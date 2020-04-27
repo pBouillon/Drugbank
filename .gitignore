@@ -1,0 +1,9 @@
+# Escaping data sources
+
+*.txt
+*.csv
+*.tsv
+*.gz
+*.obo
+*.sqlite
+ 
