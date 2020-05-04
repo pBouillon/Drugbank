@@ -1,5 +1,7 @@
 package dao;
 
+import org.apache.lucene.index.IndexWriter;
+
 /**
  * Base class for Data Access Objects (DAO)
  */
