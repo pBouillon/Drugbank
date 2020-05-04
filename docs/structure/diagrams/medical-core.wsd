@@ -1,0 +1,79 @@
+@startuml
+
+footer TELECOM Nancy - GMD - Bouillon Pierre - Dreyer Mathieu - Jacque Antoine
+
+title Core objects used for the medical analysis
+
+frame common.pojo {
+
+    ' Class definitions
+
+    class Disease {
+        .. attributes ..
+        - _associatedSymptoms: Symptom[0..*]
+        - _name: String
+        - _synonyms: String[0..*]
+
+        .. constructors ..
+        + Disease()
+        + Disease(name: String, synonyms: String[0..*])
+        + Disease(associatedSymptoms: Symptom[0..*], name: String, synonyms: String[0..*])
+
+        .. getters ..
+        + getAssociatedSymptoms(): Symptom[0..*]
+        + getName(): String
+        + getSynonyms(): String[0..*]
+
+        .. setters ..
+        + setAssociatedSymptoms(associatedSymptoms: Symptom[0..*]): void
+        + setName(name: String): void
+        + setSynonyms(synonyms: String[0..*]): void
+    }
+  
+    class Drug {
+        .. attributes ..
+        - _name: String
+        - _sideEffects: Symptom[0..*]
+
+        .. constructors ..
+        + Drug()
+        + Drug(name: String)
+        + Drug(name: String, sideEffects: Symptom[0..*])
+
+        .. getters ..
+        + getName(): String
+        + getSideEffects(): Symptom[0..*]
+
+        .. setters ..
+        + setName(name: String): void
+        + setSideEffects(sideEffects: Symptom[0..*])): void
+    }
+  
+    class Symptom {
+        .. attributes ..
+        - _associatedDrugs: Drug[0..*]
+        - _name: String
+
+        .. constructors ..
+        + Symptom()
+        + Symptom(name: String)
+        + Symptom(associatedDrugs: Drug[0..*], name: String)
+
+        .. getters ..
+        + getAssociatedDrugs(): Drug[0..*]
+        + getName(): name
+
+        .. setters ..
+        + setAssociatedDrugs(associatedDrugs: Drug[0..*]): void
+        + setName(name: String): void
+    }
+  
+    ' Entity relations
+
+    Disease -right-o Symptom: cause several >
+    Drug --o Symptom: may cause >
+    Symptom --o Drug: may be cured with >
+
+}
+
+@enduml
