@@ -2,6 +2,9 @@ package dao;
 
 import util.indexer.IndexerBase;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 /**
  * Base class for Data Access Objects (DAO)
  */
@@ -34,6 +37,15 @@ public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
      * Check whether the data source queried is already indexed or not
      * @return True if the indexing is already done; False otherwise
      */
-    protected abstract boolean isDataSourceIndexed();
+    protected boolean isDataSourceIndexed() {
+        // Return true if the folder containing the indexes is not empty
+        try {
+            return Files.list(indexesDirectory)
+                    .findAny()
+                    .isPresent();
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
 }

@@ -21,13 +21,6 @@ public class AtcDao extends DataAccessObjectBase<Drug> {
     @Override
     protected void initializeIndexing() { }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    protected boolean isDataSourceIndexed() {
-        return false;
-    }
 
     @Override
     public Document getAsDocument(Drug sourceObject) {

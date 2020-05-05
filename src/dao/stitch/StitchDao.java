@@ -110,19 +110,4 @@ public class StitchDao extends DataAccessObjectBase<Drug> implements IIndexer<Dr
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    protected boolean isDataSourceIndexed() {
-        // Return true if the folder containing the indexes is not empty
-        try {
-            return Files.list(indexesDirectory)
-                    .findAny()
-                    .isPresent();
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
 }

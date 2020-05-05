@@ -125,19 +125,4 @@ public class DrugBankDao extends  DataAccessObjectBase<Drug> implements IIndexer
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    protected boolean isDataSourceIndexed() {
-        // Return true if the folder containing the indexes is not empty
-        try {
-            return Files.list(indexesDirectory)
-                    .findAny()
-                    .isPresent();
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
 }
