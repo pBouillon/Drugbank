@@ -28,9 +28,19 @@ public class DrugBankParser implements IParser<Drug> {
         public static final String BEGIN_DRUGCARD = "#BEGIN_DRUGCARD";
 
         /**
+         * Used when the following line will be the drug's indication
+         */
+        public static final String INDICATION = "# Indication";
+
+        /**
          * Used when the following line will be the drug's generic name
          */
         public static final String GENERIC_NAME = "# Generic_Name";
+
+        /**
+         * Used when the following line will be the drug's toxicity
+         */
+        public static final String TOXICITY = "# Toxicity";
 
     }
 
@@ -43,11 +53,14 @@ public class DrugBankParser implements IParser<Drug> {
 
         // Atomic boolean for file parsing
         AtomicBoolean isGenericNameField = new AtomicBoolean(false);
+        AtomicBoolean isIndicationField = new AtomicBoolean(false);
         AtomicBoolean isNewDrugCardField = new AtomicBoolean(false);
+        AtomicBoolean isToxicityField = new AtomicBoolean(false);
 
         // Supplier to indicate if any flag is raised
         BooleanSupplier isAnyFlagRaised = ()
-            -> isGenericNameField.get() || isNewDrugCardField.get();
+            -> isGenericNameField.get() || isIndicationField.get()
+                || isNewDrugCardField.get() ||isToxicityField.get();
 
         // Set the flags according to the currently read field
         Consumer<String> setFlags = (field) -> {
@@ -56,8 +69,18 @@ public class DrugBankParser implements IParser<Drug> {
                 return;
             }
 
+            if (field.contains(Fields.INDICATION)) {
+                isIndicationField.set(true);
+                return;
+            }
+
             if (field.contains(Fields.GENERIC_NAME)) {
                 isGenericNameField.set(true);
+                return;
+            }
+
+            if (field.contains(Fields.TOXICITY)) {
+                isToxicityField.set(true);
             }
         };
 
@@ -74,15 +97,26 @@ public class DrugBankParser implements IParser<Drug> {
                     return;
                 }
 
+                Drug currentDrug = drugs.peek();
+
+                // Set the indication of the lastly added Drug
+                if (isIndicationField.get()) {
+                    currentDrug.setIndication(line);
+                    isIndicationField.set(false);
+                    return;
+                }
+
                 // Set the generic name of the lastly added Drug
                 if (isGenericNameField.get()) {
-                    // Drug should not be null here
-                    // If the parsed file is correctly formatted, there should be a new drug card before anything else
-                    // which will create a new Drug instance in the Queue
-                    //noinspection ConstantConditions
-                    drugs.peek()
-                        .setName(line);
+                    currentDrug.setName(line);
                     isGenericNameField.set(false);
+                    return;
+                }
+
+                // Set the toxicity of the lastly added Drug
+                if (isToxicityField.get()) {
+                    currentDrug.setToxicity(line);
+                    isToxicityField.set(false);
                     return;
                 }
 
