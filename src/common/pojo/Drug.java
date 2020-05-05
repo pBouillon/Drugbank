@@ -9,9 +9,19 @@ import util.Lazy;
 public class Drug {
 
     /**
+     * The drug's indication
+     */
+    private String _indication;
+
+    /**
      * The drug's name
      */
     private String _name;
+
+    /**
+     * The drug's toxicity
+     */
+    private String _toxicity;
 
     /**
      * Collection of side effects caused by this drugs
@@ -25,21 +35,11 @@ public class Drug {
     public Drug() { }
 
     /**
-     * Specialized constructor omitting lazy values
-     * @param name Drug's name
+     * Getter for the drug's indication
+     * @return The drug's indication as a String
      */
-    public Drug(String name) {
-        _name = name;
-    }
-
-    /**
-     * Specialized constructor
-     * @param name Drug's name
-     * @param sideEffects List of
-     */
-    public Drug(String name, Iterable<Symptom> sideEffects) {
-        _name = name;
-        _sideEffects.setSupplier(() -> sideEffects);
+    public String getIndication() {
+        return _indication;
     }
 
     /**
@@ -48,6 +48,14 @@ public class Drug {
      */
     public String getName() {
         return _name;
+    }
+
+    /**
+     * Getter for the drug's toxicity
+     * @return The drug's toxicity as a String
+     */
+    public String getToxicity() {
+        return _toxicity;
     }
 
     /**
@@ -60,11 +68,27 @@ public class Drug {
     }
 
     /**
+     * Drug's indication setter
+     * @param indication New indication to be set
+     */
+    public void setIndication(String indication) {
+        _indication = indication;
+    }
+
+    /**
      * Drug's name setter
      * @param name New name to be set
      */
     public void setName(String name) {
         _name = name;
+    }
+
+    /**
+     * Drug's toxicity setter
+     * @param toxicity New name to be set
+     */
+    public void setToxicity(String toxicity) {
+        _toxicity = toxicity;
     }
 
     /**
