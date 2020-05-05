@@ -2,6 +2,8 @@ package common.pojo;
 
 import util.Lazy;
 
+import java.util.List;
+
 /**
  * Basic POJO holding disease's data
  * POJO built according to https://stackoverflow.com/a/3527340
@@ -11,7 +13,7 @@ public class Disease {
     /**
      * Lazy list of all symptoms related to this disease
      */
-    private final Lazy<Iterable<Symptom>> _associatedSymptoms = new Lazy<>();
+    private final Lazy<List<Symptom>> _associatedSymptoms = new Lazy<>();
 
     /**
      * Disease's name
@@ -21,7 +23,7 @@ public class Disease {
     /**
      * Disease's synonyms
      */
-    private Iterable<String> _synonyms;
+    private List<String> _synonyms;
 
     /**
      * Default constructor for parameter-less construction
@@ -33,7 +35,7 @@ public class Disease {
      * @param name Disease's name
      * @param synonyms Disease's synonyms
      */
-    public Disease(String name, Iterable<String> synonyms) {
+    public Disease(String name, List<String> synonyms) {
         _name = name;
         _synonyms = synonyms;
     }
@@ -44,7 +46,7 @@ public class Disease {
      * @param name Disease's name
      * @param synonyms Disease's synonyms
      */
-    public Disease(Iterable<Symptom> associatedSymptoms, String name, Iterable<String> synonyms) {
+    public Disease(List<Symptom> associatedSymptoms, String name, List<String> synonyms) {
         _associatedSymptoms.setSupplier(() -> associatedSymptoms);
         _name = name;
         _synonyms = synonyms;
@@ -55,7 +57,7 @@ public class Disease {
      * @return A collection of all symptoms related to this disease
      * @see Symptom
      */
-    public Iterable<Symptom> getAssociatedSymptoms() {
+    public List<Symptom> getAssociatedSymptoms() {
         return _associatedSymptoms.getOrCompute();
     }
 
@@ -69,9 +71,9 @@ public class Disease {
 
     /**
      * Get the synonyms of the disease
-     * @return An Iterable of the disease synonyms
+     * @return An List of the disease synonyms
      */
-    public Iterable<String> getSynonyms() {
+    public List<String> getSynonyms() {
         return _synonyms;
     }
 
@@ -79,7 +81,7 @@ public class Disease {
      * Set the collection of all symptoms related to this disease
      * @param associatedSymptoms A collection of all symptoms related to this disease
      */
-    public void setAssociatedSymptoms(Iterable<Symptom> associatedSymptoms) {
+    public void setAssociatedSymptoms(List<Symptom> associatedSymptoms) {
         _associatedSymptoms.setSupplier(() -> associatedSymptoms);
     }
 
@@ -93,9 +95,9 @@ public class Disease {
 
     /**
      * Set the synonyms of this disease
-     * @param synonyms An Iterable of the disease synonyms
+     * @param synonyms An List of the disease synonyms
      */
-    public void setSynonyms(Iterable<String> synonyms) {
+    public void setSynonyms(List<String> synonyms) {
         _synonyms = synonyms;
     }
 
