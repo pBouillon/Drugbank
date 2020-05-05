@@ -29,6 +29,28 @@ public class Configuration {
     /**
      * Lucene constants
      */
-    public static class Lucene { }
+    public static class Lucene {
+
+        /**
+         * Key used for indexing field per entity
+         */
+        public static class IndexKey {
+
+            /**
+             * Keys of the Drug entity
+             * @see Drug
+             */
+            public static class Drug {
+
+                /**
+                 * Generic name of the drug
+                 */
+                public static final String NAME = "name";
+
+            }
+
+        }
+
+    }
 
 }

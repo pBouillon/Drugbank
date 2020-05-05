@@ -4,22 +4,28 @@ import common.Configuration;
 import common.pojo.Drug;
 import dao.DataAccessObjectBase;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import util.IIndexer;
 import util.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 /**
  * DAO for the DrugBank data source
  */
-public class DrugBankDao extends DataAccessObjectBase {
+public class DrugBankDao extends DataAccessObjectBase implements IIndexer<Drug> {
 
     /**
      * Drug bank data source path
@@ -60,6 +66,34 @@ public class DrugBankDao extends DataAccessObjectBase {
      * @inheritDoc
      */
     @Override
+    public Document getAsDocument(Drug sourceObject) {
+        Document document = new Document();
+
+        document.add(new StringField(
+            Configuration.Lucene.IndexKey.Drug.NAME,
+            sourceObject.getName(),
+            Field.Store.YES
+        ));
+
+        return document;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void indexSourceObjects(IndexWriter writer, List<Drug> sourceObjects) throws IOException {
+        List<Document> documents = sourceObjects.stream()
+                .map(this::getAsDocument)
+                .collect(Collectors.toList());
+
+        writer.addDocuments(documents);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     protected void initialize() {
         // Prepare the data source
         _dataSource = Paths.get(Configuration.DrugBank.Paths.SOURCE);
@@ -81,26 +115,28 @@ public class DrugBankDao extends DataAccessObjectBase {
      */
     @Override
     protected void initializeIndexing() {
-        Queue<Drug> drugs = null;
+        List<Drug> drugs = null;
 
         // Retrieve the records from the file
         IParser<Drug> parser = new DrugBankParser();
         try {
-            drugs = (Queue<Drug>) parser.extractData(_dataSource);
+            drugs = (List<Drug>) parser.extractData(_dataSource);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
         // Index the fetched records
-        IndexWriter indexWriter;
         try {
-            indexWriter = createIndexWriter();
+            // Create the index writer
+            IndexWriter indexWriter = createIndexWriter();
+
+            // Index the extracted drug objects
+            indexSourceObjects(indexWriter, drugs);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
-        // TODO: index the fetched rows
     }
 
     /**
