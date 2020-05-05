@@ -29,6 +29,25 @@ public class Configuration {
 
     }
 
+    public static class Stitch {
+        /**
+         * Stitch paths
+         */
+        public static class Paths {
+
+            /**
+             * Default data source location
+             */
+            public static final String SOURCE = "./data/stitch_atc/chemical.sources.v5.0.tsv";
+
+            /**
+             * Lucene indexes paths
+             */
+            public static final String INDEX = "./src/dao/stitch/indexes/";
+
+        }
+    }
+
     /**
      * Lucene constants
      */
@@ -64,6 +83,16 @@ public class Configuration {
                  * Drug's toxicity
                  */
                 public static final String TOXICITY = "toxicity";
+
+                /**
+                 * Drug's ATC
+                 */
+                public static final String ATC = "atc";
+
+                /**
+                 * Drug's compound id
+                 */
+                public static final String COMPOUND_ID = "compound_id";
 
             }
 
