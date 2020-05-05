@@ -7,6 +7,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
@@ -69,10 +70,25 @@ public class DrugBankDao extends DataAccessObjectBase implements IIndexer<Drug> 
     public Document getAsDocument(Drug sourceObject) {
         Document document = new Document();
 
+        // Drug's indication
+        document.add(new TextField(
+                Configuration.Lucene.IndexKey.Drug.INDICATION,
+                sourceObject.getIndication(),
+                Field.Store.YES
+        ));
+
+        // Drug's generic name
         document.add(new StringField(
             Configuration.Lucene.IndexKey.Drug.NAME,
             sourceObject.getName(),
             Field.Store.YES
+        ));
+
+        // Drug's toxicity
+        document.add(new TextField(
+                Configuration.Lucene.IndexKey.Drug.TOXICITY,
+                sourceObject.getToxicity(),
+                Field.Store.YES
         ));
 
         return document;

@@ -47,6 +47,7 @@ public class DrugBankParser implements IParser<Drug> {
     /**
      * @inheritDoc
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public Iterable<Drug> extractData(Path source) throws IOException {
         Stack<Drug> drugs = new Stack<>();
@@ -97,7 +98,10 @@ public class DrugBankParser implements IParser<Drug> {
                     return;
                 }
 
-                Drug currentDrug = drugs.peek();
+                Drug currentDrug = null;
+                if (!drugs.isEmpty()) {
+                    currentDrug = drugs.peek();
+                }
 
                 // Set the indication of the lastly added Drug
                 if (isIndicationField.get()) {

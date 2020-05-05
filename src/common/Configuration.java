@@ -46,9 +46,19 @@ public class Configuration {
             public static class Drug {
 
                 /**
+                 * Drug's indication
+                 */
+                public static final String INDICATION = "indication";
+
+                /**
                  * Generic name of the drug
                  */
                 public static final String NAME = "name";
+
+                /**
+                 * Drug's toxicity
+                 */
+                public static final String TOXICITY = "toxicity";
 
             }
 
