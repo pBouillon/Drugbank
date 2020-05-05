@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * DAO for the DrugBank data source
@@ -21,18 +22,31 @@ import java.util.List;
 public class DrugBankDao extends DataAccessObjectBase {
 
     /**
+     * Drug bank data source path
+     */
+    private final Path _dataSource;
+
+    /**
+     * Folder in which all indexes will be stored
+     */
+    private final Path _indexesFolder;
+
+    /**
      * Lucene IndexWriter
      * @see IndexWriter
      */
-    private IndexWriter _indexWriter;
+    private final IndexWriter _indexWriter;
 
     /**
      * Default constructor
      * @throws IOException on missing index folder
      */
-    public DrugBankDao() throws IOException {
+    public DrugBankDao(Path dataSource) throws IOException {
+        _dataSource = dataSource;
+
         // Index destination
         Path indexDest = Paths.get(Configuration.Lucene.Paths.INDEX);
+        _indexesFolder = indexDest;
         Directory indexDirectory = FSDirectory.open(indexDest);
 
         // Create the index writer configuration
@@ -48,14 +62,30 @@ public class DrugBankDao extends DataAccessObjectBase {
      * @inheritDoc
      */
     @Override
-    protected void initializeIndexing() { }
+    protected void initializeIndexing() {
+
+        Iterable<Drug> drugs;
+
+        // Retrieve the records from the file
+        IParser<Drug> parser = new DrugBankParser();
+        try {
+            drugs = parser.extractData(_dataSource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Index the fetched records
+        // TODO: index the fetched rows
+
+    }
 
     /**
      * @inheritDoc
      */
     @Override
     protected boolean isDataSourceIndexed() {
-        return false;
+        return _indexesFolder.iterator().hasNext();
     }
 
 }
