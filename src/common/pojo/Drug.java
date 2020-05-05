@@ -108,7 +108,7 @@ public class Drug {
      * Getter for the drug's ATC
      * @return the drug ATC if set
      */
-    public String get_ATC() {
+    public String getATC() {
         return _ATC;
     }
 
@@ -156,10 +156,10 @@ public class Drug {
 
     /**
      * ATC setter
-     * @param _ATC New ATC code
+     * @param ATC New ATC code
      */
-    public void set_ATC(String _ATC) {
-        this._ATC = _ATC;
+    public void setATC(String ATC) {
+        this._ATC = ATC;
     }
 
     /**

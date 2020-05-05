@@ -13,6 +13,9 @@ public class DrugRepository extends RepositoryBase {
      */
     private final DrugBankDao _drugBankDao;
 
+    /**
+     * Private DAO to query the STITCH sources
+     */
     private final StitchDao _stitchDAO;
 
     /**

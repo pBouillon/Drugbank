@@ -36,30 +36,29 @@ public class StitchParser implements IParser<Drug> {
 
         // Atomic boolean for file parsing
         AtomicBoolean isFirstLine = new AtomicBoolean(true);
-        AtomicBoolean isNewDrugCardField = new AtomicBoolean(false);
 
         Files.lines(source)
                 .forEachOrdered(line -> {
-                    // Skip empty lines
+                    // Skip empty lines and comments
                     if (line.isEmpty() || line.startsWith(Fields.BEGIN_COMMENT)) {
                         return;
                     }
-                    //Skip first line
+
+                    // Skip first line
                     if (isFirstLine.get()) {
                         isFirstLine.set(false);
                         return;
                     }
 
                     String[] lineTab = line.split("\t");
-                    if(!lineTab[2].equals("ATC")){
+                    if (!lineTab[2].equals("ATC")){
                         return;
                     }
 
                     Drug currentDrug = new Drug();
-                    currentDrug.set_ATC(lineTab[3]);
+                    currentDrug.setATC(lineTab[3]);
                     currentDrug.set_compoundId(lineTab[0]);
                     drugs.add(currentDrug);
-
                 });
 
         return drugs;

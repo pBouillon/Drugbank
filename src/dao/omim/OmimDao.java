@@ -1,11 +1,13 @@
 package dao.omim;
 
+import common.pojo.Drug;
 import dao.DataAccessObjectBase;
+import org.apache.lucene.document.Document;
 
 /**
  * DAO for the OMIM data source
  */
-public class OmimDao extends DataAccessObjectBase {
+public class OmimDao extends DataAccessObjectBase<Drug> {
 
     /**
      * @inheritDoc
@@ -27,4 +29,8 @@ public class OmimDao extends DataAccessObjectBase {
         return false;
     }
 
+    @Override
+    public Document getAsDocument(Drug sourceObject) {
+        return null;
+    }
 }

@@ -1,11 +1,11 @@
 package dao;
 
-import org.apache.lucene.index.IndexWriter;
+import util.indexer.IndexerBase;
 
 /**
  * Base class for Data Access Objects (DAO)
  */
-public abstract class DataAccessObjectBase {
+public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
 
     /**
      * Default constructor
