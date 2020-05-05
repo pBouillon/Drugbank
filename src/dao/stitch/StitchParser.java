@@ -46,6 +46,7 @@ public class StitchParser implements IParser<Drug> {
                     }
                     //Skip first line
                     if (isFirstLine.get()) {
+                        isFirstLine.set(false);
                         return;
                     }
 
