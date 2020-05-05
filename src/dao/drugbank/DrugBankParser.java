@@ -6,8 +6,7 @@ import util.IParser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -40,7 +39,7 @@ public class DrugBankParser implements IParser<Drug> {
      */
     @Override
     public Iterable<Drug> extractData(Path source) throws IOException {
-        Queue<Drug> drugs = new LinkedList<>();
+        Stack<Drug> drugs = new Stack<>();
 
         // Atomic boolean for file parsing
         AtomicBoolean isGenericNameField = new AtomicBoolean(false);

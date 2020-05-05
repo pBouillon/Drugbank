@@ -6,6 +6,12 @@
 *.gz
 *.obo
 *.sqlite
+
+# Escaping indexes
+indexes/
+*.fdx
+*.fdt
+*.lock
  
 # Escaping Java files
 
