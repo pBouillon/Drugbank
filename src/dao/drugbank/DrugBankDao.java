@@ -11,9 +11,9 @@ import org.apache.lucene.store.FSDirectory;
 import util.IParser;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -24,30 +24,28 @@ public class DrugBankDao extends DataAccessObjectBase {
     /**
      * Drug bank data source path
      */
-    private final Path _dataSource;
+    private Path _dataSource;
 
     /**
      * Folder in which all indexes will be stored
      */
-    private final Path _indexesFolder;
+    private Path _indexesDirectory;
 
     /**
-     * Lucene IndexWriter
+     * Default constructor, initialize the data source from the constants
+     * @see Configuration
+     */
+    public DrugBankDao() { }
+
+    /**
+     * Create a Lucene IndexWriter
+     * @return A new instance of the IndexWriter
+     * @throws IOException On non-existing index folder
      * @see IndexWriter
      */
-    private final IndexWriter _indexWriter;
-
-    /**
-     * Default constructor
-     * @throws IOException on missing index folder
-     */
-    public DrugBankDao(Path dataSource) throws IOException {
-        _dataSource = dataSource;
-
+    private IndexWriter createIndexWriter() throws IOException {
         // Index destination
-        Path indexDest = Paths.get(Configuration.Lucene.Paths.INDEX);
-        _indexesFolder = indexDest;
-        Directory indexDirectory = FSDirectory.open(indexDest);
+        Directory indexDirectory = FSDirectory.open(_indexesDirectory);
 
         // Create the index writer configuration
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(
@@ -55,7 +53,27 @@ public class DrugBankDao extends DataAccessObjectBase {
         );
 
         // Create the index writer
-        _indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
+        return new IndexWriter(indexDirectory, indexWriterConfig);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    protected void initialize() {
+        // Prepare the data source
+        _dataSource = Paths.get(Configuration.DrugBank.Paths.SOURCE);
+
+        // Prepare the indexes directory
+        _indexesDirectory = Paths.get(Configuration.DrugBank.Paths.INDEX);
+        if (Files.notExists(_indexesDirectory)) {
+            try {
+                Files.createDirectory(_indexesDirectory);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
     }
 
     /**
@@ -63,21 +81,26 @@ public class DrugBankDao extends DataAccessObjectBase {
      */
     @Override
     protected void initializeIndexing() {
-
-        Iterable<Drug> drugs;
+        Queue<Drug> drugs = null;
 
         // Retrieve the records from the file
         IParser<Drug> parser = new DrugBankParser();
         try {
-            drugs = parser.extractData(_dataSource);
+            drugs = (Queue<Drug>) parser.extractData(_dataSource);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
         // Index the fetched records
+        IndexWriter indexWriter;
+        try {
+            indexWriter = createIndexWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         // TODO: index the fetched rows
-
     }
 
     /**
@@ -85,7 +108,14 @@ public class DrugBankDao extends DataAccessObjectBase {
      */
     @Override
     protected boolean isDataSourceIndexed() {
-        return _indexesFolder.iterator().hasNext();
+        // Return true if the folder containing the indexes is not empty
+        try {
+            return Files.list(_indexesDirectory)
+                    .findAny()
+                    .isPresent();
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }

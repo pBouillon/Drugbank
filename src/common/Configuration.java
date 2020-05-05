@@ -5,15 +5,17 @@ package common;
  */
 public class Configuration {
 
-    /**
-     * Lucene constants
-     */
-    public static class Lucene {
+    public static class DrugBank {
 
         /**
-         * Lucene paths constants
+         * Drugbank paths constants
          */
         public static class Paths {
+
+            /**
+             * Default data source location
+             */
+            public static final String SOURCE = "./data/drugbank/drugbank.txt";
 
             /**
              * Lucene indexes paths
@@ -23,5 +25,10 @@ public class Configuration {
         }
 
     }
+
+    /**
+     * Lucene constants
+     */
+    public static class Lucene { }
 
 }

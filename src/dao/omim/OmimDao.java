@@ -11,6 +11,12 @@ public class OmimDao extends DataAccessObjectBase {
      * @inheritDoc
      */
     @Override
+    protected void initialize() { }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     protected void initializeIndexing() { }
 
     /**
