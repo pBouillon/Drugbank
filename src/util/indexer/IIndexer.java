@@ -1,6 +1,5 @@
-package util;
+package util.indexer;
 
-import common.pojo.Drug;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 
@@ -18,7 +17,7 @@ public interface IIndexer<T> {
      * @param writer Lucene index writer
      * @param sourceObjects Collection of
      */
-    void indexSourceObjects(IndexWriter writer, List<Drug> sourceObjects) throws IOException;
+    void indexSourceObjects(IndexWriter writer, List<T> sourceObjects) throws IOException;
 
     /**
      * Convert a source object to a Lucene document

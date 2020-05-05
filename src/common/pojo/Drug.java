@@ -38,6 +38,16 @@ public class Drug {
     private final Lazy<List<Symptom>> _sideEffects = new Lazy<>();
 
     /**
+     * Drug ATC
+     */
+    private String _ATC;
+
+    /**
+     * Drug compound ID
+     */
+    private String _compoundId;
+
+    /**
      * Default constructor for parameter-less construction
      */
     public Drug() {
@@ -95,6 +105,22 @@ public class Drug {
     }
 
     /**
+     * Getter for the drug's ATC
+     * @return the drug ATC if set
+     */
+    public String getATC() {
+        return _ATC;
+    }
+
+    /**
+     * Getter for the drug's compoundId
+     * @return the drug compoundId if set
+     */
+    public String get_compoundId() {
+        return _compoundId;
+    }
+
+    /**
      * Drug's name setter
      * @param name New name to be set
      */
@@ -128,4 +154,19 @@ public class Drug {
         _sideEffects.setSupplier(() -> sideEffects);
     }
 
+    /**
+     * ATC setter
+     * @param ATC New ATC code
+     */
+    public void setATC(String ATC) {
+        this._ATC = ATC;
+    }
+
+    /**
+     * setter for CompoundId
+     * @param _compoundId new Compound ID
+     */
+    public void set_compoundId(String _compoundId) {
+        this._compoundId = _compoundId;
+    }
 }

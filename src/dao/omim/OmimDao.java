@@ -1,11 +1,13 @@
 package dao.omim;
 
+import common.pojo.Drug;
 import dao.DataAccessObjectBase;
+import org.apache.lucene.document.Document;
 
 /**
  * DAO for the OMIM data source
  */
-public class OmimDao extends DataAccessObjectBase {
+public class OmimDao extends DataAccessObjectBase<Drug> {
 
     /**
      * @inheritDoc
@@ -19,12 +21,8 @@ public class OmimDao extends DataAccessObjectBase {
     @Override
     protected void initializeIndexing() { }
 
-    /**
-     * @inheritDoc
-     */
     @Override
-    protected boolean isDataSourceIndexed() {
-        return false;
+    public Document getAsDocument(Drug sourceObject) {
+        return null;
     }
-
 }
