@@ -1,19 +1,19 @@
 package dao.stitch;
 
 import common.pojo.Drug;
+import util.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 /**
  * Drug bank file parser
+ * @see IParser
  */
-public class StitchParser  {
+public class StitchParser implements IParser<Drug> {
 
     /**
      * Represent the known fields of the parsed file
@@ -30,6 +30,7 @@ public class StitchParser  {
     /**
      * @inheritDoc
      */
+    @Override
     public Iterable<Drug> extractData(Path source) throws IOException {
         Stack<Drug> drugs = new Stack<>();
 
