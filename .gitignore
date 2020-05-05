@@ -6,7 +6,8 @@
 *.gz
 *.obo
 *.sqlite
- 
+*.keg
+
 # Escaping Java files
 
 # Created by https://www.gitignore.io/api/java,eclipse,jetbrains
