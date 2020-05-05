@@ -5,10 +5,13 @@ package common;
  */
 public class Configuration {
 
+    /**
+     * Drugbank constants
+     */
     public static class DrugBank {
 
         /**
-         * Drugbank paths constants
+         * Drugbank paths
          */
         public static class Paths {
 
