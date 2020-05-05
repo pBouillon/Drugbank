@@ -2,6 +2,8 @@ package common.pojo;
 
 import util.Lazy;
 
+import java.util.List;
+
 /**
  * Basic POJO holding symptom's data
  * POJO built according to https://stackoverflow.com/a/3527340
@@ -11,7 +13,7 @@ public class Symptom {
     /**
      * Lazy list of all drugs that may cure this symptom
      */
-    private final Lazy<Iterable<Drug>> _associatedDrugs = new Lazy<>();
+    private final Lazy<List<Drug>> _associatedDrugs = new Lazy<>();
 
     /**
      * Symptom's name
@@ -36,7 +38,7 @@ public class Symptom {
      * @param associatedDrugs Collection of all drugs that may cure this disease
      * @param name Symptom's name
      */
-    public Symptom(Iterable<Drug> associatedDrugs, String name) {
+    public Symptom(List<Drug> associatedDrugs, String name) {
         _associatedDrugs.setSupplier(() -> associatedDrugs);
         _name = name;
     }
@@ -46,7 +48,7 @@ public class Symptom {
      * @return A collection of all drugs that may cure this disease
      * @see Drug
      */
-    public Iterable<Drug> getAssociatedDrugs() {
+    public List<Drug> getAssociatedDrugs() {
         return _associatedDrugs.getOrCompute();
     }
 
@@ -62,7 +64,7 @@ public class Symptom {
      * Set the collection of all drugs that may cure this disease
      * @param associatedDrugs A collection of all drugs that may cure this disease
      */
-    public void setAssociatedDrugs(Iterable<Drug> associatedDrugs) {
+    public void setAssociatedDrugs(List<Drug> associatedDrugs) {
         _associatedDrugs.setSupplier(() -> associatedDrugs);
     }
 

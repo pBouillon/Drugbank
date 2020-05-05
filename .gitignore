@@ -8,6 +8,13 @@
 *.sqlite
 *.keg
 
+
+# Escaping indexes
+indexes/
+*.fdx
+*.fdt
+*.lock
+
 # Escaping Java files
 
 # Created by https://www.gitignore.io/api/java,eclipse,jetbrains
