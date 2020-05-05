@@ -21,7 +21,7 @@ public class StitchParser implements IParser<Drug> {
     private static class Fields {
 
         /**
-         * Used when beginning a new drug card
+         * Used when beginning a comment
          */
         public static final String BEGIN_COMMENT = "#";
 
