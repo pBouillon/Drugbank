@@ -20,7 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Queue;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -82,6 +82,13 @@ public class DrugBankDao extends DataAccessObjectBase implements IIndexer<Drug> 
             Configuration.Lucene.IndexKey.Drug.NAME,
             sourceObject.getName(),
             Field.Store.YES
+        ));
+
+        // Drug's synonyms
+        document.add(new TextField(
+                Configuration.Lucene.IndexKey.Drug.SYNONYMS,
+                String.join(" ", sourceObject.getSynonyms()),
+                Field.Store.YES
         ));
 
         // Drug's toxicity

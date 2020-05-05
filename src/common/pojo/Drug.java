@@ -2,6 +2,9 @@ package common.pojo;
 
 import util.Lazy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Basic POJO holding drug's data
  * POJO built according to https://stackoverflow.com/a/3527340
@@ -19,6 +22,11 @@ public class Drug {
     private String _name;
 
     /**
+     * Collection of all synonyms of this drug
+     */
+    private final Lazy<List<String>> _synonyms = new Lazy<>();
+
+    /**
      * The drug's toxicity
      */
     private String _toxicity;
@@ -27,12 +35,15 @@ public class Drug {
      * Collection of side effects caused by this drugs
      * @see Symptom
      */
-    private final Lazy<Iterable<Symptom>> _sideEffects = new Lazy<>();
+    private final Lazy<List<Symptom>> _sideEffects = new Lazy<>();
 
     /**
      * Default constructor for parameter-less construction
      */
-    public Drug() { }
+    public Drug() {
+        _sideEffects.setSupplier(ArrayList::new);
+        _synonyms.setSupplier(ArrayList::new);
+    }
 
     /**
      * Getter for the drug's indication
@@ -51,6 +62,14 @@ public class Drug {
     }
 
     /**
+     * Synonyms getter
+     * @return An Iterable of String
+     */
+    public List<String> getSynonyms() {
+        return _synonyms.getOrCompute();
+    }
+
+    /**
      * Getter for the drug's toxicity
      * @return The drug's toxicity as a String
      */
@@ -63,7 +82,7 @@ public class Drug {
      * @return An Iterable of Symptom
      * @see Symptom
      */
-    public Iterable<Symptom> getSideEffects() {
+    public List<Symptom> getSideEffects() {
         return _sideEffects.getOrCompute();
     }
 
@@ -84,6 +103,15 @@ public class Drug {
     }
 
     /**
+     * Synonyms setter
+     * @param synonyms Iterable of String corresponding to the synonyms of this drug
+     */
+    public void setSynonyms(List<String> synonyms) {
+        _synonyms.setSupplier(() -> synonyms);
+    }
+
+
+    /**
      * Drug's toxicity setter
      * @param toxicity New name to be set
      */
@@ -96,7 +124,7 @@ public class Drug {
      * @param sideEffects Iterable of Symptom corresponding to the side effects of this drug
      * @see Symptom
      */
-    public void setSideEffects(Iterable<Symptom> sideEffects) {
+    public void setSideEffects(List<Symptom> sideEffects) {
         _sideEffects.setSupplier(() -> sideEffects);
     }
 

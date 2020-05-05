@@ -56,6 +56,11 @@ public class Configuration {
                 public static final String NAME = "name";
 
                 /**
+                 * Drug's synonyms
+                 */
+                public static final String SYNONYMS = "synonyms";
+
+                /**
                  * Drug's toxicity
                  */
                 public static final String TOXICITY = "toxicity";
