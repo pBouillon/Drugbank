@@ -4,7 +4,6 @@ import common.Configuration;
 import common.pojo.Drug;
 import dao.DataAccessObjectBase;
 import dao.TextSourceDaoBase;
-import dao.stitch.StitchParser;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
