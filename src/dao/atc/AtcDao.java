@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * DAO for the DrugBank data source
+ * DAO for the Atc data source
  */
 public class AtcDao extends DataAccessObjectBase<Drug> implements IIndexer<Drug> {
 
     /**
-     * Drug bank data source path
+     * Atc data source path
      */
     private Path _dataSource;
 

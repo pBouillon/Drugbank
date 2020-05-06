@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * DAO for the DrugBank data source
+ * DAO for the Stitch data source
  */
 public class StitchDao extends DataAccessObjectBase<Drug> implements IIndexer<Drug> {
 
     /**
-     * Drug bank data source path
+     * Stitch data source path
      */
     private Path _dataSource;
 
