@@ -48,6 +48,25 @@ public class Configuration {
         }
     }
 
+    public static class Atc {
+        /**
+         * atc paths
+         */
+        public static class Paths {
+
+            /**
+             * Default data source location
+             */
+            public static final String SOURCE = "./data/stitch_atc/br08303.keg";
+
+            /**
+             * Lucene indexes paths
+             */
+            public static final String INDEX = "./src/dao/atc/indexes/";
+
+        }
+    }
+
     /**
      * Lucene constants
      */

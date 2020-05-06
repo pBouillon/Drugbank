@@ -1,5 +1,6 @@
 package repository;
 
+import dao.atc.AtcDao;
 import dao.drugbank.DrugBankDao;
 import dao.stitch.StitchDao;
 
@@ -19,12 +20,18 @@ public class DrugRepository extends RepositoryBase {
     private final StitchDao _stitchDAO;
 
     /**
+     * Private DAO to query the ATC sources
+     */
+    private final AtcDao _atcDAO;
+
+    /**
      * Default constructor
      * Initialize the DAOs
      */
     public DrugRepository() {
         _drugBankDao = new DrugBankDao();
         _stitchDAO = new StitchDao();
+        _atcDAO = new AtcDao();
     }
 
 }
