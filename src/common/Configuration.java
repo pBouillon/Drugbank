@@ -29,6 +29,9 @@ public class Configuration {
 
     }
 
+    /**
+     * Stitch constants
+     */
     public static class Stitch {
         /**
          * Stitch paths

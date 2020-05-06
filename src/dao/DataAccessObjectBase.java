@@ -4,9 +4,11 @@ import util.indexer.IndexerBase;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Base class for Data Access Objects (DAO)
+ * @param <T> The type of the data accessed
  */
 public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
 
@@ -15,7 +17,9 @@ public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
      * Check if the data source queried by the concrete DAO is already indexed
      * and if not starts the indexing
      */
-    protected DataAccessObjectBase() {
+    protected DataAccessObjectBase(Path indexDirectory) {
+        super(indexDirectory);
+
         initialize();
 
         if (!isDataSourceIndexed()) {

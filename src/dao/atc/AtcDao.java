@@ -21,6 +21,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.nio.file.Path;
+
 /**
  * DAO for the Atc data source
  */
@@ -36,6 +38,14 @@ public class AtcDao extends DataAccessObjectBase<Drug> implements IIndexer<Drug>
      * @see Configuration
      */
     public AtcDao() { }
+
+    /**
+     * Default constructor
+     * @see DataAccessObjectBase
+     */
+    protected AtcDao(Path indexDirectory) {
+        super(indexDirectory);
+    }
 
     /**
      * @inheritDoc
