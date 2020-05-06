@@ -1,7 +1,7 @@
 package dao.stitch;
 
 import common.pojo.Drug;
-import util.IParser;
+import parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -8,6 +8,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,30 @@ public abstract class IndexerBase<T> implements IIndexer<T> {
      * Folder in which all indexes will be stored
      */
     protected Path indexesDirectory;
+
+    /**
+     * Default constructor
+     * @param indexesDirectoryPath Path to the index directory, create it if not exists
+     */
+    protected IndexerBase(Path indexesDirectoryPath) {
+        indexesDirectory = indexesDirectoryPath;
+        ensureDirectoryCreation();
+    }
+
+    /**
+     * Ensure that the index directory is created
+     * If not created, creates it
+     */
+    private void ensureDirectoryCreation() {
+        if (Files.notExists(indexesDirectory)) {
+            try {
+                Files.createDirectory(indexesDirectory);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+    }
 
     /**
      * Create a Lucene IndexWriter
