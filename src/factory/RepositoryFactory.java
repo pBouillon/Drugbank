@@ -6,7 +6,6 @@ import repository.RepositoryBase;
 import repository.SymptomRepository;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Factory to handle repository instances

@@ -1,7 +1,7 @@
 package dao.drugbank;
 
 import common.pojo.Drug;
-import util.IParser;
+import parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -92,28 +92,59 @@ public class DrugBankParser implements IParser<Drug> {
             }
         };
 
+        Consumer<String> handleSingleLineFields = (field) -> {
+            Drug currentDrug = null;
+            if (!drugs.isEmpty()) {
+                currentDrug = drugs.peek();
+            }
+
+            // Set the indication of the lastly added Drug
+            if (isIndicationField.get()) {
+                currentDrug.setIndication(field);
+                isIndicationField.set(false);
+                return;
+            }
+
+            // Set the generic name of the lastly added Drug
+            if (isGenericNameField.get()) {
+                currentDrug.setName(field);
+                isGenericNameField.set(false);
+                return;
+            }
+
+            // Set the toxicity of the lastly added Drug
+            if (isToxicityField.get()) {
+                currentDrug.setToxicity(field);
+                isToxicityField.set(false);
+                return;
+            }
+
+            // Create a new instance of Drug for this new card
+            if (isNewDrugCardField.get()) {
+                drugs.add(new Drug());
+                isNewDrugCardField.set(false);
+            }
+        };
+
         // Set the flags according to the currently read field
         Consumer<String> setFlags = (field) -> {
             if (field.contains(Fields.BEGIN_DRUGCARD)) {
                 isNewDrugCardField.set(true);
-                return;
             }
 
-            if (field.contains(Fields.INDICATION)) {
+            else if (field.contains(Fields.INDICATION)) {
                 isIndicationField.set(true);
-                return;
             }
 
-            if (field.contains(Fields.GENERIC_NAME)) {
+            else if (field.contains(Fields.GENERIC_NAME)) {
                 isGenericNameField.set(true);
-                return;
             }
 
-            if (field.contains(Fields.SYNONYMS)) {
+            else if (field.contains(Fields.SYNONYMS)) {
                 isSynonymField.set(true);
             }
 
-            if (field.contains(Fields.TOXICITY)) {
+            else if (field.contains(Fields.TOXICITY)) {
                 isToxicityField.set(true);
             }
         };
@@ -134,37 +165,7 @@ public class DrugBankParser implements IParser<Drug> {
                     return;
                 }
 
-                Drug currentDrug = null;
-                if (!drugs.isEmpty()) {
-                    currentDrug = drugs.peek();
-                }
-
-                // Set the indication of the lastly added Drug
-                if (isIndicationField.get()) {
-                    currentDrug.setIndication(line);
-                    isIndicationField.set(false);
-                    return;
-                }
-
-                // Set the generic name of the lastly added Drug
-                if (isGenericNameField.get()) {
-                    currentDrug.setName(line);
-                    isGenericNameField.set(false);
-                    return;
-                }
-
-                // Set the toxicity of the lastly added Drug
-                if (isToxicityField.get()) {
-                    currentDrug.setToxicity(line);
-                    isToxicityField.set(false);
-                    return;
-                }
-
-                // Create a new instance of Drug for this new card
-                if (isNewDrugCardField.get()) {
-                    drugs.add(new Drug());
-                    isNewDrugCardField.set(false);
-                }
+                handleSingleLineFields.accept(line);
             });
 
         return drugs;
