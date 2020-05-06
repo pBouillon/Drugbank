@@ -1,14 +1,12 @@
 package dao.atc;
 
 import common.pojo.Drug;
-import dao.stitch.StitchParser;
-import util.IParser;
+import parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 /**
