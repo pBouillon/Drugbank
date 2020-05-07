@@ -19,19 +19,31 @@ public class MeDRAExtractor {
      */
     private static String getConnectionString() {
         // Retrieve .ini file
+        Wini ini = null;
         try {
-            Wini ini = new Wini(new File(Configuration.Sider.Paths.INI));
+            ini = new Wini(new File(Configuration.Sider.Paths.INI));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        String host;
-        String database;
-        String user;
-        String password;
+        String host = ini.get(
+                Configuration.Sider.INI_BLOCK_NAME,
+                "host");
 
-        return null;
+        String database = ini.get(
+                Configuration.Sider.INI_BLOCK_NAME,
+                "database");
+
+        String user = ini.get(
+                Configuration.Sider.INI_BLOCK_NAME,
+                "user");
+
+        String password = ini.get(
+                Configuration.Sider.INI_BLOCK_NAME,
+                "password");
+
+        return String.format("jdbc:mysql://%s/%s?user=%s&password=%s", host, database, user, password);
     }
 
 }
