@@ -49,11 +49,16 @@ public class Configuration {
             public static final String INDEX = "./src/dao/stitch/indexes/";
 
         }
+
     }
 
+    /**
+     * ATC constants
+     */
     public static class Atc {
+
         /**
-         * atc paths
+         * ATC paths
          */
         public static class Paths {
 
@@ -68,6 +73,7 @@ public class Configuration {
             public static final String INDEX = "./src/dao/atc/indexes/";
 
         }
+
     }
 
     /**

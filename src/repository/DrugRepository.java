@@ -10,6 +10,11 @@ import dao.stitch.StitchDao;
 public class DrugRepository extends RepositoryBase {
 
     /**
+     * Private DAO to query the ATC sources
+     */
+    private final AtcDao _atcDAO;
+
+    /**
      * Private DAO to query the drugbank sources
      */
     private final DrugBankDao _drugBankDao;
@@ -20,18 +25,13 @@ public class DrugRepository extends RepositoryBase {
     private final StitchDao _stitchDAO;
 
     /**
-     * Private DAO to query the ATC sources
-     */
-    private final AtcDao _atcDAO;
-
-    /**
      * Default constructor
      * Initialize the DAOs
      */
     public DrugRepository() {
+        _atcDAO = new AtcDao();
         _drugBankDao = new DrugBankDao();
         _stitchDAO = new StitchDao();
-        _atcDAO = new AtcDao();
     }
 
 }

@@ -16,31 +16,29 @@ import java.util.regex.Pattern;
 public class AtcParser implements IParser<Drug> {
 
     /**
-     * Represent the known fields of the parsed file
-     */
-    private static class Fields {
-
-        /**
-         * Used when beginning a comment
-         */
-        public static final String BEGIN_COMMENT = "[#!%+].*";
-
-    }
-
-    /**
      * @inheritDoc
      */
     @Override
     public Iterable<Drug> extractData(Path source) throws IOException {
+        // Compile commented lines pattern
+        final String commentFormat = "[#!%+].*";
+        final Pattern commentPattern = Pattern.compile(commentFormat);
+
+        // Parse the source file
         Stack<Drug> drugs = new Stack<>();
-        Pattern commentPattern = Pattern.compile(Fields.BEGIN_COMMENT);
         Files.lines(source)
                 .forEachOrdered(line -> {
                     // Skip empty lines and comments
                     if (line.isEmpty() || commentPattern.matcher(line).matches()) {
                         return;
                     }
-                    String[] lineTab = line.substring(1).trim().split(" *", 2);
+
+                    // Extract the two relevant fields
+                    String[] lineTab = line.substring(1)
+                            .trim()
+                            .split(" *", 2);
+
+                    // Create the object from the extracted fields
                     Drug currentDrug = new Drug();
                     currentDrug.setATC(lineTab[0]);
                     currentDrug.setName(lineTab[1]);
