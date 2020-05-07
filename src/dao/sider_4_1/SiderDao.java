@@ -4,8 +4,12 @@ import common.Configuration;
 import common.pojo.Symptom;
 import dao.DataAccessObjectBase;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.IndexWriter;
 import util.indexer.IIndexer;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -42,8 +46,25 @@ public class SiderDao extends DataAccessObjectBase<Symptom> implements IIndexer<
      */
     @Override
     protected void initializeIndexing() {
-        List<Symptom> drugs = _extractor.extract();
-        System.out.println(drugs.size());
+        // Create the index writer
+        IndexWriter indexWriter = null;
+        try {
+            indexWriter = createIndexWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // Extract the symptoms and create them
+        List<Symptom> extracted = _extractor.extract();
+
+        // Index the extracted Symptom objects
+        try {
+            indexSourceObjects(indexWriter, extracted);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -51,6 +72,14 @@ public class SiderDao extends DataAccessObjectBase<Symptom> implements IIndexer<
      */
     @Override
     public Document getAsDocument(Symptom sourceObject) {
-        return null;
+        Document symptomDocument = new Document();
+
+        // Add the side effect's name to the document
+        symptomDocument.add(new TextField(
+                Configuration.Lucene.IndexKey.Symptom.NAME,
+                sourceObject.getName(),
+                Field.Store.YES));
+
+        return symptomDocument;
     }
 }

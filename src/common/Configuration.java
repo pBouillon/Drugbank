@@ -65,7 +65,6 @@ public class Configuration {
 
             /**
              * Keys of the Drug entity
-             * @see Drug
              */
             public static class Drug {
 
@@ -101,6 +100,17 @@ public class Configuration {
 
             }
 
+            /**
+             * Keys of the Symptom entity
+             */
+            public static class Symptom {
+
+                /**
+                 * Symptom's name
+                 */
+                public static final String NAME = "name";
+
+            }
         }
 
     }
