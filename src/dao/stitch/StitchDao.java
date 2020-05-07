@@ -12,7 +12,7 @@ import util.indexer.IIndexer;
 import java.nio.file.Paths;
 
 /**
- * DAO for the DrugBank data source
+ * DAO for the Stitch data source
  */
 public class StitchDao extends TextSourceDaoBase<Drug> implements IIndexer<Drug> {
 

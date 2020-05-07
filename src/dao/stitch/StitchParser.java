@@ -10,7 +10,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Drug bank file parser
+ * Stitch file parser
  * @see IParser
  */
 public class StitchParser implements IParser<Drug> {
