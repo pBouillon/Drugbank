@@ -1,19 +1,18 @@
 package dao.sider_4_1;
 
 import common.Configuration;
-import common.pojo.Drug;
+import common.pojo.Symptom;
 import dao.DataAccessObjectBase;
 import org.apache.lucene.document.Document;
 import util.indexer.IIndexer;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 /**
  * DAO for the Sider data source
  */
-public class SiderDao extends DataAccessObjectBase<Drug> implements IIndexer<Drug> {
+public class SiderDao extends DataAccessObjectBase<Symptom> implements IIndexer<Symptom> {
 
     /**
      * Data extractor for MeDRA databases
@@ -43,14 +42,15 @@ public class SiderDao extends DataAccessObjectBase<Drug> implements IIndexer<Dru
      */
     @Override
     protected void initializeIndexing() {
-        List<Drug> drugs = _extractor.extract();
+        List<Symptom> drugs = _extractor.extract();
+        System.out.println(drugs.size());
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Document getAsDocument(Drug sourceObject) {
+    public Document getAsDocument(Symptom sourceObject) {
         return null;
     }
 }

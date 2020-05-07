@@ -1,7 +1,7 @@
 package dao.sider_4_1;
 
 import common.Configuration;
-import common.pojo.Drug;
+import common.pojo.Symptom;
 import org.ini4j.Wini;
 import util.extractor.MySQLExtractorBase;
 
@@ -12,69 +12,53 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Extract information from the MeDRA databases
  * @see SiderDao
  */
-public class MeDRAExtractor extends MySQLExtractorBase<Drug> {
+public class MeDRAExtractor extends MySQLExtractorBase<Symptom> {
 
     /**
      * @inheritDoc
      */
     @Override
-    public List<Drug> extract() {
-        Connection connection = getConnection();
+    public List<Symptom> extract() {
+        Stack<Symptom> symptoms = new Stack<>();
 
-        Statement statement = null;
-        ResultSet resultSet = null;
+        // SQL query to fetch all side effects name
+        final String sqlQuerySideEffectsName =
+                "SELECT DISTINCT " +
+                "    m_se.side_effect_name " +
+                "FROM " +
+                "    meddra_all_se m_se " +
+                "WHERE " +
+                "    m_se.meddra_concept_type = 'PT';";
 
-        // TODO: data extraction
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(
-                    "select cui from meddra limit 3");
+        // Perform query and process the results
+        try (Connection connection = getConnection();
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(sqlQuerySideEffectsName)) {
+            // Result buffers
+            String sideEffectName;
+            Symptom newSideEffect;
 
+            // Process each result
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("cui"));
-            }
+                sideEffectName = resultSet.getString("side_effect_name");
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+                newSideEffect = new Symptom();
+                newSideEffect.setName(sideEffectName);
+
+                symptoms.add(newSideEffect);
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
             System.exit(1);
-        } finally {
-            // it is a good idea to release
-            // resources in a finally{} block
-            // in reverse-order of their creation
-            // if they are no-longer needed
-
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException ignored) { } // ignore
-
-                resultSet = null;
-            }
-
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ignored) { } // ignore
-
-                statement = null;
-            }
-
-            if (connection != null)
-            {
-                try {
-                    connection.close();
-                } catch (SQLException ignored) { }
-
-                connection = null;
-            }
         }
 
-        return null;
+        return symptoms;
     }
 
     /**
