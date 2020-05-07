@@ -1,7 +1,7 @@
 package dao.stitch;
 
 import common.pojo.Drug;
-import parser.IParser;
+import util.parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Stitch file parser
+ * Stitch file util.parser
  * @see IParser
  */
 public class StitchParser implements IParser<Drug> {

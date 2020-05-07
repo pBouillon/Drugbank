@@ -1,11 +1,14 @@
 package dao.sider_4_1;
 
+import common.Configuration;
 import common.pojo.Drug;
 import dao.DataAccessObjectBase;
 import org.apache.lucene.document.Document;
 import util.indexer.IIndexer;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * DAO for the Sider data source
@@ -21,8 +24,8 @@ public class SiderDao extends DataAccessObjectBase<Drug> implements IIndexer<Dru
      * Default constructor
      * @see DataAccessObjectBase
      */
-    protected SiderDao(Path indexDirectory) {
-        super(indexDirectory);
+    public SiderDao() {
+        super(Paths.get(Configuration.Sider.Paths.INDEX));
     }
 
     /**
@@ -39,7 +42,9 @@ public class SiderDao extends DataAccessObjectBase<Drug> implements IIndexer<Dru
      * @inheritDoc
      */
     @Override
-    protected void initializeIndexing() { }
+    protected void initializeIndexing() {
+        List<Drug> drugs = _extractor.extract();
+    }
 
     /**
      * @inheritDoc

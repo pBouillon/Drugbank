@@ -1,7 +1,7 @@
 package dao.drugbank;
 
 import common.pojo.Drug;
-import parser.IParser;
+import util.parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +12,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 /**
- * Drug bank file parser
+ * Drug bank file util.parser
  * @see IParser
  */
 public class DrugBankParser implements IParser<Drug> {

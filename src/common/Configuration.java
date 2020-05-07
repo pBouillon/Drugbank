@@ -128,7 +128,7 @@ public class Configuration {
             /**
              * Sider indexes paths
              */
-            public static final String INDEX = "./src/dao/sider_4.1/indexes/";
+            public static final String INDEX = "./src/dao/sider_4_1/indexes/";
 
         }
 

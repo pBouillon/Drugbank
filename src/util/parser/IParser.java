@@ -1,10 +1,10 @@
-package parser;
+package util.parser;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Represent a parser
+ * Represent a util.parser
  * @param <T> The type of the element to produce on parsing
  */
 public interface IParser<T> {
