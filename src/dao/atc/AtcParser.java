@@ -1,7 +1,7 @@
 package dao.atc;
 
 import common.pojo.Drug;
-import parser.IParser;
+import util.parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 
 /**
- * Atc file parser
+ * Atc file util.parser
  * @see IParser
  */
 public class AtcParser implements IParser<Drug> {

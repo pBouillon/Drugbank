@@ -2,7 +2,7 @@ package dao;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
-import parser.IParser;
+import util.parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,7 +21,7 @@ public abstract class TextSourceDaoBase<T> extends DataAccessObjectBase<T> {
     protected Path dataSource;
 
     /**
-     * Associated parser for this data source
+     * Associated util.parser for this data source
      */
     protected IParser<T> parser;
 
@@ -33,7 +33,7 @@ public abstract class TextSourceDaoBase<T> extends DataAccessObjectBase<T> {
     }
 
     /**
-     * Must be override to provide the `dataSource` and the `parser`
+     * Must be override to provide the `dataSource` and the `util.parser`
      *
      * @inheritDoc
      */
