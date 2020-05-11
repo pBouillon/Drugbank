@@ -1,38 +1,59 @@
 package dao.omim;
 
-import common.pojo.Drug;
-import dao.DataAccessObjectBase;
+import common.Configuration;
+import common.pojo.Disease;
+import dao.TextSourceDaoBase;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import util.indexer.IIndexer;
+import util.indexer.IndexerBase;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * DAO for the OMIM data source
  */
-public class OmimDao extends DataAccessObjectBase<Drug> {
+public class OmimDao extends TextSourceDaoBase<Disease> implements IIndexer<Disease> {
 
     /**
      * Default constructor
-     * @see DataAccessObjectBase
      */
-    protected OmimDao(Path indexDirectory) {
-        super(indexDirectory);
+    public OmimDao() {
+        super(Paths.get(Configuration.Omim.Paths.INDEX));
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    protected void initialize() { }
+    protected void initialize() {
+        dataSource = Paths.get(Configuration.Omim.Paths.SOURCE);
+        parser = new OmimParser();
+    }
 
     /**
      * @inheritDoc
      */
     @Override
-    protected void initializeIndexing() { }
+    public Document getAsDocument(Disease sourceObject) {
+        Document document = new Document();
 
-    @Override
-    public Document getAsDocument(Drug sourceObject) {
-        return null;
+        // Disease's name
+        document.add(new StringField(
+                Configuration.Lucene.IndexKey.Disease.NAME,
+                sourceObject.getName(),
+                Field.Store.YES
+        ));
+
+        // Disease's symptoms
+        document.add(new TextField(
+                Configuration.Lucene.IndexKey.Disease.SYNONYMS,
+                IndexerBase.getJoinedStringCollection(sourceObject.getSynonyms()),
+                Field.Store.YES
+        ));
+
+        return document;
     }
 }

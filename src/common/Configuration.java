@@ -64,6 +64,23 @@ public class Configuration {
         public static class IndexKey {
 
             /**
+             * Keys of the Disease entity
+             */
+            public static class Disease {
+
+                /**
+                 * Generic name of the disease
+                 */
+                public static final String NAME = "name";
+
+                /**
+                 * Other names of the disease
+                 */
+                public static final String SYNONYMS = "synonym";
+
+            }
+
+            /**
              * Keys of the Drug entity
              */
             public static class Drug {
@@ -111,6 +128,30 @@ public class Configuration {
                 public static final String NAME = "name";
 
             }
+        }
+
+    }
+
+    /**
+     * OMIM constants
+     */
+    public static class Omim {
+
+        /**
+         * OMIM paths
+         */
+        public static class Paths {
+
+            /**
+             * Default data source location
+             */
+            public static final String SOURCE = "./data/omim/omim_onto.csv";
+
+            /**
+             * Lucene indexes paths
+             */
+            public static final String INDEX = "./src/dao/omim/indexes/";
+
         }
 
     }

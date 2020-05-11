@@ -12,7 +12,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 /**
- * Drug bank file util.parser
+ * Drug bank file parser
  * @see IParser
  */
 public class DrugBankParser implements IParser<Drug> {
