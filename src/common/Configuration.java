@@ -121,6 +121,33 @@ public class Configuration {
                 public static final String CUI = "cui";
 
             }
+
+            /**
+             * Keys of the Disease entity
+             */
+            public static class Disease {
+
+                /**
+                 * Disease's name
+                 */
+                public static final String NAME = "name";
+
+                /**
+                 * Disease's hpo_id
+                 */
+                public static final String HPO_ID = "hpo_id";
+
+                /**
+                 * Disease's sign_id
+                 */
+                public static final String HPO_SIGN_ID = "sign_id";
+
+                /**
+                 * Disease's db_name
+                 */
+                public static final String HPO_DB_NAME = "db_name";
+
+            }
         }
 
     }
@@ -149,6 +176,26 @@ public class Configuration {
              * Sider indexes paths
              */
             public static final String INDEX = "./src/dao/sider_4_1/indexes/";
+
+        }
+
+    }
+
+    public static class HPO {
+        /**
+         * Hpo paths
+         */
+        public static class Paths {
+
+            /**
+             * database path
+             */
+            public static final String PATH = "D:/travail/TELECOM/cours/BDD/Projet/gmd/data/hpo/hpo_annotations.sqlite";
+
+            /**
+             * hpo indexes paths
+             */
+            public static final String INDEX = "./src/dao/hpo/indexes/";
 
         }
 
