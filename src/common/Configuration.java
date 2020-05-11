@@ -110,6 +110,16 @@ public class Configuration {
                  */
                 public static final String NAME = "name";
 
+                /**
+                 * Symptom's hpo_id
+                 */
+                public static final String HPO_ID = "hpo_id";
+
+                /**
+                 * Symptom's cui
+                 */
+                public static final String CUI = "cui";
+
             }
         }
 
@@ -163,6 +173,30 @@ public class Configuration {
              * Lucene indexes paths
              */
             public static final String INDEX = "./src/dao/stitch/indexes/";
+
+        }
+
+    }
+
+    /**
+     * Hp constants
+     */
+    public static class Hp {
+
+        /**
+         * Hp paths
+         */
+        public static class Paths {
+
+            /**
+             * Default data source location
+             */
+            public static final String SOURCE = "./data/hpo/hp.obo";
+
+            /**
+             * Lucene indexes paths
+             */
+            public static final String INDEX = "./src/dao/hp/indexes/";
 
         }
 
