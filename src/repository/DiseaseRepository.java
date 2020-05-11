@@ -1,6 +1,5 @@
 package repository;
 
-import dao.atc.AtcDao;
 import dao.omim.OmimDao;
 
 /**
