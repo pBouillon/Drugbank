@@ -104,17 +104,17 @@ public class Symptom {
 
     /**
      * hpoId setter
-     * @param _hpoId the hpoId
+     * @param hpoId the hpoId
      */
-    public void setHpoId(String _hpoId) {
-        this._hpoId = _hpoId;
+    public void setHpoId(String hpoId) {
+        this._hpoId = hpoId;
     }
 
     /**
      * cui setter
-     * @param _cui the symptom cui
+     * @param cui the symptom cui
      */
-    public void setCui(String _cui) {
-        this._cui = _cui;
+    public void setCui(String cui) {
+        this._cui = cui;
     }
 }

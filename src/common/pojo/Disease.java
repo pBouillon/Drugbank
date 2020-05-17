@@ -142,25 +142,25 @@ public class Disease {
 
     /**
      * setter for the hpoId
-     * @param _hpoId new hpoId
+     * @param hpoId new hpoId
      */
-    public void setHpoId(String _hpoId) {
-        this._hpoId = _hpoId;
+    public void setHpoId(String hpoId) {
+        this._hpoId = hpoId;
     }
 
     /**
      * setter for the dbName
-     * @param _hpoDbName db name
+     * @param hpoDbName db name
      */
-    public void setHpoDbName(String _hpoDbName) {
-        this._hpoDbName = _hpoDbName;
+    public void setHpoDbName(String hpoDbName) {
+        this._hpoDbName = hpoDbName;
     }
 
     /**
      * setter for the Hpo sign id
-     * @param _hpoSignId the new hpo sign id
+     * @param hpoSignId the new hpo sign id
      */
-    public void setHpoSignId(String _hpoSignId) {
-        this._hpoSignId = _hpoSignId;
+    public void setHpoSignId(String hpoSignId) {
+        this._hpoSignId = hpoSignId;
     }
 }
