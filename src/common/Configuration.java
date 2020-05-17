@@ -127,6 +127,43 @@ public class Configuration {
                  */
                 public static final String NAME = "name";
 
+                /**
+                 * Symptom's hpo_id
+                 */
+                public static final String HPO_ID = "hpo_id";
+
+                /**
+                 * Symptom's cui
+                 */
+                public static final String CUI = "cui";
+
+            }
+
+            /**
+             * Keys of the Disease entity
+             */
+            public static class Disease {
+
+                /**
+                 * Disease's name
+                 */
+                public static final String NAME = "name";
+
+                /**
+                 * Disease's hpo_id
+                 */
+                public static final String HPO_ID = "hpo_id";
+
+                /**
+                 * Disease's sign_id
+                 */
+                public static final String HPO_SIGN_ID = "sign_id";
+
+                /**
+                 * Disease's db_name
+                 */
+                public static final String HPO_DB_NAME = "db_name";
+
             }
         }
 
@@ -185,6 +222,26 @@ public class Configuration {
 
     }
 
+    public static class HPO {
+        /**
+         * Hpo paths
+         */
+        public static class Paths {
+
+            /**
+             * database path
+             */
+            public static final String PATH = "D:/travail/TELECOM/cours/BDD/Projet/gmd/data/hpo/hpo_annotations.sqlite";
+
+            /**
+             * hpo indexes paths
+             */
+            public static final String INDEX = "./src/dao/hpo/indexes/";
+
+        }
+
+    }
+
     /**
      * Stitch constants
      */
@@ -204,6 +261,30 @@ public class Configuration {
              * Lucene indexes paths
              */
             public static final String INDEX = "./src/dao/stitch/indexes/";
+
+        }
+
+    }
+
+    /**
+     * Hp constants
+     */
+    public static class Hp {
+
+        /**
+         * Hp paths
+         */
+        public static class Paths {
+
+            /**
+             * Default data source location
+             */
+            public static final String SOURCE = "./data/hpo/hp.obo";
+
+            /**
+             * Lucene indexes paths
+             */
+            public static final String INDEX = "./src/dao/hp/indexes/";
 
         }
 

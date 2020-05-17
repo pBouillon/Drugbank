@@ -3,7 +3,7 @@ package dao.sider_4_1;
 import common.Configuration;
 import common.pojo.Symptom;
 import org.ini4j.Wini;
-import util.extractor.MySQLExtractorBase;
+import util.extractor.SQLExtractorBase;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.util.Stack;
  * Extract information from the MeDRA databases
  * @see SiderDao
  */
-public class MeDRAExtractor extends MySQLExtractorBase<Symptom> {
+public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
 
     /**
      * @inheritDoc

@@ -2,7 +2,6 @@ package repository;
 
 import dao.atc.AtcDao;
 import dao.drugbank.DrugBankDao;
-import dao.sider_4_1.SiderDao;
 import dao.stitch.StitchDao;
 
 /**
@@ -21,11 +20,6 @@ public class DrugRepository extends RepositoryBase {
     private final DrugBankDao _drugBankDao;
 
     /**
-     * Private DAO to query the SIDER sources (MeDRA)
-     */
-    private final SiderDao _siderDao;
-
-    /**
      * Private DAO to query the STITCH sources
      */
     private final StitchDao _stitchDAO;
@@ -37,7 +31,6 @@ public class DrugRepository extends RepositoryBase {
     public DrugRepository() {
         _atcDAO = new AtcDao();
         _drugBankDao = new DrugBankDao();
-        _siderDao = new SiderDao();
         _stitchDAO = new StitchDao();
     }
 
