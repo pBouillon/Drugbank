@@ -26,6 +26,21 @@ public class Disease {
     private List<String> _synonyms;
 
     /**
+     * Id in the database dbName
+     */
+    private String _hpoId;
+
+    /**
+     * name of the database where the Id have to comes (see HPO)
+     */
+    private String _hpoDbName;
+
+    /**
+     * The hpo sign linked to this disease
+     */
+    private String _hpoSignId;
+
+    /**
      * Default constructor for parameter-less construction
      */
     public Disease() { }
@@ -78,6 +93,30 @@ public class Disease {
     }
 
     /**
+     * getter for the HPOId
+     * @return the hpoId
+     */
+    public String getHpoId() {
+        return _hpoId;
+    }
+
+    /**
+     * getter for the dbName
+     * @return the dbName
+     */
+    public String getHpoDbName() {
+        return _hpoDbName;
+    }
+
+    /**
+     * getter for the hpo sign id
+     * @return the sign id
+     */
+    public String getHpoSignId() {
+        return _hpoSignId;
+    }
+
+    /**
      * Set the collection of all symptoms related to this disease
      * @param associatedSymptoms A collection of all symptoms related to this disease
      */
@@ -101,4 +140,27 @@ public class Disease {
         _synonyms = synonyms;
     }
 
+    /**
+     * setter for the hpoId
+     * @param hpoId new hpoId
+     */
+    public void setHpoId(String hpoId) {
+        this._hpoId = hpoId;
+    }
+
+    /**
+     * setter for the dbName
+     * @param hpoDbName db name
+     */
+    public void setHpoDbName(String hpoDbName) {
+        this._hpoDbName = hpoDbName;
+    }
+
+    /**
+     * setter for the Hpo sign id
+     * @param hpoSignId the new hpo sign id
+     */
+    public void setHpoSignId(String hpoSignId) {
+        this._hpoSignId = hpoSignId;
+    }
 }

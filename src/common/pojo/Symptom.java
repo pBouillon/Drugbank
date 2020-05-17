@@ -21,6 +21,16 @@ public class Symptom {
     private String _name;
 
     /**
+     * Symptom hpo id
+     */
+    private String _hpoId;
+
+    /**
+     * Symptom cui
+     */
+    private String _cui;
+
+    /**
      * Default constructor for parameter-less construction
      */
     public Symptom() { }
@@ -61,6 +71,22 @@ public class Symptom {
     }
 
     /**
+     * hpoId getter
+     * @return the hpo id
+     */
+    public String getHpoId() {
+        return _hpoId;
+    }
+
+    /**
+     * cui getter
+     * @return the cui
+     */
+    public String getCui() {
+        return _cui;
+    }
+
+    /**
      * Set the collection of all drugs that may cure this disease
      * @param associatedDrugs A collection of all drugs that may cure this disease
      */
@@ -76,4 +102,19 @@ public class Symptom {
         _name = name;
     }
 
+    /**
+     * hpoId setter
+     * @param hpoId the hpoId
+     */
+    public void setHpoId(String hpoId) {
+        this._hpoId = hpoId;
+    }
+
+    /**
+     * cui setter
+     * @param cui the symptom cui
+     */
+    public void setCui(String cui) {
+        this._cui = cui;
+    }
 }
