@@ -20,8 +20,14 @@ public class Symptom {
      */
     private String _name;
 
+    /**
+     * Symptom hpo id
+     */
     private String _hpoId;
 
+    /**
+     * Symptom cui
+     */
     private String _cui;
 
     /**
@@ -68,7 +74,7 @@ public class Symptom {
      * hpoId getter
      * @return the hpo id
      */
-    public String get_hpoId() {
+    public String getHpoId() {
         return _hpoId;
     }
 
@@ -76,7 +82,7 @@ public class Symptom {
      * cui getter
      * @return the cui
      */
-    public String get_cui() {
+    public String getCui() {
         return _cui;
     }
 
@@ -100,7 +106,7 @@ public class Symptom {
      * hpoId setter
      * @param _hpoId the hpoId
      */
-    public void set_hpoId(String _hpoId) {
+    public void setHpoId(String _hpoId) {
         this._hpoId = _hpoId;
     }
 
@@ -108,7 +114,7 @@ public class Symptom {
      * cui setter
      * @param _cui the symptom cui
      */
-    public void set_cui(String _cui) {
+    public void setCui(String _cui) {
         this._cui = _cui;
     }
 }

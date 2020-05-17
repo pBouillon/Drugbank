@@ -25,15 +25,13 @@ public class HpoExtractor extends SQLExtractorBase<Disease> {
     public List<Disease> extract() {
         Stack<Disease> diseases = new Stack<>();
         // SQL query to fetch all side effects name
-        final String sqlQuery ="SELECT\n" +
-                "    disease_db,\n" +
-                "    disease_id,\n" +
-                "    disease_label,\n" +
-                "    sign_id\n" +
-                "FROM\n" +
+        final String sqlQuery ="SELECT" +
+                "    disease_db," +
+                "    disease_id," +
+                "    disease_label," +
+                "    sign_id" +
+                "FROM" +
                 "    phenotype_annotation;";
-
-
         // Perform query and process the results
         try (Connection connection = getConnection();
                  Statement statement = connection.createStatement();
@@ -46,9 +44,9 @@ public class HpoExtractor extends SQLExtractorBase<Disease> {
 
                 newDisease = new Disease();
                 newDisease.setName(resultSet.getString("disease_label"));
-                newDisease.set_hpoId(resultSet.getString("disease_id"));
-                newDisease.set_hpoDbName(resultSet.getString("disease_db"));
-                newDisease.set_hpoSignId(resultSet.getString("sign_id"));
+                newDisease.setHpoId(resultSet.getString("disease_id"));
+                newDisease.setHpoDbName(resultSet.getString("disease_db"));
+                newDisease.setHpoSignId(resultSet.getString("sign_id"));
                 diseases.add(newDisease);
             }
         } catch (SQLException throwable) {

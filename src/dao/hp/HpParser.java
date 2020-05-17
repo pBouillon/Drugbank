@@ -62,7 +62,7 @@ public class HpParser implements IParser<Symptom> {
 
                 if(line.equals(Fields.BEGIN_CARD)){
                     symptoms.push(new Symptom());
-                    symptoms.peek().set_cui("");
+                    symptoms.peek().setCui("");
                     return;
                 }
 
@@ -72,12 +72,12 @@ public class HpParser implements IParser<Symptom> {
                 }
 
                 if(line.startsWith(Fields.ID_FIELD)){
-                    symptoms.peek().set_hpoId(line.replace(Fields.ID_FIELD, ""));
+                    symptoms.peek().setHpoId(line.replace(Fields.ID_FIELD, ""));
                     return;
                 }
 
                 if(line.startsWith(Fields.CUI_FIELD)){
-                    symptoms.peek().set_cui(line.replace(Fields.CUI_FIELD, ""));
+                    symptoms.peek().setCui(line.replace(Fields.CUI_FIELD, ""));
                     return;
                 }
 

@@ -96,7 +96,7 @@ public class Disease {
      * getter for the HPOId
      * @return the hpoId
      */
-    public String get_hpoId() {
+    public String getHpoId() {
         return _hpoId;
     }
 
@@ -104,7 +104,7 @@ public class Disease {
      * getter for the dbName
      * @return the dbName
      */
-    public String get_hpoDbName() {
+    public String getHpoDbName() {
         return _hpoDbName;
     }
 
@@ -112,7 +112,7 @@ public class Disease {
      * getter for the hpo sign id
      * @return the sign id
      */
-    public String get_hpoSignId() {
+    public String getHpoSignId() {
         return _hpoSignId;
     }
 
@@ -144,7 +144,7 @@ public class Disease {
      * setter for the hpoId
      * @param _hpoId new hpoId
      */
-    public void set_hpoId(String _hpoId) {
+    public void setHpoId(String _hpoId) {
         this._hpoId = _hpoId;
     }
 
@@ -152,7 +152,7 @@ public class Disease {
      * setter for the dbName
      * @param _hpoDbName db name
      */
-    public void set_hpoDbName(String _hpoDbName) {
+    public void setHpoDbName(String _hpoDbName) {
         this._hpoDbName = _hpoDbName;
     }
 
@@ -160,7 +160,7 @@ public class Disease {
      * setter for the Hpo sign id
      * @param _hpoSignId the new hpo sign id
      */
-    public void set_hpoSignId(String _hpoSignId) {
+    public void setHpoSignId(String _hpoSignId) {
         this._hpoSignId = _hpoSignId;
     }
 }

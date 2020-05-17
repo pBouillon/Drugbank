@@ -45,14 +45,14 @@ public class HpDao extends TextSourceDaoBase<Symptom> implements IIndexer<Sympto
         // Symptom's CUI
         document.add(new StringField(
                 Configuration.Lucene.IndexKey.Symptom.CUI,
-                sourceObject.get_cui(),
+                sourceObject.getCui(),
                 Field.Store.YES
         ));
 
         // Symptom's hpoId
         document.add(new StringField(
                 Configuration.Lucene.IndexKey.Symptom.HPO_ID,
-                sourceObject.get_hpoId(),
+                sourceObject.getHpoId(),
                 Field.Store.YES
         ));
 

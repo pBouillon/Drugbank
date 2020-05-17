@@ -32,6 +32,9 @@ public class HpoDao extends DataAccessObjectBase<Disease> implements IIndexer<Di
         super(Paths.get(Configuration.HPO.Paths.INDEX));
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public Document getAsDocument(Disease sourceObject) {
         Document doc = new Document();
@@ -45,19 +48,19 @@ public class HpoDao extends DataAccessObjectBase<Disease> implements IIndexer<Di
         // Add the disease DB_NAME to the document
         doc.add(new StringField(
                 Configuration.Lucene.IndexKey.Disease.HPO_DB_NAME,
-                sourceObject.get_hpoDbName(),
+                sourceObject.getHpoDbName(),
                 Field.Store.YES));
 
         // Add the disease HPO_ID to the document
         doc.add(new StringField(
                 Configuration.Lucene.IndexKey.Disease.HPO_ID,
-                sourceObject.get_hpoId(),
+                sourceObject.getHpoId(),
                 Field.Store.YES));
 
         // Add the disease SIGN_ID to the document
         doc.add(new StringField(
                 Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID,
-                sourceObject.get_hpoSignId(),
+                sourceObject.getHpoSignId(),
                 Field.Store.YES));
 
         return doc;
