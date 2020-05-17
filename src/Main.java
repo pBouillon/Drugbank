@@ -1,3 +1,4 @@
+import factory.RepositoryFactory;
 import factory.RepositoryFactorySingleton;
 import repository.DiseaseRepository;
 import repository.DrugRepository;
@@ -14,9 +15,16 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        DrugRepository drugRepository =  RepositoryFactorySingleton.instance.getDrugRepository();
-        SymptomRepository symptomRepository =  RepositoryFactorySingleton.instance.getSymptomRepository();
-        DiseaseRepository diseaseRepository =  RepositoryFactorySingleton.instance.getDiseaseRepository();
+        RepositoryFactory repositories = RepositoryFactorySingleton.instance;
+
+        // Get an instance of the Disease repository
+        DiseaseRepository diseaseRepository =  repositories.getDiseaseRepository();
+
+        // Get an instance of the Drug repository
+        DrugRepository drugRepository =  repositories.getDrugRepository();
+
+        // Get an instance of the Symptom repository
+        SymptomRepository symptomRepository =  repositories.getSymptomRepository();
 
     }
 
