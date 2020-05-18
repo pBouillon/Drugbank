@@ -1,8 +1,8 @@
-package diagnostic;
+package diagnostic.request;
 
 /**
  * Diagnostic request, holding information on which base the diagnostic
- * @see DiagnosticManager
+ * @see diagnostic.DiagnosticManager
  */
 public class DiagnosticRequest {
 
