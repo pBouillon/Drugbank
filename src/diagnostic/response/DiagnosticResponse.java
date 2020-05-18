@@ -2,6 +2,7 @@ package diagnostic.response;
 
 import common.pojo.Disease;
 import common.pojo.Drug;
+import util.Lazy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class DiagnosticResponse {
     /**
      * Collection of all IDiagnosableEntity with a list of the drugs curing their effects
      */
-    public Map<IDiagnosableEntity, List<Drug>> _cures = new HashMap<>();
+    public Map<IDiagnosableEntity, Lazy<List<Drug>>> _cures = new HashMap<>();
 
     /**
      * Get all causes of the IDiagnosableEntity causing the undesirable effect of the request
@@ -59,7 +60,7 @@ public class DiagnosticResponse {
      * Getter for the diagnosed cures
      * @return A map of all the diagnosed cures
      */
-    public Map<IDiagnosableEntity, List<Drug>> getCures() {
+    public Map<IDiagnosableEntity, Lazy<List<Drug>>> getCures() {
         return _cures;
     }
 
@@ -67,7 +68,7 @@ public class DiagnosticResponse {
      * Setter for the diagnosed cures
      * @param cures The new Map to set as the diagnosed cures
      */
-    public void setCures(Map<IDiagnosableEntity, List<Drug>> cures) {
+    public void setCures(Map<IDiagnosableEntity, Lazy<List<Drug>>> cures) {
         _cures = cures;
     }
 
