@@ -2,13 +2,14 @@ package common.pojo;
 
 import util.Lazy;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Basic POJO holding symptom's data
  * POJO built according to https://stackoverflow.com/a/3527340
  */
-public class Symptom {
+public class Symptom implements Serializable {
 
     /**
      * Lazy list of all drugs that may cure this symptom
