@@ -1,14 +1,16 @@
 package common.pojo;
 
+import diagnostic.response.IDiagnosableEntity;
 import util.Lazy;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Basic POJO holding disease's data
  * POJO built according to https://stackoverflow.com/a/3527340
  */
-public class Disease {
+public class Disease implements IDiagnosableEntity, Serializable {
 
     /**
      * Lazy list of all symptoms related to this disease

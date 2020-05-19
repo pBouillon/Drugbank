@@ -1,7 +1,9 @@
 package common.pojo;
 
+import diagnostic.response.IDiagnosableEntity;
 import util.Lazy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * Basic POJO holding drug's data
  * POJO built according to https://stackoverflow.com/a/3527340
  */
-public class Drug {
+public class Drug implements IDiagnosableEntity, Serializable {
 
     /**
      * The drug's indication
