@@ -6,6 +6,7 @@ import dao.TextSourceDaoBase;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import util.indexer.IIndexer;
 
 import java.nio.file.Paths;
@@ -36,7 +37,7 @@ public class HpDao extends TextSourceDaoBase<Symptom> implements IIndexer<Sympto
         Document document = new Document();
 
         // Symptom's name
-        document.add(new StringField(
+        document.add(new TextField(
                 Configuration.Lucene.IndexKey.Symptom.NAME,
                 sourceObject.getName(),
                 Field.Store.YES
