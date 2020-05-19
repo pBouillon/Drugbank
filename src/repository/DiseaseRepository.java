@@ -1,5 +1,6 @@
 package repository;
 
+import dao.hpo.HpoDao;
 import dao.omim.OmimDao;
 
 /**
@@ -12,8 +13,11 @@ public class DiseaseRepository extends RepositoryBase {
      */
     private final OmimDao _omimDAO;
 
+    private final HpoDao _hpoDAO;
+
     public DiseaseRepository() {
         _omimDAO = new OmimDao();
+        _hpoDAO = new HpoDao();
     }
 
 }

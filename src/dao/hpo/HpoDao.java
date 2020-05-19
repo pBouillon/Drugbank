@@ -94,6 +94,7 @@ public class HpoDao extends DataAccessObjectBase<Disease> implements IIndexer<Di
         // Index the extracted Symptom objects
         try {
             indexSourceObjects(indexWriter, extracted);
+            indexWriter.commit();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

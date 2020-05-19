@@ -1,8 +1,11 @@
 import factory.RepositoryFactory;
 import factory.RepositoryFactorySingleton;
+import org.apache.lucene.queryparser.classic.ParseException;
 import repository.DiseaseRepository;
 import repository.DrugRepository;
 import repository.SymptomRepository;
+
+import java.io.IOException;
 
 /**
  * Program startup class
@@ -25,6 +28,12 @@ public class Main {
 
         // Get an instance of the Symptom repository
         SymptomRepository symptomRepository =  repositories.getSymptomRepository();
+
+        try {
+            symptomRepository.getSymptomByName("dysplasia");
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

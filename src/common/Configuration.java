@@ -64,23 +64,6 @@ public class Configuration {
         public static class IndexKey {
 
             /**
-             * Keys of the Disease entity
-             */
-            public static class Disease {
-
-                /**
-                 * Generic name of the disease
-                 */
-                public static final String NAME = "name";
-
-                /**
-                 * Other names of the disease
-                 */
-                public static final String SYNONYMS = "synonym";
-
-            }
-
-            /**
              * Keys of the Drug entity
              */
             public static class Drug {
@@ -164,6 +147,10 @@ public class Configuration {
                  */
                 public static final String HPO_DB_NAME = "db_name";
 
+                /**
+                 * Other names of the disease
+                 */
+                public static final String SYNONYMS = "synonym";
             }
         }
 

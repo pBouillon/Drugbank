@@ -61,6 +61,8 @@ public abstract class TextSourceDaoBase<T> extends DataAccessObjectBase<T> {
 
             // Index the extracted drug objects
             indexSourceObjects(indexWriter, parsed);
+
+            indexWriter.commit();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

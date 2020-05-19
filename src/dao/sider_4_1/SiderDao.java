@@ -61,6 +61,7 @@ public class SiderDao extends DataAccessObjectBase<Symptom> implements IIndexer<
         // Index the extracted Symptom objects
         try {
             indexSourceObjects(indexWriter, extracted);
+            indexWriter.commit();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

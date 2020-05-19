@@ -2,6 +2,8 @@ package util.indexer;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Abstract data indexer
+ *
  * @param <T> data type to be indexed
  */
 public abstract class IndexerBase<T> implements IIndexer<T> {
@@ -24,32 +27,54 @@ public abstract class IndexerBase<T> implements IIndexer<T> {
      */
     protected Path indexesDirectory;
 
+    protected IndexWriter indexWriter;
+
     /**
      * Default constructor
+     *
      * @param indexesDirectoryPath Path to the index directory, create it if not exists
      */
     protected IndexerBase(Path indexesDirectoryPath) {
         indexesDirectory = indexesDirectoryPath;
         ensureDirectoryCreation();
+        // Index destination
+        Directory indexDirectory = null;
+        try {
+            indexDirectory = FSDirectory.open(indexesDirectory);
+            // Create the index writer configuration
+            IndexWriterConfig indexWriterConfig = new IndexWriterConfig(
+                    new StandardAnalyzer()
+            );
+            indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+
+            // Create the index writer
+            indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Create a Lucene IndexWriter
+     *
      * @return A new instance of the IndexWriter
      * @throws IOException On non-existing index folder
      * @see IndexWriter
      */
     protected IndexWriter createIndexWriter() throws IOException {
-        // Index destination
-        Directory indexDirectory = FSDirectory.open(indexesDirectory);
+        return indexWriter;
+    }
 
-        // Create the index writer configuration
-        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(
-                new StandardAnalyzer()
-        );
+    /**
+     * Create a Lucene IndexReader
+     *
+     * @return A new instance of the IndexReader
+     * @throws IOException On non-existing index folder
+     * @see IndexReader
+     */
+    public IndexReader createIndexReader() throws IOException {
 
-        // Create the index writer
-        return new IndexWriter(indexDirectory, indexWriterConfig);
+        return DirectoryReader.open(indexWriter);
     }
 
     /**
@@ -75,6 +100,7 @@ public abstract class IndexerBase<T> implements IIndexer<T> {
 
     /**
      * Join a String list
+     *
      * @param array The String list to join
      * @return A String containing all elements joined with a whitespace
      */

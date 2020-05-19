@@ -44,9 +44,7 @@ public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
     protected boolean isDataSourceIndexed() {
         // Return true if the folder containing the indexes is not empty
         try {
-            return Files.list(indexesDirectory)
-                    .findAny()
-                    .isPresent();
+            return Files.list(indexesDirectory).anyMatch(path -> !path.getFileName().toString().equals("write.lock"));
         } catch (IOException e) {
             return false;
         }
