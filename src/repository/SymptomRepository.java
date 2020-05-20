@@ -16,7 +16,9 @@ import org.apache.lucene.search.TopDocs;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Symptom repository providing entry points for Symptom fetching and creation
@@ -42,18 +44,18 @@ public class SymptomRepository extends RepositoryBase {
         _hpDao = new HpDao();
     }
 
-    public Iterable<Symptom> getSymptomByName(String name) throws ParseException, IOException {
-        ArrayList<Symptom> symptomList = new ArrayList<>();
+    public Iterable<Symptom> getSymptom(String param, String query) throws ParseException, IOException {
+        Map<String, Symptom> symptomMap = new HashMap<>();
         StandardAnalyzer analyzer = new StandardAnalyzer();
 
-        Query q = new QueryParser(Configuration.Lucene.IndexKey.Symptom.NAME, analyzer).parse(name);
+        Query q = new QueryParser(param, analyzer).parse(query);
         int hitsPerPage = 10;
 
-        List<IndexReader> idxReaders= new ArrayList<>();
+        List<IndexReader> idxReaders = new ArrayList<>();
         idxReaders.add(_siderDao.createIndexReader());
         idxReaders.add(_hpDao.createIndexReader());
 
-        for (IndexReader reader: idxReaders) {
+        for (IndexReader reader : idxReaders) {
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(q, hitsPerPage);
             ScoreDoc[] hits = docs.scoreDocs;
@@ -61,18 +63,23 @@ public class SymptomRepository extends RepositoryBase {
             for (ScoreDoc hit : hits) {
                 int docId = hit.doc;
                 Document d = searcher.doc(docId);
-                currentSymptom = new Symptom();
-                currentSymptom.setName(d.get(Configuration.Lucene.IndexKey.Symptom.NAME));
-                currentSymptom.setCui(d.get(Configuration.Lucene.IndexKey.Symptom.CUI));
-                currentSymptom.setHpoId(d.get(Configuration.Lucene.IndexKey.Symptom.HPO_ID));
-                System.out.println(currentSymptom.getName());
-                symptomList.add(currentSymptom);
+                String name = d.get(Configuration.Lucene.IndexKey.Symptom.NAME);
+                if (symptomMap.containsKey(name)) {
+                    currentSymptom = symptomMap.get(name);
+                } else {
+                    currentSymptom = new Symptom();
+                    currentSymptom.setName(name);
+                }
+                if (currentSymptom.getCui()==null){
+                    currentSymptom.setCui(d.get(Configuration.Lucene.IndexKey.Symptom.CUI));
+                }
+                if(currentSymptom.getHpoId()==null) {
+                    currentSymptom.setHpoId(d.get(Configuration.Lucene.IndexKey.Symptom.HPO_ID));
+                }
+                symptomMap.put(name,currentSymptom);
             }
         }
-
-
-
-        return symptomList;
+        return symptomMap.values();
     }
 
 }
