@@ -154,6 +154,17 @@ public class Configuration {
             }
         }
 
+        /**
+         * Lucene search parameters
+         */
+        public static class Search {
+
+            /**
+             * Number of hits per pages
+             */
+            public static final int HITS_PER_PAGES = 512;
+
+        }
     }
 
     /**
