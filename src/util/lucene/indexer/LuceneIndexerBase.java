@@ -1,4 +1,4 @@
-package util.indexer;
+package util.lucene.indexer;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -17,16 +17,18 @@ import java.util.stream.Collectors;
 
 /**
  * Abstract data indexer
- *
  * @param <T> data type to be indexed
  */
-public abstract class IndexerBase<T> implements IIndexer<T> {
+public abstract class LuceneIndexerBase<T> implements ILuceneIndexer<T> {
 
     /**
      * Folder in which all indexes will be stored
      */
     protected Path indexesDirectory;
 
+    /**
+     * Associated index writer
+     */
     protected IndexWriter indexWriter;
 
     /**
@@ -34,11 +36,13 @@ public abstract class IndexerBase<T> implements IIndexer<T> {
      *
      * @param indexesDirectoryPath Path to the index directory, create it if not exists
      */
-    protected IndexerBase(Path indexesDirectoryPath) {
+    protected LuceneIndexerBase(Path indexesDirectoryPath) {
         indexesDirectory = indexesDirectoryPath;
+
         ensureDirectoryCreation();
+
         // Index destination
-        Directory indexDirectory = null;
+        Directory indexDirectory;
         try {
             indexDirectory = FSDirectory.open(indexesDirectory);
             // Create the index writer configuration
@@ -55,6 +59,17 @@ public abstract class IndexerBase<T> implements IIndexer<T> {
     }
 
     /**
+     * Create a Lucene IndexReader
+     *
+     * @return A new instance of the IndexReader
+     * @throws IOException On non-existing index folder
+     * @see IndexReader
+     */
+    public IndexReader createIndexReader() throws IOException {
+        return DirectoryReader.open(indexWriter);
+    }
+
+    /**
      * Create a Lucene IndexWriter
      *
      * @return A new instance of the IndexWriter
@@ -63,18 +78,6 @@ public abstract class IndexerBase<T> implements IIndexer<T> {
      */
     protected IndexWriter createIndexWriter() throws IOException {
         return indexWriter;
-    }
-
-    /**
-     * Create a Lucene IndexReader
-     *
-     * @return A new instance of the IndexReader
-     * @throws IOException On non-existing index folder
-     * @see IndexReader
-     */
-    public IndexReader createIndexReader() throws IOException {
-
-        return DirectoryReader.open(indexWriter);
     }
 
     /**

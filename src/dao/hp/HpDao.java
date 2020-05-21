@@ -7,14 +7,14 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import util.indexer.IIndexer;
+import util.lucene.indexer.ILuceneIndexer;
 
 import java.nio.file.Paths;
 
 /**
  * DAO for the HPO data source
  */
-public class HpDao extends TextSourceDaoBase<Symptom> implements IIndexer<Symptom> {
+public class HpDao extends TextSourceDaoBase<Symptom> implements ILuceneIndexer<Symptom> {
 
     public HpDao() {
         super(Paths.get(Configuration.Hp.Paths.INDEX));

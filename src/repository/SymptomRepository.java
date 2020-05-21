@@ -5,38 +5,32 @@ import common.pojo.Symptom;
 import dao.hp.HpDao;
 import dao.sider_4_1.SiderDao;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Symptom repository providing entry points for Symptom fetching and creation
  */
-public class SymptomRepository extends RepositoryBase {
+public class SymptomRepository extends RepositoryBase<Symptom> {
 
     /**
      * Default constructor
-     * Initialize the DAOs
      */
     public SymptomRepository() throws IOException {
-        handledIndexes = Arrays.asList(
-                new SiderDao().createIndexReader(),
+        super(new SiderDao().createIndexReader(),
                 new HpDao().createIndexReader());
     }
 
     /**
-     * Extract and create a Symptom from a Lucene document
-     * @param document Document in which the data will be extracted
-     * @return The newly created symptom
-     * @see Symptom
+     * @inheritDoc
      */
-    private Symptom createSymptomFromDocument(Document document) {
+    @Override
+    public Symptom createFromDocument(Document document) {
         return new Symptom(
                 document.get(Configuration.Lucene.IndexKey.Symptom.NAME),
                 document.get(Configuration.Lucene.IndexKey.Symptom.CUI),
@@ -45,12 +39,10 @@ public class SymptomRepository extends RepositoryBase {
     }
 
     /**
-     * Merge a Symptom in a symptom list
-     * If already existing, add only the missing fields
-     * @param symptomsMap Map of all symptoms with their names as keys
-     * @param toMerge Symptom to merge in the collection
+     * @inheritDoc
      */
-    private void mergeResult(Map<String, Symptom> symptomsMap, Symptom toMerge) {
+    @Override
+    protected void mergeResult(Map<String, Symptom> symptomsMap, Symptom toMerge) {
         // Get current record or create it
         Symptom currentSymptom = symptomsMap.getOrDefault(
                 toMerge.getName(), new Symptom(toMerge.getName()));
@@ -81,33 +73,13 @@ public class SymptomRepository extends RepositoryBase {
         Map<String, Symptom> symptomMap = new HashMap<>();
 
         // Query all tracked symptoms in the lucene indexes
-        Query query = createAndParseQuery(
+        Query query = createParsedQuery(
                 symptomName, Configuration.Lucene.IndexKey.Symptom.NAME);
 
-        // Initialize used objects
-        IndexSearcher searcher;
-        TopDocs docs;
-        Document document;
-
-        // Buffer for the symptoms found
-        Symptom currentSymptom;
-
-        // For each DAO handled by the repository
-        for (IndexReader reader : handledIndexes) {
-            // Search for tracked symptoms
-            searcher = new IndexSearcher(reader);
-            docs = searcher.search(query, Configuration.Lucene.Search.HITS_PER_PAGES);
-
-            // For each documents found
-            for (ScoreDoc hit : docs.scoreDocs) {
-                // Extract the symptom it contains
-                document = searcher.doc(hit.doc);
-                currentSymptom = createSymptomFromDocument(document);
-
-                // Merge its content with all the other symptoms found
-                mergeResult(symptomMap, currentSymptom);
-            }
-        }
+        // Extract all records from the matches
+        getMatchingEntities(query)
+                .forEach(symptom
+                        -> mergeResult(symptomMap, symptom));
 
         return (List<Symptom>) symptomMap.values();
     }

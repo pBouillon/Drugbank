@@ -6,14 +6,14 @@ import dao.TextSourceDaoBase;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
-import util.indexer.IIndexer;
+import util.lucene.indexer.ILuceneIndexer;
 
 import java.nio.file.Paths;
 
 /**
  * DAO for the Atc data source
  */
-public class AtcDao extends TextSourceDaoBase<Drug> implements IIndexer<Drug> {
+public class AtcDao extends TextSourceDaoBase<Drug> implements ILuceneIndexer<Drug> {
 
     /**
      * Default constructor, initialize the data source from the constants

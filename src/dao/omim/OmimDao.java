@@ -7,15 +7,15 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import util.indexer.IIndexer;
-import util.indexer.IndexerBase;
+import util.lucene.indexer.ILuceneIndexer;
+import util.lucene.indexer.LuceneIndexerBase;
 
 import java.nio.file.Paths;
 
 /**
  * DAO for the OMIM data source
  */
-public class OmimDao extends TextSourceDaoBase<Disease> implements IIndexer<Disease> {
+public class OmimDao extends TextSourceDaoBase<Disease> implements ILuceneIndexer<Disease> {
 
     /**
      * Default constructor
@@ -50,7 +50,7 @@ public class OmimDao extends TextSourceDaoBase<Disease> implements IIndexer<Dise
         // Disease's symptoms
         document.add(new TextField(
                 Configuration.Lucene.IndexKey.Disease.SYNONYMS,
-                IndexerBase.getJoinedStringCollection(sourceObject.getSynonyms()),
+                LuceneIndexerBase.getJoinedStringCollection(sourceObject.getSynonyms()),
                 Field.Store.YES
         ));
 

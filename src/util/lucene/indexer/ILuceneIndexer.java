@@ -1,4 +1,4 @@
-package util.indexer;
+package util.lucene.indexer;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
@@ -10,7 +10,7 @@ import java.util.List;
  * Represent an indexer for a specific data type
  * @param <T> Data type to be indexed
  */
-public interface IIndexer<T> {
+public interface ILuceneIndexer<T> {
 
     /**
      * Add a collection of documents to the indexing

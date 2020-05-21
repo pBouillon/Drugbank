@@ -7,14 +7,14 @@ import dao.TextSourceDaoBase;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
-import util.indexer.IIndexer;
+import util.lucene.indexer.ILuceneIndexer;
 
 import java.nio.file.Paths;
 
 /**
  * DAO for the Stitch data source
  */
-public class StitchDao extends TextSourceDaoBase<Drug> implements IIndexer<Drug> {
+public class StitchDao extends TextSourceDaoBase<Drug> implements ILuceneIndexer<Drug> {
 
     /**
      * Default constructor

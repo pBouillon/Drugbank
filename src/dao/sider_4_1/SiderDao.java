@@ -7,7 +7,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
-import util.indexer.IIndexer;
+import util.lucene.indexer.ILuceneIndexer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * DAO for the Sider data source
  */
-public class SiderDao extends DataAccessObjectBase<Symptom> implements IIndexer<Symptom> {
+public class SiderDao extends DataAccessObjectBase<Symptom> implements ILuceneIndexer<Symptom> {
 
     /**
      * Data extractor for MeDRA databases

@@ -7,7 +7,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
-import util.indexer.IIndexer;
+import util.lucene.indexer.ILuceneIndexer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * DAO for the HPO data source
  */
-public class HpoDao extends DataAccessObjectBase<Disease> implements IIndexer<Disease> {
+public class HpoDao extends DataAccessObjectBase<Disease> implements ILuceneIndexer<Disease> {
 
     /**
      * Data extractor for MeDRA databases

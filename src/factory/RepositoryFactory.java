@@ -5,6 +5,7 @@ import repository.DrugRepository;
 import repository.RepositoryBase;
 import repository.SymptomRepository;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -67,7 +68,7 @@ public class RepositoryFactory {
      * @return An instance of a SymptomRepository
      * @see SymptomRepository
      */
-    public SymptomRepository getSymptomRepository() {
+    public SymptomRepository getSymptomRepository() throws IOException {
         if (!_cache.containsKey(RepositoryKey.SYMPTOM)) {
             _cache.put(RepositoryKey.SYMPTOM, new SymptomRepository());
         }

@@ -1,6 +1,6 @@
 package dao;
 
-import util.indexer.IndexerBase;
+import util.lucene.indexer.LuceneIndexerBase;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
  * Base class for Data Access Objects (DAO)
  * @param <T> The type of the data accessed
  */
-public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
+public abstract class DataAccessObjectBase<T> extends LuceneIndexerBase<T> {
 
     /**
      * Default constructor
