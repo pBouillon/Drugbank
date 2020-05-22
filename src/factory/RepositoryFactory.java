@@ -33,7 +33,7 @@ public class RepositoryFactory {
      */
     public RepositoryFactory() {
         // Initialize the cache with a maximum capacity of all the services it will contains
-        _cache = new HashMap(
+        _cache = new HashMap<>(
                 RepositoryKey.values().length);
     }
 
@@ -42,7 +42,7 @@ public class RepositoryFactory {
      * @return An instance of a DiseaseRepository
      * @see DiseaseRepository
      */
-    public DiseaseRepository getDiseaseRepository() {
+    public DiseaseRepository getDiseaseRepository() throws IOException {
         if (!_cache.containsKey(RepositoryKey.DISEASE)) {
             _cache.put(RepositoryKey.DISEASE, new DiseaseRepository());
         }
@@ -55,7 +55,7 @@ public class RepositoryFactory {
      * @return An instance of a DrugRepository
      * @see DrugRepository
      */
-    public DrugRepository getDrugRepository() {
+    public DrugRepository getDrugRepository() throws IOException {
         if (!_cache.containsKey(RepositoryKey.DRUG)) {
             _cache.put(RepositoryKey.DRUG, new DrugRepository());
         }
