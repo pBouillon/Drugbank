@@ -229,7 +229,7 @@ public class Configuration {
             /**
              * database path
              */
-            public static final String PATH = "D:/travail/TELECOM/cours/BDD/Projet/gmd/data/hpo/hpo_annotations.sqlite";
+            public static final String PATH = "./data/hpo/hpo_annotations.sqlite";
 
             /**
              * hpo indexes paths
