@@ -35,16 +35,16 @@ public class DrugRepository extends RepositoryBase<Drug> {
                 new Drug(toMerge.getName()));
 
         // Merge data
-        if(currentDrug.get_compoundId() == null && toMerge.get_compoundId() != null){
+        if (currentDrug.get_compoundId() == null && toMerge.get_compoundId() != null) {
             toMerge.set_compoundId(currentDrug.get_compoundId());
         }
-        if(currentDrug.getToxicity() == null && toMerge.getToxicity() != null){
+        if (currentDrug.getToxicity() == null && toMerge.getToxicity() != null) {
             toMerge.setToxicity(currentDrug.getToxicity());
         }
-        if(currentDrug.getATC() == null && toMerge.getATC() != null){
+        if (currentDrug.getATC() == null && toMerge.getATC() != null) {
             toMerge.setATC(currentDrug.getATC());
         }
-        if(currentDrug.getIndication() == null && toMerge.getIndication() != null){
+        if (currentDrug.getIndication() == null && toMerge.getIndication() != null) {
             toMerge.setIndication(currentDrug.getIndication());
         }
 

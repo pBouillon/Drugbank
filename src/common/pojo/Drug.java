@@ -58,9 +58,18 @@ public class Drug implements IDiagnosableEntity, Serializable {
     }
 
     /**
+     * Default constructor
+     */
+    public Drug(String name) {
+        _sideEffects.setSupplier(ArrayList::new);
+        _synonyms.setSupplier(ArrayList::new);
+        _name = name;
+    }
+
+    /**
      * Constructor with all init attributes
      */
-    public Drug(String name, String toxicity, String atc, String compoundId, String indication){
+    public Drug(String name, String toxicity, String atc, String compoundId, String indication) {
         _sideEffects.setSupplier(ArrayList::new);
         _synonyms.setSupplier(ArrayList::new);
         _name = name;
@@ -68,12 +77,6 @@ public class Drug implements IDiagnosableEntity, Serializable {
         _ATC = atc;
         _compoundId = compoundId;
         _indication = indication;
-    }
-
-    public Drug(String name) {
-        _sideEffects.setSupplier(ArrayList::new);
-        _synonyms.setSupplier(ArrayList::new);
-        _name = name;
     }
 
     /**
