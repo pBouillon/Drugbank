@@ -7,7 +7,6 @@ import lucene.indexer.ILuceneIndexer;
 import lucene.indexer.LuceneIndexerBase;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 
 import java.nio.file.Paths;
@@ -41,7 +40,7 @@ public class OmimDao extends TextSourceDaoBase<Disease> implements ILuceneIndexe
         Document document = new Document();
 
         // Disease's name
-        document.add(new StringField(
+        document.add(new TextField(
                 Configuration.Lucene.IndexKey.Disease.NAME,
                 sourceObject.getName(),
                 Field.Store.YES

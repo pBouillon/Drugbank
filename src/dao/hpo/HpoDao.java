@@ -8,11 +8,9 @@ import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
-import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.document.TextField;
 
-import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * DAO for the HPO data source
@@ -36,7 +34,7 @@ public class HpoDao extends DatabaseDaoBase<Disease> implements ILuceneIndexer<D
         Document doc = new Document();
 
         // Add the disease name to the document
-        doc.add(new StringField(
+        doc.add(new TextField(
                 Configuration.Lucene.IndexKey.Disease.NAME,
                 sourceObject.getName(),
                 Field.Store.YES));

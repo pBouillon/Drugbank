@@ -33,8 +33,8 @@ public class Main {
         // Dummy example to be removed
         try {
             repositoryFactory
-                    .getDrugRepository()
-                    .getEntities(Configuration.Lucene.IndexKey.Drug.NAME,"Chloroquine")
+                    .getDiseaseRepository()
+                    .getEntities(Configuration.Lucene.IndexKey.Disease.NAME,"Leprosy")
                     .forEach(drug -> System.out.println(drug.getName()));
         } catch (IOException | ParseException e) {
             e.printStackTrace();

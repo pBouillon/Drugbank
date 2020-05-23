@@ -47,6 +47,11 @@ public class Disease implements IDiagnosableEntity, Serializable {
      */
     public Disease() { }
 
+
+    public Disease(String name) {
+        _name = name;
+    }
+
     /**
      * Specialized constructor omitting lazy values
      * @param name Disease's name
@@ -67,6 +72,14 @@ public class Disease implements IDiagnosableEntity, Serializable {
         _associatedSymptoms.setSupplier(() -> associatedSymptoms);
         _name = name;
         _synonyms = synonyms;
+    }
+
+
+    public Disease(String name, String signId, String hpoID, String hpoDbName) {
+        _name = name;
+        _hpoSignId = signId;
+        _hpoId = hpoID;
+        _hpoDbName = hpoDbName;
     }
 
     /**
