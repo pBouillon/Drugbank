@@ -3,12 +3,12 @@ package dao.omim;
 import common.Configuration;
 import common.pojo.Disease;
 import dao.TextSourceDaoBase;
+import lucene.indexer.ILuceneIndexer;
+import lucene.indexer.LuceneIndexerBase;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import util.lucene.indexer.ILuceneIndexer;
-import util.lucene.indexer.LuceneIndexerBase;
 
 import java.nio.file.Paths;
 

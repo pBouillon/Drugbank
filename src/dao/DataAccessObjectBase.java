@@ -1,6 +1,6 @@
 package dao;
 
-import util.lucene.indexer.LuceneIndexerBase;
+import lucene.indexer.LuceneIndexerBase;
 
 import java.io.IOException;
 import java.nio.file.Files;

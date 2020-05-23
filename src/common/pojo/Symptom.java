@@ -130,4 +130,5 @@ public class Symptom implements Serializable {
     public void setCui(String cui) {
         this._cui = cui;
     }
+
 }

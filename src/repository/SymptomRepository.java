@@ -9,6 +9,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
                 .forEach(symptom
                         -> mergeResult(symptomMap, symptom));
 
-        return (List<Symptom>) symptomMap.values();
+        return new ArrayList<>(symptomMap.values());
     }
 
 }

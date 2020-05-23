@@ -3,10 +3,10 @@ package dao.atc;
 import common.Configuration;
 import common.pojo.Drug;
 import dao.TextSourceDaoBase;
+import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
-import util.lucene.indexer.ILuceneIndexer;
 
 import java.nio.file.Paths;
 

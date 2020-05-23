@@ -1,7 +1,7 @@
 package repository;
 
+import lucene.searcher.LuceneSearcherBase;
 import org.apache.lucene.index.IndexReader;
-import util.lucene.searcher.LuceneSearcherBase;
 
 import java.util.Map;
 

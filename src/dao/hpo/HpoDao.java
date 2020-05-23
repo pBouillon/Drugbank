@@ -3,11 +3,11 @@ package dao.hpo;
 import common.Configuration;
 import common.pojo.Disease;
 import dao.DataAccessObjectBase;
+import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
-import util.lucene.indexer.ILuceneIndexer;
 
 import java.io.IOException;
 import java.nio.file.Paths;

@@ -3,11 +3,11 @@ package dao.hp;
 import common.Configuration;
 import common.pojo.Symptom;
 import dao.TextSourceDaoBase;
+import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import util.lucene.indexer.ILuceneIndexer;
 
 import java.nio.file.Paths;
 

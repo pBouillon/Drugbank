@@ -3,11 +3,11 @@ package dao.sider_4_1;
 import common.Configuration;
 import common.pojo.Symptom;
 import dao.DataAccessObjectBase;
+import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
-import util.lucene.indexer.ILuceneIndexer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
