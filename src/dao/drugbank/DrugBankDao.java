@@ -7,7 +7,6 @@ import dao.TextSourceDaoBase;
 import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 
 import java.nio.file.Paths;
@@ -49,7 +48,7 @@ public class DrugBankDao extends TextSourceDaoBase<Drug> implements ILuceneIndex
         ));
 
         // Drug's generic name
-        document.add(new StringField(
+        document.add(new TextField(
             Configuration.Lucene.IndexKey.Drug.NAME,
             sourceObject.getName(),
             Field.Store.YES

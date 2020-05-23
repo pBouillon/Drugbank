@@ -5,13 +5,8 @@ import common.pojo.Symptom;
 import dao.hp.HpDao;
 import dao.sider_4_1.SiderDao;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.Query;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,28 +56,6 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
 
         // "Save" results
         symptomsMap.put(currentSymptom.getName(), currentSymptom);
-    }
-
-    /**
-     * Fetch all symptoms indexed by Lucene from their name
-     * @param symptomName Name of the symptom to be matched
-     * @return A list of all Symptoms indexed by Lucene
-     * @throws ParseException On Lucene parsing
-     * @throws IOException On Lucene parsing
-     */
-    public List<Symptom> getSymptomsByName(String symptomName) throws ParseException, IOException {
-        Map<String, Symptom> symptomMap = new HashMap<>();
-
-        // Query all tracked symptoms in the lucene indexes
-        Query query = createParsedQuery(
-                symptomName, Configuration.Lucene.IndexKey.Symptom.NAME);
-
-        // Extract all records from the matches
-        getMatchingEntities(query)
-                .forEach(symptom
-                        -> mergeResult(symptomMap, symptom));
-
-        return new ArrayList<>(symptomMap.values());
     }
 
 }
