@@ -1,5 +1,6 @@
 package dao;
 
+import lucene.indexer.ILuceneIndexer;
 import lucene.indexer.LuceneIndexerBase;
 
 import java.io.IOException;
@@ -44,7 +45,12 @@ public abstract class DataAccessObjectBase<T> extends LuceneIndexerBase<T> {
     protected boolean isDataSourceIndexed() {
         // Return true if the folder containing the indexes is not empty
         try {
-            return Files.list(indexesDirectory).anyMatch(path -> !path.getFileName().toString().equals("write.lock"));
+            return Files
+                    .list(indexesDirectory)
+                    .anyMatch(path
+                            -> !path.getFileName()
+                                .toString()
+                                .equals(ILuceneIndexer.INDEXER_LOCK_FILE));
         } catch (IOException e) {
             return false;
         }
