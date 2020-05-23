@@ -90,7 +90,6 @@ public abstract class LuceneIndexerBase<T> implements ILuceneIndexer<T> {
                 Files.createDirectory(indexesDirectory);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.exit(1);
             }
         }
     }

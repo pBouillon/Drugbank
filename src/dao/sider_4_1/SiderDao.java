@@ -3,6 +3,7 @@ package dao.sider_4_1;
 import common.Configuration;
 import common.pojo.Symptom;
 import dao.DataAccessObjectBase;
+import dao.DatabaseDaoBase;
 import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -16,12 +17,7 @@ import java.util.List;
 /**
  * DAO for the Sider data source
  */
-public class SiderDao extends DataAccessObjectBase<Symptom> implements ILuceneIndexer<Symptom> {
-
-    /**
-     * Data extractor for MeDRA databases
-     */
-    private MeDRAExtractor _extractor;
+public class SiderDao extends DatabaseDaoBase<Symptom> implements ILuceneIndexer<Symptom> {
 
     /**
      * Default constructor
@@ -38,34 +34,7 @@ public class SiderDao extends DataAccessObjectBase<Symptom> implements ILuceneIn
      */
     @Override
     protected void initialize() {
-        _extractor = new MeDRAExtractor();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    protected void initializeIndexing() {
-        // Create the index writer
-        IndexWriter indexWriter = null;
-        try {
-            indexWriter = createIndexWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        // Extract the symptoms and create them
-        List<Symptom> extracted = _extractor.extract();
-
-        // Index the extracted Symptom objects
-        try {
-            indexSourceObjects(indexWriter, extracted);
-            indexWriter.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        extractor = new MeDRAExtractor();
     }
 
     /**

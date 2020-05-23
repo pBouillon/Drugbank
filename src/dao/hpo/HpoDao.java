@@ -3,6 +3,7 @@ package dao.hpo;
 import common.Configuration;
 import common.pojo.Disease;
 import dao.DataAccessObjectBase;
+import dao.DatabaseDaoBase;
 import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -16,12 +17,7 @@ import java.util.List;
 /**
  * DAO for the HPO data source
  */
-public class HpoDao extends DataAccessObjectBase<Disease> implements ILuceneIndexer<Disease> {
-
-    /**
-     * Data extractor for MeDRA databases
-     */
-    private HpoExtractor _extractor;
+public class HpoDao extends DatabaseDaoBase<Disease> implements ILuceneIndexer<Disease> {
 
     /**
      * Default constructor
@@ -71,34 +67,7 @@ public class HpoDao extends DataAccessObjectBase<Disease> implements ILuceneInde
      */
     @Override
     protected void initialize() {
-        _extractor = new HpoExtractor();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    protected void initializeIndexing() {
-        // Create the index writer
-        IndexWriter indexWriter = null;
-        try {
-            indexWriter = createIndexWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        // Extract the symptoms and create them
-        List<Disease> extracted = _extractor.extract();
-
-        // Index the extracted Symptom objects
-        try {
-            indexSourceObjects(indexWriter, extracted);
-            indexWriter.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        extractor = new HpoExtractor();
     }
 
 }

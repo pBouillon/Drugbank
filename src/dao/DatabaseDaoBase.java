@@ -1,7 +1,9 @@
 package dao;
 
+import common.pojo.Symptom;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
+import util.extractor.IDatabaseExtractor;
 import util.parser.IParser;
 
 import java.io.IOException;
@@ -9,26 +11,21 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Represent a data that is coming from a text source (files, etc.)
+ * Represent a data that is coming from a queryable source
  * @param <T> The type of the data handled
  * @see dao.DataAccessObjectBase
  */
-public abstract class TextSourceDaoBase<T> extends DataAccessObjectBase<T> {
+public abstract class DatabaseDaoBase<T> extends DataAccessObjectBase<T> {
 
     /**
-     * Path to the textual source
+     * Associated extractor for this data source
      */
-    protected Path dataSource;
-
-    /**
-     * Associated util.parser for this data source
-     */
-    protected IParser<T> parser;
+    protected IDatabaseExtractor<T> extractor;
 
     /**
      * Default constructor
      */
-    protected TextSourceDaoBase(Path indexDirectory) {
+    protected DatabaseDaoBase(Path indexDirectory) {
         super(indexDirectory);
     }
 
@@ -44,23 +41,21 @@ public abstract class TextSourceDaoBase<T> extends DataAccessObjectBase<T> {
      */
     @Override
     protected void initializeIndexing() {
-        List<T> parsed = null;
+        // Create the index writer
+        IndexWriter indexWriter = null;
 
-        // Retrieve the records from the file
         try {
-            parsed = (List<T>) parser.extractData(dataSource);
+            indexWriter = createIndexWriter();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Index the fetched records
+        // Extract the symptoms and create them
+        List<T> extracted = extractor.extract();
+
+        // Index the extracted Symptom objects
         try {
-            // Create the index writer
-            IndexWriter indexWriter = createIndexWriter();
-
-            // Index the extracted drug objects
-            indexSourceObjects(indexWriter, parsed);
-
+            indexSourceObjects(indexWriter, extracted);
             indexWriter.commit();
         } catch (IOException e) {
             e.printStackTrace();

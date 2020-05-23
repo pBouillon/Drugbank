@@ -27,7 +27,6 @@ public abstract class SQLExtractorBase<T> extends DatabaseExtractorBase<T> {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
             System.out.println(getConnectionString());
-            System.exit(1);
         }
 
         return connection;

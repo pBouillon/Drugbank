@@ -50,7 +50,6 @@ public class HpoExtractor extends SQLExtractorBase<Disease> {
             }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
-            System.exit(1);
         }
 
         return diseases;

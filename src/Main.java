@@ -1,7 +1,10 @@
 import diagnostic.DiagnosticManager;
 import diagnostic.request.DiagnosticRequest;
+import org.apache.lucene.queryparser.classic.ParseException;
 import repository.factory.RepositoryFactory;
 import repository.factory.RepositoryFactorySingleton;
+
+import java.io.IOException;
 
 /**
  * Program startup class
@@ -25,6 +28,16 @@ public class Main {
         diagnosticRequest.setUndesirableEffect("headache");
 
         DiagnosticManager.generateDiagnostic(diagnosticRequest);
+
+        // Dummy example to be removed
+        try {
+            repositoryFactory
+                    .getSymptomRepository()
+                    .getSymptomsByName("headache")
+                    .forEach(symptom -> System.out.println(symptom.getName()));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }
