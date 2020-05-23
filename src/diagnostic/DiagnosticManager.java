@@ -5,8 +5,8 @@ import common.pojo.Drug;
 import diagnostic.request.DiagnosticRequest;
 import diagnostic.response.DiagnosticResponse;
 import diagnostic.response.IDiagnosableEntity;
-import factory.RepositoryFactory;
-import factory.RepositoryFactorySingleton;
+import repository.factory.RepositoryFactory;
+import repository.factory.RepositoryFactorySingleton;
 import util.Lazy;
 
 import java.util.ArrayList;

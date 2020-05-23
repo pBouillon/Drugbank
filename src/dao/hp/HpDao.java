@@ -3,17 +3,18 @@ package dao.hp;
 import common.Configuration;
 import common.pojo.Symptom;
 import dao.TextSourceDaoBase;
+import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
-import util.indexer.IIndexer;
+import org.apache.lucene.document.TextField;
 
 import java.nio.file.Paths;
 
 /**
  * DAO for the HPO data source
  */
-public class HpDao extends TextSourceDaoBase<Symptom> implements IIndexer<Symptom> {
+public class HpDao extends TextSourceDaoBase<Symptom> implements ILuceneIndexer<Symptom> {
 
     public HpDao() {
         super(Paths.get(Configuration.Hp.Paths.INDEX));
@@ -36,7 +37,7 @@ public class HpDao extends TextSourceDaoBase<Symptom> implements IIndexer<Sympto
         Document document = new Document();
 
         // Symptom's name
-        document.add(new StringField(
+        document.add(new TextField(
                 Configuration.Lucene.IndexKey.Symptom.NAME,
                 sourceObject.getName(),
                 Field.Store.YES

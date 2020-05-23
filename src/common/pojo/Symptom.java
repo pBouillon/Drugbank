@@ -45,6 +45,18 @@ public class Symptom implements Serializable {
     }
 
     /**
+     * Specialized constructor omitting lazy values
+     * @param name Symptom's name
+     * @param cui Symptom cui
+     * @param hpoId Symptom's HPO ID
+     */
+    public Symptom(String name, String cui, String hpoId) {
+        _cui = cui;
+        _hpoId = hpoId;
+        _name = name;
+    }
+
+    /**
      * Specialized constructor
      * @param associatedDrugs Collection of all drugs that may cure this disease
      * @param name Symptom's name
@@ -118,4 +130,5 @@ public class Symptom implements Serializable {
     public void setCui(String cui) {
         this._cui = cui;
     }
+
 }

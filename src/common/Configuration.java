@@ -64,23 +64,6 @@ public class Configuration {
         public static class IndexKey {
 
             /**
-             * Keys of the Disease entity
-             */
-            public static class Disease {
-
-                /**
-                 * Generic name of the disease
-                 */
-                public static final String NAME = "name";
-
-                /**
-                 * Other names of the disease
-                 */
-                public static final String SYNONYMS = "synonym";
-
-            }
-
-            /**
              * Keys of the Drug entity
              */
             public static class Drug {
@@ -164,9 +147,24 @@ public class Configuration {
                  */
                 public static final String HPO_DB_NAME = "db_name";
 
+                /**
+                 * Other names of the disease
+                 */
+                public static final String SYNONYMS = "synonym";
             }
         }
 
+        /**
+         * Lucene search parameters
+         */
+        public static class Search {
+
+            /**
+             * Number of hits per pages
+             */
+            public static final int HITS_PER_PAGES = 512;
+
+        }
     }
 
     /**
@@ -231,7 +229,7 @@ public class Configuration {
             /**
              * database path
              */
-            public static final String PATH = "D:/travail/TELECOM/cours/BDD/Projet/gmd/data/hpo/hpo_annotations.sqlite";
+            public static final String PATH = "./data/hpo/hpo_annotations.sqlite";
 
             /**
              * hpo indexes paths

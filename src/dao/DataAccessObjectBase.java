@@ -1,6 +1,7 @@
 package dao;
 
-import util.indexer.IndexerBase;
+import lucene.indexer.ILuceneIndexer;
+import lucene.indexer.LuceneIndexerBase;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +11,7 @@ import java.nio.file.Path;
  * Base class for Data Access Objects (DAO)
  * @param <T> The type of the data accessed
  */
-public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
+public abstract class DataAccessObjectBase<T> extends LuceneIndexerBase<T> {
 
     /**
      * Default constructor
@@ -44,9 +45,12 @@ public abstract class DataAccessObjectBase<T> extends IndexerBase<T> {
     protected boolean isDataSourceIndexed() {
         // Return true if the folder containing the indexes is not empty
         try {
-            return Files.list(indexesDirectory)
-                    .findAny()
-                    .isPresent();
+            return Files
+                    .list(indexesDirectory)
+                    .anyMatch(path
+                            -> !path.getFileName()
+                                .toString()
+                                .equals(ILuceneIndexer.INDEXER_LOCK_FILE));
         } catch (IOException e) {
             return false;
         }

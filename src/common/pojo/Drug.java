@@ -171,4 +171,5 @@ public class Drug implements IDiagnosableEntity, Serializable {
     public void set_compoundId(String _compoundId) {
         this._compoundId = _compoundId;
     }
+
 }

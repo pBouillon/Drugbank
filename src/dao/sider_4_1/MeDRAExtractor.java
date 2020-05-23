@@ -55,7 +55,6 @@ public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
             }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
-            System.exit(1);
         }
 
         return symptoms;
@@ -75,7 +74,6 @@ public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
             ini = new Wini(new File(Configuration.Sider.Paths.INI));
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
         }
 
         // Retrieve the relevant fields

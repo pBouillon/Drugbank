@@ -4,17 +4,17 @@ import common.Configuration;
 import common.pojo.Drug;
 import dao.DataAccessObjectBase;
 import dao.TextSourceDaoBase;
+import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
-import util.indexer.IIndexer;
 
 import java.nio.file.Paths;
 
 /**
  * DAO for the Stitch data source
  */
-public class StitchDao extends TextSourceDaoBase<Drug> implements IIndexer<Drug> {
+public class StitchDao extends TextSourceDaoBase<Drug> implements ILuceneIndexer<Drug> {
 
     /**
      * Default constructor

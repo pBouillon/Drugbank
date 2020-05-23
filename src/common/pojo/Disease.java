@@ -165,4 +165,5 @@ public class Disease implements IDiagnosableEntity, Serializable {
     public void setHpoSignId(String hpoSignId) {
         this._hpoSignId = hpoSignId;
     }
+
 }
