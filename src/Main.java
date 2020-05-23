@@ -1,3 +1,4 @@
+import common.Configuration;
 import diagnostic.DiagnosticManager;
 import diagnostic.request.DiagnosticRequest;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -33,8 +34,16 @@ public class Main {
         try {
             repositoryFactory
                     .getSymptomRepository()
-                    .getSymptomsByName("headache")
+                    .getEntities(Configuration.Lucene.IndexKey.Symptom.NAME,"headache")
                     .forEach(symptom -> System.out.println(symptom.getName()));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            repositoryFactory
+                    .getDrugRepository()
+                    .getEntities(Configuration.Lucene.IndexKey.Drug.NAME,"Chloroquine")
+                    .forEach(drug -> System.out.println(drug.getName()));
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }

@@ -11,9 +11,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Abstract Lucene index searcher
@@ -53,6 +51,28 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
     }
 
     /**
+     * Fetch all entities indexed by Lucene from their name
+     * @param fieldToQuery Field to query (see Configuration.Lucene.IndexKey)
+     * @param fieldValue String to be searched
+     * @return A list of all Entities indexed by Lucene
+     * @throws ParseException On Lucene parsing
+     * @throws IOException On Lucene parsing
+     */
+    public List<T> getEntities(String fieldToQuery, String fieldValue) throws ParseException, IOException {
+        Map<String, T> entitiesMap = new HashMap<>();
+
+        // Query all tracked drugs in the lucene indexes
+        Query query = createParsedQuery(fieldValue, fieldToQuery);
+
+        // Extract all records from the matches
+        getMatchingEntities(query)
+                .forEach(drug
+                        -> mergeResult(entitiesMap, drug));
+
+        return new ArrayList<T>(entitiesMap.values());
+    }
+
+    /**
      * @inheritDoc
      */
     public List<T> getMatchingEntities(Query query) throws IOException {
@@ -63,8 +83,8 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
             // Extract the entities they are tracking
             entities.addAll(
                     getMatchingEntitiesOfIndex(query, new IndexSearcher(reader)));
-        }
 
+        }
         return entities;
     }
 
@@ -100,5 +120,13 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
         return createFromDocument(
                 searcher.doc(hit.doc));
     }
+
+    /**
+     * Merge an objects in a records collection
+     * If already existing, add only the missing fields
+     * @param recordsMap Map of all objects with their names as keys
+     * @param toMerge Object to merge in the collection
+     */
+    protected abstract void mergeResult(Map<String, T> recordsMap, T toMerge);
 
 }
