@@ -66,10 +66,10 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
 
         // Extract all records from the matches
         getMatchingEntities(query)
-                .forEach(drug
-                        -> mergeResult(entitiesMap, drug));
+                .forEach(entity
+                        -> mergeResult(entitiesMap, entity));
 
-        return new ArrayList<T>(entitiesMap.values());
+        return new ArrayList<>(entitiesMap.values());
     }
 
     /**

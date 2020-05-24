@@ -46,16 +46,13 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
         // Merge data
         if (currentSymptom.getCui() == null
                 && toMerge.getCui() != null) {
-            toMerge.setCui(currentSymptom.getCui());
+            currentSymptom.setCui(toMerge.getCui());
         }
 
         if (currentSymptom.getHpoId() == null
                 && toMerge.getHpoId() != null) {
-            toMerge.setHpoId(currentSymptom.getHpoId());
+            currentSymptom.setHpoId(toMerge.getHpoId());
         }
-
-        // "Save" results
-        symptomsMap.put(currentSymptom.getName(), currentSymptom);
     }
 
 }
