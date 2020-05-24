@@ -19,7 +19,7 @@ public class DiagnosticResponse {
     /**
      * Collection of all IDiagnosableEntity with a list of the drugs curing their effects
      */
-    public Map<IDiagnosableEntity, Lazy<List<Drug>>> _cures = new HashMap<>();
+    private Map<IDiagnosableEntity, Lazy<List<Drug>>> _cures = new HashMap<>();
 
     /**
      * Get all causes of the IDiagnosableEntity causing the undesirable effect of the request
