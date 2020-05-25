@@ -46,8 +46,10 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
      * @throws ParseException On Lucene exception
      */
     protected Query createParsedQuery(String query, String fieldToSearch) throws ParseException {
-        return new QueryParser(fieldToSearch, new StandardAnalyzer())
-                .parse(query);
+        QueryParser queryParser = new QueryParser(fieldToSearch, new StandardAnalyzer());
+        queryParser.setAllowLeadingWildcard(true);
+
+        return queryParser.parse(query);
     }
 
     /**
