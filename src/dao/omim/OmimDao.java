@@ -56,7 +56,7 @@ public class OmimDao extends TextSourceDaoBase<Disease> implements ILuceneIndexe
         // Disease's cui lists
         document.add(new TextField(
                 Configuration.Lucene.IndexKey.Disease.CUI_LIST,
-                sourceObject.get_cuiList(),
+                sourceObject.getUnifiedCuiList(),
                 Field.Store.YES
         ));
 

@@ -12,6 +12,7 @@ import org.apache.lucene.store.FSDirectory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,12 +102,24 @@ public abstract class LuceneIndexerBase<T> implements ILuceneIndexer<T> {
 
     /**
      * Join a String list
-     *
      * @param array The String list to join
-     * @return A String containing all elements joined with a whitespace
+     * @return A String containing all elements joined with a whitespace; null if `array` is null
      */
     public static String getJoinedStringCollection(List<String> array) {
-        return String.join(" ", array);
+        return array == null
+            ? null
+            : String.join(" ", array);
+    }
+
+    /**
+     * Split a joined list from LuceneIndexerBase.getJoinedStringCollection
+     * @param toSplit String to split
+     * @return A list of the split strings; null if `toSplit` is null
+     */
+    public static List<String> getSplitStringCollection(String toSplit) {
+        return toSplit == null
+            ? null
+            : Arrays.asList(toSplit.split(" "));
     }
 
     /**
