@@ -44,6 +44,18 @@ public class OmimParser implements IParser<Disease> {
         }
 
         /**
+         * "CUI" column
+         */
+        private static class CUI {
+
+            /**
+             * Index of the CUI value in the CSV
+             */
+            public static final int Index = 5;
+
+        }
+
+        /**
          * "Synonyms" column
          */
         private static class Synonyms {
@@ -75,8 +87,13 @@ public class OmimParser implements IParser<Disease> {
                     // Extract each values in the current line
                     String[] values = line.split(DEFAULT_CSV_SEPARATOR);
 
+                    // Malformed lines may not fit in the model and are considered as corrupted data
+                    if(values.length<=Fields.CUI.Index){
+                        return;
+                    }
                     // Extract the relevant fields
                     String name = values[Fields.Name.Index];
+                    String cui = values[Fields.CUI.Index];
                     String[] synonyms = values[Fields.Synonyms.Index]
                             .split(Pattern
                                     .quote(Fields.Synonyms.Separator));
@@ -84,6 +101,7 @@ public class OmimParser implements IParser<Disease> {
                     // Instantiate the new disease
                     Disease disease = new Disease();
                     disease.setName(name);
+                    disease.set_cuiList(cui);
                     disease.setSynonyms(Arrays.asList(synonyms));
 
                     diseases.add(disease);
