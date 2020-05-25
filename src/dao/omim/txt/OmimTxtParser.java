@@ -1,8 +1,11 @@
 package dao.omim.txt;
 
 import common.pojo.Disease;
+import lucene.indexer.LuceneIndexerBase;
 import util.parser.IParser;
 import util.parser.UnstructuredTextParserBase;
+
+import java.util.Arrays;
 
 /**
  * OMIM text file parser
@@ -26,14 +29,26 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
     private static class Fields {
 
         /**
-         * Used when the following line will be the disease's name
-         */
-        private static final String DISEASE = "*FIELD* TI";
-
-        /**
          * Used when the following line will be the disease's symptoms
          */
         private static final String ASSOCIATED_SYMPTOMS = "*FIELD* CS";
+
+        /**
+         * Constants for the disease's name parsing
+         */
+        private static class Name {
+
+            /**
+             * Used when the following line will be the disease's name
+             */
+            public static final String FIELD = "*FIELD* TI";
+
+            /**
+             * Used to split the name with other synonyms
+             */
+            public static final String SYNONYMS_SEPARATOR = ";";
+
+        }
 
     }
 
@@ -61,7 +76,27 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
     protected void handleSingleLineFields(String field) {
         // Since there is no other flag, passing in this method means
         // that _isDiseaseName is truthy
-        parsedEntities.add(new Disease(field));
+
+        // Sanitize the field by removing identifier and trailing data since the field
+        // is full of irrelevant data, e.g:
+        // *100660 ALDEHYDE DEHYDROGENASE, FAMILY 3, SUBFAMILY A, MEMBER 1; ALDH3A1
+
+        // Retrieving only the first part of the field, e.g:
+        // *100660 ALDEHYDE DEHYDROGENASE, FAMILY 3, SUBFAMILY A, MEMBER 1
+        String rawDiseaseName = field.split(Fields.Name.SYNONYMS_SEPARATOR)[0];
+
+        // Split each of its tokens, e.g:
+        // [*100660] [ALDEHYDE] [DEHYDROGENASE,] [FAMILY 3,] [SUBFAMILY A,] [MEMBER 1]
+        String[] rawDiseaseNameTokens = rawDiseaseName.split(" ");
+
+        // Join the name without the first identifier, e.g:
+        // "ALDEHYDE DEHYDROGENASE, FAMILY 3, SUBFAMILY A, MEMBER 1"
+        String diseaseName = LuceneIndexerBase.getJoinedStringCollection(
+                Arrays.asList(rawDiseaseNameTokens)
+                    .subList(1, rawDiseaseNameTokens.length)
+        );
+
+        parsedEntities.add(new Disease(diseaseName));
         _isDiseaseName = false;
     }
 
@@ -86,7 +121,7 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
      */
     @Override
     protected void setFlags(String field) {
-        if (field.contains(Fields.DISEASE)) {
+        if (field.contains(Fields.Name.FIELD)) {
             _isDiseaseName = true;
         }
 
