@@ -52,11 +52,12 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
 
     /**
      * Fetch all entities indexed by Lucene from their name
-     * @param searchParams a list of search param (results matching on of this params will be found
+     * @param searchParams A list of search params (results matching on all those params will be fetched)
      * @return A list of all Entities indexed by Lucene
      */
     public List<T> getEntities(SearchParam ... searchParams) {
         Map<String, T> entitiesMap = new HashMap<>();
+
         for (SearchParam searchParam: searchParams) {
             // Query all tracked drugs in the lucene indexes
             Query query = null;
@@ -66,13 +67,14 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
                 e.printStackTrace();
             }
 
-        // Extract all records from the matches
-        try {
-            getMatchingEntities(query)
-                    .forEach(entity
-                            -> mergeResult(entitiesMap, entity));
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Extract all records from the matches
+            try {
+                getMatchingEntities(query)
+                        .forEach(entity
+                                -> mergeResult(entitiesMap, entity));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return new ArrayList<>(entitiesMap.values());

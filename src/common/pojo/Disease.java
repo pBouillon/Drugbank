@@ -142,7 +142,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * getter for the list of CUI
      * @return the list of CUI
      */
-    public String get_cuiList() {
+    public String getCuiList() {
         return _cuiList;
     }
 
