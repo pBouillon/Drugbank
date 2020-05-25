@@ -52,7 +52,7 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
 
     /**
      * Fetch all entities indexed by Lucene from their name
-     * @param searchParams A list of search params (results matching on all those params will be fetched)
+     * @param searchParams A collection of search params (results matching on all those params will be fetched)
      * @return A list of all Entities indexed by Lucene
      */
     public List<T> getEntities(SearchParam ... searchParams) {
