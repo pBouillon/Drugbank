@@ -71,20 +71,16 @@ public class DiagnosticManager {
         // Retrieve all diseases that may cause each symptom
         List<Disease> diseasesForCurrentSymptom;
         for (Symptom symptom : symptoms) {
-            try {
-                diseasesForCurrentSymptom = _repositoryFactory
-                    .getDiseaseRepository()
-                    // FIXME: Query the valid field with the correct value
-                    .getEntities(
-                            Configuration.Lucene.IndexKey.Disease.NAME,
-                            symptom.getName()
-                    );
+            diseasesForCurrentSymptom = _repositoryFactory
+                .getDiseaseRepository()
+                // FIXME: Query the valid field with the correct value
+                .getEntities(
+                        Configuration.Lucene.IndexKey.Disease.NAME,
+                        symptom.getName()
+                );
 
-                // Since diseaseCauses is a set, remove any duplicate
-                diseaseCauses.addAll(diseasesForCurrentSymptom);
-            } catch (ParseException | IOException e) {
-                e.printStackTrace();
-            }
+            // Since diseaseCauses is a set, remove any duplicate
+            diseaseCauses.addAll(diseasesForCurrentSymptom);
         }
 
         return new ArrayList<>(diseaseCauses);
@@ -112,15 +108,11 @@ public class DiagnosticManager {
     private static List<Symptom> getAssociatedSymptoms(DiagnosticRequest diagnosticRequest) {
         List<Symptom> associatedSymptoms = null;
 
-        try {
-            associatedSymptoms = _repositoryFactory
-                    .getSymptomRepository()
-                    .getEntities(
-                            Configuration.Lucene.IndexKey.Symptom.NAME,
-                            diagnosticRequest.getUndesirableEffect());
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
+        associatedSymptoms = _repositoryFactory
+                .getSymptomRepository()
+                .getEntities(
+                        Configuration.Lucene.IndexKey.Symptom.NAME,
+                        diagnosticRequest.getUndesirableEffect());
 
         return associatedSymptoms;
     }
