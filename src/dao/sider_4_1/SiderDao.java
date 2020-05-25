@@ -8,11 +8,8 @@ import lucene.indexer.ILuceneIndexer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexWriter;
 
-import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * DAO for the Sider data source

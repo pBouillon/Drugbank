@@ -73,10 +73,9 @@ public abstract class LuceneIndexerBase<T> implements ILuceneIndexer<T> {
      * Create a Lucene IndexWriter
      *
      * @return A new instance of the IndexWriter
-     * @throws IOException On non-existing index folder
      * @see IndexWriter
      */
-    protected IndexWriter createIndexWriter() throws IOException {
+    protected IndexWriter createIndexWriter() {
         return indexWriter;
     }
 

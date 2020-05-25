@@ -24,7 +24,8 @@ public class DiagnosticManager {
      * Provider for the various repositories
      * @see RepositoryFactorySingleton
      */
-    private RepositoryFactory _repositoryFactory = RepositoryFactorySingleton.instance;
+    private static final RepositoryFactory _repositoryFactory
+            = RepositoryFactorySingleton.instance;
 
     /**
      * Core method to generate a diagnostic from a request
@@ -34,6 +35,9 @@ public class DiagnosticManager {
     public static DiagnosticResponse generateDiagnostic(DiagnosticRequest diagnosticRequest) {
         DiagnosticResponse response = new DiagnosticResponse();
         Map<IDiagnosableEntity, Lazy<List<Drug>>> cures = response.getCures();
+
+        // Force repository population
+        _repositoryFactory.initializeRepositories();
 
         // Fetch all potential causes
         List<IDiagnosableEntity> causes = new ArrayList<>();

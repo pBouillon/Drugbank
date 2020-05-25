@@ -39,9 +39,11 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
      */
     @Override
     protected void mergeResult(Map<String, Symptom> symptomsMap, Symptom toMerge) {
+        final String symptomName = toMerge.getName();
+
         // Get current record or create it
-        Symptom currentSymptom = symptomsMap.getOrDefault(
-                toMerge.getName(), new Symptom(toMerge.getName()));
+        symptomsMap.putIfAbsent(symptomName, new Symptom(symptomName));
+        Symptom currentSymptom = symptomsMap.get(symptomName);
 
         // Merge data
         if (currentSymptom.getCui() == null

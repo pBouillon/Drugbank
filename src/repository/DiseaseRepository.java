@@ -1,5 +1,6 @@
 package repository;
 
+import common.Configuration;
 import common.pojo.Disease;
 import dao.hpo.HpoDao;
 import dao.omim.OmimDao;
@@ -23,11 +24,36 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
 
     @Override
     protected void mergeResult(Map<String, Disease> recordsMap, Disease toMerge) {
+        final String diseaseName = toMerge.getName();
 
+        // Get current record or create it
+        recordsMap.putIfAbsent(diseaseName, new Disease(diseaseName));
+        Disease currentDisease = recordsMap.get(diseaseName);
+
+        // Merge data
+        if (currentDisease.getHpoDbName() == null
+                && toMerge.getHpoDbName() != null) {
+            currentDisease.setHpoDbName(toMerge.getHpoDbName());
+        }
+
+        if (currentDisease.getHpoId() == null
+                && toMerge.getHpoId() != null) {
+            currentDisease.setHpoId(toMerge.getHpoId());
+        }
+
+        if (currentDisease.getHpoSignId() == null
+                && toMerge.getHpoSignId() != null) {
+            currentDisease.setHpoSignId(toMerge.getHpoSignId());
+        }
     }
 
     @Override
     public Disease createFromDocument(Document document) {
-        return null;
+        return new Disease(
+                document.get(Configuration.Lucene.IndexKey.Disease.NAME),
+                document.get(Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID),
+                document.get(Configuration.Lucene.IndexKey.Disease.HPO_ID),
+                document.get(Configuration.Lucene.IndexKey.Disease.HPO_DB_NAME)
+        );
     }
 }

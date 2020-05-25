@@ -26,7 +26,7 @@ public class RepositoryFactory {
     /**
      * Hashmap of all repositories that may have been queried, acting as a cache
      */
-    private final HashMap<RepositoryKey, RepositoryBase> _cache;
+    private final HashMap<RepositoryKey, RepositoryBase<?>> _cache;
 
     /**
      * Default constructor
@@ -86,6 +86,22 @@ public class RepositoryFactory {
         }
 
         return (SymptomRepository) _cache.get(RepositoryKey.SYMPTOM);
+    }
+
+    /**
+     * Instantiate and initialize all repositories
+     * @see RepositoryBase
+     */
+    public void initializeRepositories() {
+        // Instantiate all repositories and storing their instances in the cache
+        // Repository creation will trigger indexing
+        try {
+            _cache.put(RepositoryKey.DISEASE, new DiseaseRepository());
+            _cache.put(RepositoryKey.DRUG, new DrugRepository());
+            _cache.put(RepositoryKey.SYMPTOM, new SymptomRepository());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

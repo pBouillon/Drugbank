@@ -59,6 +59,7 @@ public abstract class TextSourceDaoBase<T> extends DataAccessObjectBase<T> {
             IndexWriter indexWriter = createIndexWriter();
 
             // Index the extracted drug objects
+            assert parsed != null;
             indexSourceObjects(indexWriter, parsed);
 
             indexWriter.commit();

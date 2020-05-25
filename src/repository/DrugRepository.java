@@ -29,27 +29,32 @@ public class DrugRepository extends RepositoryBase<Drug> {
      */
     @Override
     protected void mergeResult(Map<String, Drug> recordsMap, Drug toMerge) {
+        final String drugName = toMerge.getName();
+
         // Get current record or create it
-        Drug currentDrug = recordsMap.getOrDefault(
-                toMerge.getName(),
-                new Drug(toMerge.getName()));
+        recordsMap.putIfAbsent(drugName, new Drug(drugName));
+        Drug currentDrug = recordsMap.get(drugName);
 
         // Merge data
-        if (currentDrug.get_compoundId() == null && toMerge.get_compoundId() != null) {
-            toMerge.set_compoundId(currentDrug.get_compoundId());
-        }
-        if (currentDrug.getToxicity() == null && toMerge.getToxicity() != null) {
-            toMerge.setToxicity(currentDrug.getToxicity());
-        }
-        if (currentDrug.getATC() == null && toMerge.getATC() != null) {
-            toMerge.setATC(currentDrug.getATC());
-        }
-        if (currentDrug.getIndication() == null && toMerge.getIndication() != null) {
-            toMerge.setIndication(currentDrug.getIndication());
+        if (currentDrug.get_compoundId() == null
+                && toMerge.get_compoundId() != null) {
+            currentDrug.set_compoundId(toMerge.get_compoundId());
         }
 
-        // "Save" results
-        recordsMap.put(currentDrug.getName(), currentDrug);
+        if (currentDrug.getToxicity() == null
+                && toMerge.getToxicity() != null) {
+            currentDrug.setToxicity(toMerge.getToxicity());
+        }
+
+        if (currentDrug.getATC() == null
+                && toMerge.getATC() != null) {
+            currentDrug.setATC(toMerge.getATC());
+        }
+
+        if (currentDrug.getIndication() == null
+                && toMerge.getIndication() != null) {
+            currentDrug.setIndication(toMerge.getIndication());
+        }
     }
 
     /**
