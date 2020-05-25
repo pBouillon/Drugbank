@@ -151,6 +151,11 @@ public class Configuration {
                  * Other names of the disease
                  */
                 public static final String SYNONYMS = "synonym";
+
+                /**
+                 * List of the symptoms CUI
+                 */
+                public static final String CUI_LIST = "cui_list";
             }
         }
 

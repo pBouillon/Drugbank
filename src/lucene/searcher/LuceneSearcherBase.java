@@ -52,20 +52,19 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
 
     /**
      * Fetch all entities indexed by Lucene from their name
-     * @param fieldToQuery Field to query (see Configuration.Lucene.IndexKey)
-     * @param fieldValue String to be searched
+     * @param searchParams a list of search param (results matching on of this params will be found
      * @return A list of all Entities indexed by Lucene
      */
-    public List<T> getEntities(String fieldToQuery, String fieldValue) {
+    public List<T> getEntities(SearchParam ... searchParams) {
         Map<String, T> entitiesMap = new HashMap<>();
-
-        // Query all tracked drugs in the lucene indexes
-        Query query = null;
-        try {
-            query = createParsedQuery(fieldValue, fieldToQuery);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        for (SearchParam searchParam: searchParams) {
+            // Query all tracked drugs in the lucene indexes
+            Query query = null;
+            try {
+                query = createParsedQuery(searchParam.fieldValue, searchParam.fieldToQuery);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
         // Extract all records from the matches
         try {

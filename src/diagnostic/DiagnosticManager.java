@@ -7,12 +7,11 @@ import common.pojo.Symptom;
 import diagnostic.request.DiagnosticRequest;
 import diagnostic.response.DiagnosticResponse;
 import diagnostic.response.IDiagnosableEntity;
-import org.apache.lucene.queryparser.classic.ParseException;
+import lucene.searcher.SearchParam;
 import repository.factory.RepositoryFactory;
 import repository.factory.RepositoryFactorySingleton;
 import util.Lazy;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -71,14 +70,28 @@ public class DiagnosticManager {
         // Retrieve all diseases that may cause each symptom
         List<Disease> diseasesForCurrentSymptom;
         for (Symptom symptom : symptoms) {
-            diseasesForCurrentSymptom = _repositoryFactory
-                .getDiseaseRepository()
-                // FIXME: Query the valid field with the correct value
-                .getEntities(
-                        Configuration.Lucene.IndexKey.Disease.NAME,
-                        symptom.getName()
-                );
-
+            if(symptom.getHpoId()!=null && symptom.getCui()!=null){
+                diseasesForCurrentSymptom = _repositoryFactory
+                        .getDiseaseRepository()
+                        .getEntities(
+                                new SearchParam(Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID, symptom.getHpoId()),
+                                new SearchParam(Configuration.Lucene.IndexKey.Disease.CUI_LIST, symptom.getCui())
+                        );
+            }else if(symptom.getHpoId()!=null){
+                diseasesForCurrentSymptom = _repositoryFactory
+                        .getDiseaseRepository()
+                        .getEntities(
+                                new SearchParam(Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID, symptom.getHpoId())
+                        );
+            }else if(symptom.getCui()!=null){
+                diseasesForCurrentSymptom = _repositoryFactory
+                        .getDiseaseRepository()
+                        .getEntities(
+                                new SearchParam(Configuration.Lucene.IndexKey.Disease.CUI_LIST, symptom.getCui())
+                        );
+            }else{
+                continue;
+            }
             // Since diseaseCauses is a set, remove any duplicate
             diseaseCauses.addAll(diseasesForCurrentSymptom);
         }
@@ -111,8 +124,8 @@ public class DiagnosticManager {
         associatedSymptoms = _repositoryFactory
                 .getSymptomRepository()
                 .getEntities(
-                        Configuration.Lucene.IndexKey.Symptom.NAME,
-                        diagnosticRequest.getUndesirableEffect());
+                        new SearchParam(Configuration.Lucene.IndexKey.Symptom.NAME,
+                        diagnosticRequest.getUndesirableEffect()));
 
         return associatedSymptoms;
     }

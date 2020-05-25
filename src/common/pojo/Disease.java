@@ -43,6 +43,11 @@ public class Disease implements IDiagnosableEntity, Serializable {
     private String _hpoSignId;
 
     /**
+     * list of the disease's symptom's cui
+     */
+    private String _cuiList;
+
+    /**
      * Default constructor for parameter-less construction
      */
     public Disease() { }
@@ -75,11 +80,13 @@ public class Disease implements IDiagnosableEntity, Serializable {
     }
 
 
-    public Disease(String name, String signId, String hpoID, String hpoDbName) {
+    public Disease(String name, String signId, String hpoID, String hpoDbName, String cuiList) {
         _name = name;
         _hpoSignId = signId;
         _hpoId = hpoID;
         _hpoDbName = hpoDbName;
+        _cuiList = cuiList;
+
     }
 
     /**
@@ -132,6 +139,14 @@ public class Disease implements IDiagnosableEntity, Serializable {
     }
 
     /**
+     * getter for the list of CUI
+     * @return the list of CUI
+     */
+    public String get_cuiList() {
+        return _cuiList;
+    }
+
+    /**
      * Set the collection of all symptoms related to this disease
      * @param associatedSymptoms A collection of all symptoms related to this disease
      */
@@ -177,6 +192,14 @@ public class Disease implements IDiagnosableEntity, Serializable {
      */
     public void setHpoSignId(String hpoSignId) {
         this._hpoSignId = hpoSignId;
+    }
+
+    /**
+     * Setter for the list of CUI
+     * @param _cuiList the new list of CUI
+     */
+    public void set_cuiList(String _cuiList) {
+        this._cuiList = _cuiList;
     }
 
 }

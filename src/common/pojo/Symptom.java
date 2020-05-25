@@ -51,7 +51,7 @@ public class Symptom implements Serializable {
      * @param hpoId Symptom's HPO ID
      */
     public Symptom(String name, String cui, String hpoId) {
-        _cui = cui;
+        _cui = cui!=null && !cui.equals("") ? cui : null;
         _hpoId = hpoId;
         _name = name;
     }

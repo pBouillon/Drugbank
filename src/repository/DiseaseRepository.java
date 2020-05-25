@@ -45,6 +45,11 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
                 && toMerge.getHpoSignId() != null) {
             currentDisease.setHpoSignId(toMerge.getHpoSignId());
         }
+
+        if (currentDisease.get_cuiList() == null
+                && toMerge.get_cuiList() != null) {
+            currentDisease.set_cuiList(toMerge.get_cuiList());
+        }
     }
 
     @Override
@@ -53,7 +58,8 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
                 document.get(Configuration.Lucene.IndexKey.Disease.NAME),
                 document.get(Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID),
                 document.get(Configuration.Lucene.IndexKey.Disease.HPO_ID),
-                document.get(Configuration.Lucene.IndexKey.Disease.HPO_DB_NAME)
+                document.get(Configuration.Lucene.IndexKey.Disease.HPO_DB_NAME),
+                document.get(Configuration.Lucene.IndexKey.Disease.CUI_LIST)
         );
     }
 }
