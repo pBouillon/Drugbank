@@ -46,9 +46,9 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
             currentDisease.setHpoSignId(toMerge.getHpoSignId());
         }
 
-        if (currentDisease.get_cuiList() == null
-                && toMerge.get_cuiList() != null) {
-            currentDisease.set_cuiList(toMerge.get_cuiList());
+        if (currentDisease.getCuiList() == null
+                && toMerge.getCuiList() != null) {
+            currentDisease.set_cuiList(toMerge.getCuiList());
         }
     }
 
