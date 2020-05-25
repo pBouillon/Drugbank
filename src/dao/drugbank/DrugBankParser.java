@@ -1,7 +1,9 @@
 package dao.drugbank;
 
+import common.pojo.Disease;
 import common.pojo.Drug;
 import util.parser.IParser;
+import util.parser.UnstructuredTextParserBase;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +17,32 @@ import java.util.function.Consumer;
  * Drug bank file parser
  * @see IParser
  */
-public class DrugBankParser implements IParser<Drug> {
+public class DrugBankParser extends UnstructuredTextParserBase<Drug> {
+
+    /**
+     * TODO
+     */
+    private boolean _isGenericNameField = false;
+
+    /**
+     * TODO
+     */
+    private boolean _isIndicationField = false;
+
+    /**
+     * TODO
+     */
+    private boolean _isNewDrugCardField = false;
+
+    /**
+     * TODO
+     */
+    private boolean _isSynonymField = false;
+
+    /**
+     * TODO
+     */
+    private boolean _isToxicityField = false;
 
     /**
      * Represent the known fields of the parsed file
@@ -49,126 +76,90 @@ public class DrugBankParser implements IParser<Drug> {
 
     }
 
-    /**
-     * @inheritDoc
-     */
+    @Override
+    protected void handleMultilineFields(String field) {
+        // If the line is empty, lower all flags
+        if (field.isEmpty()) {
+            _isSynonymField = false;
+            return;
+        }
+
+        Drug currentDrug = parsedEntities.peek();
+
+        if (_isSynonymField) {
+            currentDrug.getSynonyms().add(field);
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Iterable<Drug> extractData(Path source) throws IOException {
-        Stack<Drug> drugs = new Stack<>();
+    protected void handleSingleLineFields(String field) {
+        Drug currentDrug = null;
 
-        // Atomic boolean for file parsing
-        AtomicBoolean isGenericNameField = new AtomicBoolean(false);
-        AtomicBoolean isIndicationField = new AtomicBoolean(false);
-        AtomicBoolean isNewDrugCardField = new AtomicBoolean(false);
-        AtomicBoolean isSynonymField = new AtomicBoolean(false);
-        AtomicBoolean isToxicityField = new AtomicBoolean(false);
+        if (!parsedEntities.isEmpty()) {
+            currentDrug = parsedEntities.peek();
+        }
 
-        // Supplier to indicate if any flag is raised
-        BooleanSupplier isAnyFlagRaised = ()
-            -> isGenericNameField.get() || isIndicationField.get()
-                || isNewDrugCardField.get() ||isToxicityField.get();
+        // Set the indication of the lastly added Drug
+        if (_isIndicationField) {
+            currentDrug.setIndication(field);
+            _isIndicationField = false;
+            return;
+        }
 
-        // Check if any multi-line field flag is raised
-        BooleanSupplier isAnyMultiLineFieldRaised = isSynonymField::get;
+        // Set the generic name of the lastly added Drug
+        if (_isGenericNameField) {
+            currentDrug.setName(field);
+            _isGenericNameField = false;
+            return;
+        }
 
-        // Handle fields split among several lines
-        Consumer<String> handleMultilinesFields = (field) -> {
-            // Skip handling if no flag is raised
-            if (!isAnyMultiLineFieldRaised.getAsBoolean()) {
-                return;
-            }
+        // Set the toxicity of the lastly added Drug
+        if (_isToxicityField) {
+            currentDrug.setToxicity(field);
+            _isToxicityField = false;
+            return;
+        }
 
-            // If the line is empty, lower all flags
-            if (field.isEmpty()) {
-                isSynonymField.set(false);
-                return;
-            }
+        // Create a new instance of Drug for this new card
+        if (_isNewDrugCardField) {
+            parsedEntities.add(new Drug());
+            _isNewDrugCardField = false;
+        }
+    }
 
-            Drug currentDrug = drugs.peek();
+    @Override
+    protected boolean isAnyFlagRaised() {
+        return _isGenericNameField || _isIndicationField
+                || _isNewDrugCardField ||_isToxicityField;
+    }
 
-            if (isSynonymField.get()) {
-                currentDrug.getSynonyms().add(field);
-            }
-        };
+    @Override
+    protected boolean isAnyMultiLineFieldRaised() {
+        return _isSynonymField;
+    }
 
-        Consumer<String> handleSingleLineFields = (field) -> {
-            Drug currentDrug = null;
-            if (!drugs.isEmpty()) {
-                currentDrug = drugs.peek();
-            }
+    @Override
+    protected void setFlags(String field) {
+        if (field.contains(Fields.BEGIN_DRUGCARD)) {
+            _isNewDrugCardField = true;
+        }
 
-            // Set the indication of the lastly added Drug
-            if (isIndicationField.get()) {
-                currentDrug.setIndication(field);
-                isIndicationField.set(false);
-                return;
-            }
+        else if (field.contains(Fields.INDICATION)) {
+            _isIndicationField = true;
+        }
 
-            // Set the generic name of the lastly added Drug
-            if (isGenericNameField.get()) {
-                currentDrug.setName(field);
-                isGenericNameField.set(false);
-                return;
-            }
+        else if (field.contains(Fields.GENERIC_NAME)) {
+            _isGenericNameField = true;
+        }
 
-            // Set the toxicity of the lastly added Drug
-            if (isToxicityField.get()) {
-                currentDrug.setToxicity(field);
-                isToxicityField.set(false);
-                return;
-            }
+        else if (field.contains(Fields.SYNONYMS)) {
+            _isSynonymField = true;
+        }
 
-            // Create a new instance of Drug for this new card
-            if (isNewDrugCardField.get()) {
-                drugs.add(new Drug());
-                isNewDrugCardField.set(false);
-            }
-        };
-
-        // Set the flags according to the currently read field
-        Consumer<String> setFlags = (field) -> {
-            if (field.contains(Fields.BEGIN_DRUGCARD)) {
-                isNewDrugCardField.set(true);
-            }
-
-            else if (field.contains(Fields.INDICATION)) {
-                isIndicationField.set(true);
-            }
-
-            else if (field.contains(Fields.GENERIC_NAME)) {
-                isGenericNameField.set(true);
-            }
-
-            else if (field.contains(Fields.SYNONYMS)) {
-                isSynonymField.set(true);
-            }
-
-            else if (field.contains(Fields.TOXICITY)) {
-                isToxicityField.set(true);
-            }
-        };
-
-        Files.lines(source)
-            .forEachOrdered(line -> {
-                // Handle fields split among several lines
-                handleMultilinesFields.accept(line);
-
-                // Skip empty lines
-                if (line.isEmpty()) {
-                    return;
-                }
-
-                // If no flags are raised try to set them instead of processing
-                if (!isAnyFlagRaised.getAsBoolean()) {
-                    setFlags.accept(line);
-                    return;
-                }
-
-                handleSingleLineFields.accept(line);
-            });
-
-        return drugs;
+        else if (field.contains(Fields.TOXICITY)) {
+            _isToxicityField = true;
+        }
     }
 
 }
