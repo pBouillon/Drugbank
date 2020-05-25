@@ -11,27 +11,27 @@ import util.parser.UnstructuredTextParserBase;
 public class DrugBankParser extends UnstructuredTextParserBase<Drug> {
 
     /**
-     * TODO
+     * Flag raised when the following field is the drug's generic name
      */
     private boolean _isGenericNameField = false;
 
     /**
-     * TODO
+     * Flag raised when the following field is the drug's indications
      */
     private boolean _isIndicationField = false;
 
     /**
-     * TODO
+     * Flag raised when the following field marks the beginning of a new drug card
      */
     private boolean _isNewDrugCardField = false;
 
     /**
-     * TODO
+     * Multiline flag raised when the following fields are synonyms of the current drug
      */
     private boolean _isSynonymField = false;
 
     /**
-     * TODO
+     * Flag raised when the following field is the drug's toxicity
      */
     private boolean _isToxicityField = false;
 
