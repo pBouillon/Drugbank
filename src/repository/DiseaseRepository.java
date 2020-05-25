@@ -24,24 +24,27 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
 
     @Override
     protected void mergeResult(Map<String, Disease> recordsMap, Disease toMerge) {
+        final String diseaseName = toMerge.getName();
+
         // Get current record or create it
-        Disease currentDrug = recordsMap.getOrDefault(
-                toMerge.getName(),
-                new Disease(toMerge.getName()));
+        recordsMap.putIfAbsent(diseaseName, new Disease(diseaseName));
+        Disease currentDisease = recordsMap.get(diseaseName);
 
         // Merge data
-        if (currentDrug.getHpoDbName() == null && toMerge.getHpoDbName() != null) {
-            toMerge.setHpoDbName(currentDrug.getHpoDbName());
-        }
-        if (currentDrug.getHpoId() == null && toMerge.getHpoId() != null) {
-            toMerge.setHpoId(currentDrug.getHpoId());
-        }
-        if (currentDrug.getHpoSignId() == null && toMerge.getHpoSignId() != null) {
-            toMerge.setHpoSignId(currentDrug.getHpoSignId());
+        if (currentDisease.getHpoDbName() == null
+                && toMerge.getHpoDbName() != null) {
+            currentDisease.setHpoDbName(toMerge.getHpoDbName());
         }
 
-        // "Save" results
-        recordsMap.put(currentDrug.getName(), currentDrug);
+        if (currentDisease.getHpoId() == null
+                && toMerge.getHpoId() != null) {
+            currentDisease.setHpoId(toMerge.getHpoId());
+        }
+
+        if (currentDisease.getHpoSignId() == null
+                && toMerge.getHpoSignId() != null) {
+            currentDisease.setHpoSignId(toMerge.getHpoSignId());
+        }
     }
 
     @Override

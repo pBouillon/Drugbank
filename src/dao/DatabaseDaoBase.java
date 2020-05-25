@@ -1,10 +1,8 @@
 package dao;
 
-import common.pojo.Symptom;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import util.extractor.IDatabaseExtractor;
-import util.parser.IParser;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -42,13 +40,7 @@ public abstract class DatabaseDaoBase<T> extends DataAccessObjectBase<T> {
     @Override
     protected void initializeIndexing() {
         // Create the index writer
-        IndexWriter indexWriter = null;
-
-        try {
-            indexWriter = createIndexWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        IndexWriter indexWriter = createIndexWriter();
 
         // Extract the symptoms and create them
         List<T> extracted = extractor.extract();
