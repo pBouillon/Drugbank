@@ -156,7 +156,9 @@ public class Configuration {
                  * List of the symptoms CUI
                  */
                 public static final String CUI_LIST = "cui_list";
+
             }
+
         }
 
         /**
@@ -170,6 +172,7 @@ public class Configuration {
             public static final int HITS_PER_PAGES = 512;
 
         }
+
     }
 
     /**
