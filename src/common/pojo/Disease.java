@@ -150,8 +150,8 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * getter for the list of CUI
      * @return the list of CUI
      */
-    public String getUnifiedCuiList() {
-        return LuceneIndexerBase.getJoinedStringCollection(_cuiList);
+    public List<String> getCuiList() {
+        return _cuiList;
     }
 
     /**
@@ -166,8 +166,8 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * Setter for the list of CUI
      * @param cuiList the new list of CUI
      */
-    public void setCuiList(String cuiList) {
-        _cuiList = LuceneIndexerBase.getSplitStringCollection(cuiList);
+    public void setCuiList(List<String> cuiList) {
+        _cuiList = cuiList;
     }
 
     /**
