@@ -3,6 +3,7 @@ package common.pojo;
 import diagnostic.response.IDiagnosableEntity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
     /**
      * Lazy list of all symptoms related to this disease
      */
-    private List<String> _associatedSymptoms;
+    private List<String> _associatedSymptoms = new ArrayList<>();
 
     /**
      * Disease's name
@@ -24,7 +25,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
     /**
      * Disease's synonyms
      */
-    private List<String> _synonyms;
+    private List<String> _synonyms = new ArrayList<>();
 
     /**
      * Id in the database dbName

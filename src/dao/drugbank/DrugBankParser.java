@@ -1,17 +1,8 @@
 package dao.drugbank;
 
-import common.pojo.Disease;
 import common.pojo.Drug;
 import util.parser.IParser;
 import util.parser.UnstructuredTextParserBase;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Stack;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 /**
  * Drug bank file parser

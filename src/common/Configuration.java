@@ -151,7 +151,14 @@ public class Configuration {
                  * Other names of the disease
                  */
                 public static final String SYNONYMS = "synonym";
+
+                /**
+                 * Symptoms provoked by this disease
+                 */
+                public static final String SYMPTOMS = "symptoms";
+
             }
+
         }
 
         /**

@@ -12,7 +12,7 @@ import org.apache.lucene.document.TextField;
 import java.nio.file.Paths;
 
 /**
- * DAO for the OMIM data source
+ * DAO for the OMIM CSV data source
  */
 public class OmimCsvDao extends TextSourceDaoBase<Disease> implements ILuceneIndexer<Disease> {
 
