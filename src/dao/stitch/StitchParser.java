@@ -51,7 +51,7 @@ public class StitchParser implements IParser<Drug> {
                     }
 
                     String[] lineTab = line.split("\t");
-                    if (!lineTab[2].equals("ATC")){
+                    if (!lineTab[2].equals("ATC")) {
                         return;
                     }
 

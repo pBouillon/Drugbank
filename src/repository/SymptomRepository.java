@@ -78,13 +78,15 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
         }
 
         if (currentSymptom.getIndicationOf() != null
-                && toMerge.getIndicationOf() != null){
-            currentSymptom.getIndicationOf().addAll(toMerge.getIndicationOf());
+                && toMerge.getIndicationOf() != null) {
+            currentSymptom.getIndicationOf()
+                .addAll(toMerge.getIndicationOf());
         }
 
         if (currentSymptom.getSideEffectOf() != null
-                && toMerge.getSideEffectOf() != null){
-            currentSymptom.getSideEffectOf().addAll(toMerge.getSideEffectOf());
+                && toMerge.getSideEffectOf() != null) {
+            currentSymptom.getSideEffectOf()
+                .addAll(toMerge.getSideEffectOf());
         }
     }
 
