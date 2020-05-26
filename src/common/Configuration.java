@@ -120,6 +120,15 @@ public class Configuration {
                  */
                 public static final String CUI = "cui";
 
+                /**
+                 * indication of a drug
+                 */
+                public static final String INDICATION_OF = "indication_of";
+
+                /**
+                 * side effect of a drug
+                 */
+                public static final String SIDE_EFFECT_OF = "side_effect_of";
             }
 
             /**

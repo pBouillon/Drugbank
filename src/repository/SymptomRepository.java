@@ -7,6 +7,7 @@ import dao.sider_4_1.SiderDao;
 import org.apache.lucene.document.Document;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -30,7 +31,9 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
         return new Symptom(
                 document.get(Configuration.Lucene.IndexKey.Symptom.NAME),
                 document.get(Configuration.Lucene.IndexKey.Symptom.CUI),
-                document.get(Configuration.Lucene.IndexKey.Symptom.HPO_ID)
+                document.get(Configuration.Lucene.IndexKey.Symptom.HPO_ID),
+                Arrays.asList(document.get(Configuration.Lucene.IndexKey.Symptom.SIDE_EFFECT_OF).split(",")),
+                Arrays.asList(document.get(Configuration.Lucene.IndexKey.Symptom.INDICATION_OF).split(","))
         );
     }
 
@@ -54,6 +57,16 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
         if (currentSymptom.getHpoId() == null
                 && toMerge.getHpoId() != null) {
             currentSymptom.setHpoId(toMerge.getHpoId());
+        }
+
+        if (currentSymptom.getIndicationOf() == null
+                && toMerge.getIndicationOf() != null) {
+            currentSymptom.getIndicationOf().addAll(toMerge.getIndicationOf());
+        }
+
+        if (currentSymptom.getSideEffectOf() == null
+                && toMerge.getSideEffectOf() != null) {
+            currentSymptom.getSideEffectOf().addAll(toMerge.getSideEffectOf());
         }
     }
 

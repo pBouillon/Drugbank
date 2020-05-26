@@ -11,8 +11,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Extract information from the MeDRA databases
@@ -25,39 +26,63 @@ public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
      */
     @Override
     public List<Symptom> extract() {
-        Stack<Symptom> symptoms = new Stack<>();
+        List<Symptom> symptoms = new ArrayList<>();
 
         // SQL query to fetch all side effects name
-        final String sqlQuerySideEffectsName =
-                "SELECT DISTINCT " +
-                "    m_se.side_effect_name " +
-                "FROM " +
-                "    meddra_all_se m_se " +
-                "WHERE " +
-                "    m_se.meddra_concept_type = 'PT';";
+        final String sqlQuerySideEffectsName = "SELECT" +
+                " m_se.side_effect_name as name," +
+                " m_se.cui_of_meddra_term," +
+                " '' as stitch_list_in," +
+                " GROUP_CONCAT(stitch_compound_id1)  as stitch_list_se" +
+                " FROM" +
+                " meddra_all_se m_se" +
+                " WHERE" +
+                " m_se.meddra_concept_type = 'PT'" +
+                " group by  m_se.cui_of_meddra_term;";
 
-        // Perform query and process the results
+        final String sqlQuerySideIndicationsName = "SELECT" +
+                " m_ai.meddra_concept_name as name," +
+                " m_ai.cui_of_meddra_term," +
+                " '' as stitch_list_se," +
+                " GROUP_CONCAT(m_ai.stitch_compound_id) as stitch_list_in" +
+                " FROM" +
+                " meddra_all_indications m_ai" +
+                " WHERE" +
+                " m_ai.meddra_concept_type = 'PT'" +
+                " group by  m_ai.cui_of_meddra_term;";
+
+        populateSymptomsFromQuery(sqlQuerySideEffectsName, symptoms);
+        populateSymptomsFromQuery(sqlQuerySideIndicationsName, symptoms);
+        return symptoms;
+    }
+
+    private void populateSymptomsFromQuery(String query, List<Symptom> symptoms){
         try (Connection connection = getConnection();
-                 Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery(sqlQuerySideEffectsName)) {
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
             // Result buffers
             String sideEffectName;
+            String sideEffectCUI;
+            String[] stitchCompoundIn;
+            String[] stitchCompoundSe;
             Symptom newSideEffect;
 
             // Process each result
             while (resultSet.next()) {
-                sideEffectName = resultSet.getString("side_effect_name");
-
+                sideEffectName = resultSet.getString("name");
+                sideEffectCUI = resultSet.getString("cui_of_meddra_term");
+                stitchCompoundSe = resultSet.getString("stitch_list_se").split(",");
+                stitchCompoundIn  = resultSet.getString("stitch_list_in").split(",");
                 newSideEffect = new Symptom();
                 newSideEffect.setName(sideEffectName);
-
+                newSideEffect.setCui(sideEffectCUI);
+                newSideEffect.setSideEffectOf(Arrays.asList(stitchCompoundSe));
+                newSideEffect.setIndicationOf(Arrays.asList(stitchCompoundIn));
                 symptoms.add(newSideEffect);
             }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-
-        return symptoms;
     }
 
     /**
