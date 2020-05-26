@@ -32,6 +32,16 @@ public class Symptom implements Serializable {
     private String _cui;
 
     /**
+     * Is a side effect of each Drug with an id in this list
+     */
+    private List<String> _sideEffectOf;
+
+    /**
+     * Is an indication of each Drug with an id in this list
+     */
+    private List<String> _indicationOf;
+
+    /**
      * Default constructor for parameter-less construction
      */
     public Symptom() { }
@@ -50,10 +60,12 @@ public class Symptom implements Serializable {
      * @param cui Symptom cui
      * @param hpoId Symptom's HPO ID
      */
-    public Symptom(String name, String cui, String hpoId) {
+    public Symptom(String name, String cui, String hpoId,List<String> sideEffectOf, List<String> indicationOf) {
         _cui = cui;
         _hpoId = hpoId;
         _name = name;
+        _sideEffectOf = sideEffectOf;
+        _indicationOf = indicationOf;
     }
 
     /**
@@ -100,6 +112,22 @@ public class Symptom implements Serializable {
     }
 
     /**
+     * @see this._sideEffectOf
+     * @return  a list of drug id
+     */
+    public List<String> getSideEffectOf() {
+        return _sideEffectOf;
+    }
+
+    /**
+     * @see this._indicationOf
+     * @return a list of drug id
+     */
+    public List<String> getIndicationOf() {
+        return _indicationOf;
+    }
+
+    /**
      * Set the collection of all drugs that may cure this disease
      * @param associatedDrugs A collection of all drugs that may cure this disease
      */
@@ -131,4 +159,19 @@ public class Symptom implements Serializable {
         this._cui = cui;
     }
 
+    /**
+     * setter for Side effect of list
+     * @param stitchCompondList new list of drugs id
+     */
+    public void setSideEffectOf(List<String> stitchCompondList) {
+        _sideEffectOf = stitchCompondList;
+    }
+
+    /**
+     * setter for indication of list
+     * @param stitchCompondList new list of drugs id
+     */
+    public void setIndicationOf(List<String> stitchCompondList) {
+        _indicationOf = stitchCompondList;
+    }
 }
