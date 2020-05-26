@@ -35,7 +35,7 @@ public class DrugRepository extends RepositoryBase<Drug> {
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Drug.COMPOUND_ID,
-                            symptom.getSideEffectOf().stream().reduce("",(acc,elem)->acc+" "+elem)
+                            symptom.getSideEffectOf().stream().reduce("", (acc, elem) -> acc + " " + elem)
                     ));
         }
 
@@ -43,7 +43,7 @@ public class DrugRepository extends RepositoryBase<Drug> {
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Drug.TOXICITY,
-                            "\""+symptom.getName()+"\""
+                            "\"" + symptom.getName() + "\""
                     ));
         }
 
@@ -58,25 +58,29 @@ public class DrugRepository extends RepositoryBase<Drug> {
         Drug currentDrug = null;
         String drugName = toMerge.getName();
         String drugATC = toMerge.getATC();
-        if(drugName!=null && !drugName.equals("") && drugATC!=null && !drugATC.equals("")){
+
+        boolean validDrugName = drugName != null && !drugName.equals("");
+        boolean validDrugATC = drugATC != null && !drugATC.equals("");
+
+        if (validDrugName && validDrugATC) {
             currentDrug = recordsMap.get(drugName) == null ? recordsMap.get(drugATC) : recordsMap.get(drugName);
-            if(currentDrug == null) {
+            if (currentDrug == null) {
                 currentDrug = new Drug();
             }
             currentDrug.setName(drugName);
             currentDrug.setATC(drugATC);
             recordsMap.putIfAbsent(drugName, currentDrug);
             recordsMap.putIfAbsent(drugATC, currentDrug);
-        }else if(drugATC!=null && !drugATC.equals("")){
+        } else if (validDrugATC) {
             currentDrug = recordsMap.get(drugATC);
-            if(currentDrug == null) {
+            if (currentDrug == null) {
                 currentDrug = new Drug();
                 currentDrug.setATC(drugATC);
                 recordsMap.put(drugATC, currentDrug);
             }
-        }else if(drugName!=null && !drugName.equals("")){
+        } else if (validDrugName) {
             currentDrug = recordsMap.get(drugName);
-            if(currentDrug == null) {
+            if (currentDrug == null) {
                 currentDrug = new Drug();
                 currentDrug.setName(drugName);
                 recordsMap.put(drugName, currentDrug);
@@ -84,7 +88,7 @@ public class DrugRepository extends RepositoryBase<Drug> {
         }
 
         // Get current record or create it
-        if(currentDrug==null){
+        if (currentDrug == null) {
             System.err.println("A Drug doesn't have name nor ATC");
             return;
         }
