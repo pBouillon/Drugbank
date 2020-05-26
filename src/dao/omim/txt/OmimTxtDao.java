@@ -49,7 +49,8 @@ public class OmimTxtDao extends TextSourceDaoBase<Disease> implements ILuceneInd
         // Disease's symptoms
         document.add(new TextField(
                 Configuration.Lucene.IndexKey.Disease.SYMPTOMS,
-                LuceneIndexerBase.getJoinedStringCollection(sourceObject.getSynonyms()),
+                LuceneIndexerBase.getJoinedStringCollection(
+                        sourceObject.getAssociatedSymptoms()),
                 Field.Store.YES
         ));
 

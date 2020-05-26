@@ -65,7 +65,7 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
         Disease currentDisease = parsedEntities.peek();
 
         if (_isDiseaseSymptoms) {
-            currentDisease.getSynonyms().add(field);
+            currentDisease.getAssociatedSymptoms().add(field);
         }
     }
 

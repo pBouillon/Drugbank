@@ -30,15 +30,22 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
      */
     @Override
     public Symptom createFromDocument(Document document) {
-        List<String> sideEffectList= new ArrayList<>();
-        if(document.get(Configuration.Lucene.IndexKey.Symptom.SIDE_EFFECT_OF) != null){
-            sideEffectList.addAll(Arrays.asList(document.get(Configuration.Lucene.IndexKey.Symptom.SIDE_EFFECT_OF).split(",")));
+        List<String> sideEffectList = new ArrayList<>();
+        if (document.get(Configuration.Lucene.IndexKey.Symptom.SIDE_EFFECT_OF) != null) {
+            sideEffectList.addAll(
+                    Arrays.asList(
+                            document.get(Configuration.Lucene.IndexKey.Symptom.SIDE_EFFECT_OF)
+                                    .split(",")));
         }
 
-        List<String> indicationList= new ArrayList<>();
-        if(document.get(Configuration.Lucene.IndexKey.Symptom.INDICATION_OF) != null){
-            indicationList.addAll(Arrays.asList(document.get(Configuration.Lucene.IndexKey.Symptom.INDICATION_OF).split(",")));
+        List<String> indicationList = new ArrayList<>();
+        if (document.get(Configuration.Lucene.IndexKey.Symptom.INDICATION_OF) != null) {
+            indicationList.addAll(
+                    Arrays.asList(
+                            document.get(Configuration.Lucene.IndexKey.Symptom.INDICATION_OF)
+                                    .split(",")));
         }
+
         return new Symptom(
                 document.get(Configuration.Lucene.IndexKey.Symptom.NAME),
                 document.get(Configuration.Lucene.IndexKey.Symptom.CUI),
