@@ -100,6 +100,13 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
                             symptom.getCui()
             ));
         }
+        if (symptom.getName() != null && !symptom.getName().equals("")) {
+            searchParams.add(
+                    new SearchParam(
+                            Configuration.Lucene.IndexKey.Disease.SYMPTOMS,
+                            "\""+symptom.getName()+"\""
+                    ));
+        }
 
         return searchParams;
     }
