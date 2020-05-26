@@ -2,13 +2,17 @@ package repository;
 
 import common.Configuration;
 import common.pojo.Drug;
+import common.pojo.Symptom;
 import dao.atc.AtcDao;
 import dao.drugbank.DrugBankDao;
 import dao.stitch.StitchDao;
+import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Drug repository providing entry points for Drug fetching and creation
@@ -24,16 +28,66 @@ public class DrugRepository extends RepositoryBase<Drug> {
                 new StitchDao().createIndexReader());
     }
 
+    public static List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
+        List<SearchParam> searchParams = new Stack<>();
+
+        if (symptom.getSideEffectOf() != null) {
+            searchParams.add(
+                    new SearchParam(
+                            Configuration.Lucene.IndexKey.Drug.COMPOUND_ID,
+                            symptom.getSideEffectOf().stream().reduce("",(acc,elem)->acc+" "+elem)
+                    ));
+        }
+
+        if (symptom.getName() != null && !symptom.getName().equals("")) {
+            searchParams.add(
+                    new SearchParam(
+                            Configuration.Lucene.IndexKey.Drug.TOXICITY,
+                            "\""+symptom.getName()+"\""
+                    ));
+        }
+
+        return searchParams;
+    }
+
     /**
      * @inheritDoc
      */
     @Override
     protected void mergeResult(Map<String, Drug> recordsMap, Drug toMerge) {
-        final String drugName = toMerge.getName();
+        Drug currentDrug = null;
+        String drugName = toMerge.getName();
+        String drugATC = toMerge.getATC();
+        if(drugName!=null && !drugName.equals("") && drugATC!=null && !drugATC.equals("")){
+            currentDrug = recordsMap.get(drugName) == null ? recordsMap.get(drugATC) : recordsMap.get(drugName);
+            if(currentDrug == null) {
+                currentDrug = new Drug();
+            }
+            currentDrug.setName(drugName);
+            currentDrug.setATC(drugATC);
+            recordsMap.putIfAbsent(drugName, currentDrug);
+            recordsMap.putIfAbsent(drugATC, currentDrug);
+        }else if(drugATC!=null && !drugATC.equals("")){
+            currentDrug = recordsMap.get(drugATC);
+            if(currentDrug == null) {
+                currentDrug = new Drug();
+                currentDrug.setATC(drugATC);
+                recordsMap.put(drugATC, currentDrug);
+            }
+        }else if(drugName!=null && !drugName.equals("")){
+            currentDrug = recordsMap.get(drugName);
+            if(currentDrug == null) {
+                currentDrug = new Drug();
+                currentDrug.setName(drugName);
+                recordsMap.put(drugName, currentDrug);
+            }
+        }
 
         // Get current record or create it
-        recordsMap.putIfAbsent(drugName, new Drug(drugName));
-        Drug currentDrug = recordsMap.get(drugName);
+        if(currentDrug==null){
+            System.err.println("A Drug doesn't have name nor ATC");
+            return;
+        }
 
         // Merge data
         if (currentDrug.get_compoundId() == null
@@ -44,11 +98,6 @@ public class DrugRepository extends RepositoryBase<Drug> {
         if (currentDrug.getToxicity() == null
                 && toMerge.getToxicity() != null) {
             currentDrug.setToxicity(toMerge.getToxicity());
-        }
-
-        if (currentDrug.getATC() == null
-                && toMerge.getATC() != null) {
-            currentDrug.setATC(toMerge.getATC());
         }
 
         if (currentDrug.getIndication() == null

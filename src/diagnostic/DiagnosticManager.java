@@ -9,6 +9,7 @@ import diagnostic.response.DiagnosticResponse;
 import diagnostic.response.IDiagnosableEntity;
 import lucene.searcher.SearchParam;
 import repository.DiseaseRepository;
+import repository.DrugRepository;
 import repository.factory.RepositoryFactory;
 import repository.factory.RepositoryFactorySingleton;
 import util.Lazy;
@@ -94,11 +95,26 @@ public class DiagnosticManager {
      * @return A list of all the drugs that may cause the effect
      */
     private static List<Drug> diagnoseDrugsFor(List<Symptom> symptoms) {
-        List<Drug> drugCauses = new ArrayList<>();
+        Set<Drug> drugCauses = new HashSet<>();
 
-        // TODO: fetch from repositories
+        // Buffer for query parameters relative to each symptom
+        List<SearchParam> searchParams;
 
-        return drugCauses;
+        // Retrieve all diseases that may cause each symptom
+        List<Drug> drugForCurrentSymptom;
+        for (Symptom symptom : symptoms) {
+            searchParams = DrugRepository.generateSearchParamsFromSymptom(symptom);
+
+            drugForCurrentSymptom = _repositoryFactory
+                    .getDrugRepository()
+                    .getEntities(
+                            searchParams.toArray(SearchParam[]::new));
+
+            // Since diseaseCauses is a set, remove any duplicate
+            drugCauses.addAll(drugForCurrentSymptom);
+        }
+
+        return new ArrayList<>(drugCauses);
     }
 
     /**
