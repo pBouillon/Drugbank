@@ -30,9 +30,12 @@ public class DrugRepository extends RepositoryBase<Drug> {
     }
 
     /**
-     * @inheritDoc
+     * From a Symptom generate a list of the SearchParam used to query the associated entity
+     * from this repository
+     * @param symptom The symptom to be associated with an entity
+     * @return A list of the search param to be applied on the request
+     * @see Symptom
      */
-    @Override
     public List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
         List<SearchParam> searchParams = new Stack<>();
 

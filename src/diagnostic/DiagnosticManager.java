@@ -8,8 +8,6 @@ import diagnostic.request.DiagnosticRequest;
 import diagnostic.response.DiagnosticResponse;
 import diagnostic.response.IDiagnosableEntity;
 import lucene.searcher.SearchParam;
-import repository.DiseaseRepository;
-import repository.DrugRepository;
 import repository.factory.RepositoryFactory;
 import repository.factory.RepositoryFactorySingleton;
 import util.Lazy;
@@ -43,12 +41,12 @@ public class DiagnosticManager {
         _repositoryFactory.initializeRepositories();
 
         // Extract the associated symptoms
-        List<Symptom> associatedSymptoms = getAssociatedSymptoms(diagnosticRequest);
+        List<List<Symptom>> associatedSymptoms = getAssociatedSymptoms(diagnosticRequest);
 
         // Fetch all potential causes
         List<IDiagnosableEntity> causes = new ArrayList<>();
         causes.addAll(diagnoseDiseasesFor(associatedSymptoms));
-        causes.addAll(diagnoseDrugsFor(associatedSymptoms));
+        //causes.addAll(diagnoseDrugsFor(associatedSymptoms));
 
         // Register all potential causes of the effect specified in the request
         causes.forEach(cause
@@ -66,27 +64,25 @@ public class DiagnosticManager {
      * @param symptoms Symptoms to be associated with a disease
      * @return A list of all the disease that may cause the effect
      */
-    private static List<Disease> diagnoseDiseasesFor(List<Symptom> symptoms) {
-        Set<Disease> diseaseCauses = new HashSet<>();
-
+    private static List<Disease> diagnoseDiseasesFor(List<List<Symptom>> symptoms) {
         // Buffer for query parameters relative to each symptom
         List<SearchParam> searchParams;
 
         // Retrieve all diseases that may cause each symptom
         List<Disease> diseasesForCurrentSymptom;
-        for (Symptom symptom : symptoms) {
-            searchParams = _repositoryFactory
-                    .getDiseaseRepository()
-                    .generateSearchParamsFromSymptom(symptom);
 
-            diseasesForCurrentSymptom = _repositoryFactory
-                    .getDiseaseRepository()
-                    .getEntities(
-                            searchParams.toArray(SearchParam[]::new));
+        searchParams = _repositoryFactory
+                .getDiseaseRepository()
+                .generateSearchParamsFromSymptom(symptoms);
 
-            // Since diseaseCauses is a set, remove any duplicate
-            diseaseCauses.addAll(diseasesForCurrentSymptom);
-        }
+        diseasesForCurrentSymptom = _repositoryFactory
+                .getDiseaseRepository()
+                .getEntities(
+                        searchParams.toArray(SearchParam[]::new));
+
+        // Since diseaseCauses is a set, remove any duplicate
+        Set<Disease> diseaseCauses = new HashSet<>(diseasesForCurrentSymptom);
+
 
         return new ArrayList<>(diseaseCauses);
     }
@@ -127,12 +123,16 @@ public class DiagnosticManager {
      * @return A List of all the symptoms matching the user's request
      * @see Symptom
      */
-    private static List<Symptom> getAssociatedSymptoms(DiagnosticRequest diagnosticRequest) {
-        return _repositoryFactory
-                .getSymptomRepository()
-                .getEntities(
-                        new SearchParam(Configuration.Lucene.IndexKey.Symptom.NAME,
-                        diagnosticRequest.getUndesirableEffect()));
+    private static List<List<Symptom>> getAssociatedSymptoms(DiagnosticRequest diagnosticRequest) {
+        List<List<Symptom>> associatedMap = new ArrayList<>();
+        for (String request : diagnosticRequest.getUndesirableEffect()) {
+            associatedMap.add(_repositoryFactory
+                    .getSymptomRepository()
+                    .getEntities(
+                            new SearchParam(Configuration.Lucene.IndexKey.Symptom.NAME,
+                                    request)));
+        }
+        return associatedMap;
     }
 
     /**

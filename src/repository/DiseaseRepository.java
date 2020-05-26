@@ -11,6 +11,7 @@ import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -77,36 +78,109 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
     }
 
     /**
-     * @inheritDoc
+     * From a Symptom generate a list of the SearchParam used to query the associated entity
+     * from this repository
+     *
+     * @param symptoms The symptom to be associated with an entity
+     * @return A list of the search param to be applied on the request
+     * @see Symptom
      */
-    @Override
-    public List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
+    public List<SearchParam> generateSearchParamsFromSymptom(List<List<Symptom>> symptoms) {
         List<SearchParam> searchParams = new Stack<>();
+        if (symptoms.size() == 1) {
+            for (Symptom symptom : symptoms.get(0)) {
+                if (symptom.getHpoId() != null) {
+                    searchParams.add(
+                            new SearchParam(
+                                    Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID,
+                                    symptom.getHpoId()
+                            ));
+                }
+            }
 
-        if (symptom.getHpoId() != null) {
-            searchParams.add(
-                    new SearchParam(
-                            Configuration.Lucene.IndexKey.Disease.HPO_SIGN_ID,
-                            symptom.getHpoId()
-            ));
         }
 
-        if (symptom.getCui() != null) {
+        List<TreeNode[]> tmp = recursif(symptoms, 0);
+        List<StringBuilder> cuis = new ArrayList<>();
+        List<StringBuilder> names = new ArrayList<>();
+        for (TreeNode[] tnt: tmp) {
+            cuis.addAll(tnt[0].reduce());
+            names.addAll(tnt[1].reduce());
+        }
+
+        for (StringBuilder cuiB : cuis) {
+            String cuiQuery = cuiB.toString();
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Disease.CUI_LIST,
-                            symptom.getCui()
-            ));
+                            cuiQuery
+                    ));
+
         }
-        if (symptom.getName() != null && !symptom.getName().equals("")) {
+        for (StringBuilder nameB : names) {
+            String nameQuery = nameB.toString();
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Disease.SYMPTOMS,
-                            LuceneSearcherBase.getFieldForLuceneExactSearchOn(symptom.getName())
+                            nameQuery
                     ));
         }
 
+
         return searchParams;
+    }
+
+    private List<TreeNode[]> recursif(List<List<Symptom>> L, int idx) {
+        if (L.size() - 1 == idx) {
+            List<TreeNode[]> list = new ArrayList<>();
+            for (Symptom s : L.get(idx)) {
+                TreeNode[] res = new TreeNode[2];
+                res[0] = new TreeNode(s.getCui());
+                res[1] = new TreeNode(LuceneSearcherBase.getFieldForLuceneExactSearchOn(s.getName()));
+                list.add(res);
+            }
+            return list;
+        } else {
+            List<TreeNode[]> list = new ArrayList<>();
+            List<TreeNode[]> sons = recursif(L, idx + 1);
+            for (Symptom s : L.get(idx)) {
+                TreeNode[] res = new TreeNode[2];
+                res[0] = new TreeNode(s.getCui());
+                res[1] = new TreeNode(LuceneSearcherBase.getFieldForLuceneExactSearchOn(s.getName()));
+                for (TreeNode[] tns: sons) {
+                    res[0].sons.add(tns[0]);
+                    res[1].sons.add(tns[1]);
+                }
+                list.add(res);
+            }
+
+            return list;
+        }
+    }
+
+    private static class TreeNode{
+        public String text;
+        public List<TreeNode> sons;
+        public TreeNode(String ptext){
+            text = ptext;
+            sons = new ArrayList<>();
+        }
+        public List<StringBuilder> reduce(){
+            List<StringBuilder> res = new ArrayList<>();
+            if (sons.size()==0){
+                if(text!=null){
+                    res.add(new StringBuilder(text));
+                }
+            }else{
+                for (TreeNode son: sons) {
+                    for (StringBuilder s: son.reduce()) {
+                        s.append(" AND ").append(text);
+                        res.add(s);
+                    }
+                }
+            }
+            return res;
+        }
     }
 
 }

@@ -4,7 +4,6 @@ import common.Configuration;
 import common.pojo.Symptom;
 import dao.hp.HpDao;
 import dao.sider_4_1.SiderDao;
-import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
 import java.io.IOException;
@@ -54,14 +53,6 @@ public class SymptomRepository extends RepositoryBase<Symptom> {
                 sideEffectList,
                 indicationList
         );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
-        throw new UnsupportedOperationException();
     }
 
     /**
