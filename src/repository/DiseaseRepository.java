@@ -6,6 +6,7 @@ import common.pojo.Symptom;
 import dao.hpo.HpoDao;
 import dao.omim.csv.OmimCsvDao;
 import dao.omim.txt.OmimTxtDao;
+import lucene.searcher.LuceneSearcherBase;
 import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
@@ -76,13 +77,10 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
     }
 
     /**
-     * From a Symptom generate a list of the SearchParam used to query the associated Diseases
-     * from this repository
-     * @param symptom The symptom to be associated with a disease
-     * @return A list of the search param to be applied on the request
-     * @see Symptom
+     * @inheritDoc
      */
-    public static List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
+    @Override
+    public List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
         List<SearchParam> searchParams = new Stack<>();
 
         if (symptom.getHpoId() != null) {
@@ -104,7 +102,7 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Disease.SYMPTOMS,
-                            "\""+symptom.getName()+"\""
+                            LuceneSearcherBase.getFieldForLuceneExactSearchOn(symptom.getName())
                     ));
         }
 
