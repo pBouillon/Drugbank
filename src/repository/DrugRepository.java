@@ -6,6 +6,7 @@ import common.pojo.Symptom;
 import dao.atc.AtcDao;
 import dao.drugbank.DrugBankDao;
 import dao.stitch.StitchDao;
+import lucene.searcher.LuceneSearcherBase;
 import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
@@ -28,14 +29,20 @@ public class DrugRepository extends RepositoryBase<Drug> {
                 new StitchDao().createIndexReader());
     }
 
-    public static List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
         List<SearchParam> searchParams = new Stack<>();
 
         if (symptom.getSideEffectOf() != null) {
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Drug.COMPOUND_ID,
-                            symptom.getSideEffectOf().stream().reduce("", (acc, elem) -> acc + " " + elem)
+                            symptom.getSideEffectOf()
+                                    .stream()
+                                    .reduce("", (acc, elem) -> acc + " " + elem)
                     ));
         }
 
@@ -43,7 +50,7 @@ public class DrugRepository extends RepositoryBase<Drug> {
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Drug.TOXICITY,
-                            "\"" + symptom.getName() + "\""
+                            LuceneSearcherBase.getFieldForLuceneExactSearchOn(symptom.getName())
                     ));
         }
 
@@ -63,23 +70,33 @@ public class DrugRepository extends RepositoryBase<Drug> {
         boolean validDrugATC = drugATC != null && !drugATC.equals("");
 
         if (validDrugName && validDrugATC) {
-            currentDrug = recordsMap.get(drugName) == null ? recordsMap.get(drugATC) : recordsMap.get(drugName);
+            currentDrug = recordsMap.get(drugName) == null
+                    ? recordsMap.get(drugATC)
+                    : recordsMap.get(drugName);
+
             if (currentDrug == null) {
                 currentDrug = new Drug();
             }
+
             currentDrug.setName(drugName);
             currentDrug.setATC(drugATC);
+
             recordsMap.putIfAbsent(drugName, currentDrug);
             recordsMap.putIfAbsent(drugATC, currentDrug);
+
         } else if (validDrugATC) {
             currentDrug = recordsMap.get(drugATC);
+            
             if (currentDrug == null) {
                 currentDrug = new Drug();
                 currentDrug.setATC(drugATC);
                 recordsMap.put(drugATC, currentDrug);
             }
+
         } else if (validDrugName) {
+
             currentDrug = recordsMap.get(drugName);
+
             if (currentDrug == null) {
                 currentDrug = new Drug();
                 currentDrug.setName(drugName);

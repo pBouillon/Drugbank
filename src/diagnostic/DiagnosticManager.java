@@ -75,7 +75,9 @@ public class DiagnosticManager {
         // Retrieve all diseases that may cause each symptom
         List<Disease> diseasesForCurrentSymptom;
         for (Symptom symptom : symptoms) {
-            searchParams = DiseaseRepository.generateSearchParamsFromSymptom(symptom);
+            searchParams = _repositoryFactory
+                    .getDiseaseRepository()
+                    .generateSearchParamsFromSymptom(symptom);
 
             diseasesForCurrentSymptom = _repositoryFactory
                     .getDiseaseRepository()
@@ -103,7 +105,9 @@ public class DiagnosticManager {
         // Retrieve all diseases that may cause each symptom
         List<Drug> drugForCurrentSymptom;
         for (Symptom symptom : symptoms) {
-            searchParams = DrugRepository.generateSearchParamsFromSymptom(symptom);
+            searchParams = _repositoryFactory
+                    .getDrugRepository()
+                    .generateSearchParamsFromSymptom(symptom);
 
             drugForCurrentSymptom = _repositoryFactory
                     .getDrugRepository()
