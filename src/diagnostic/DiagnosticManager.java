@@ -34,13 +34,11 @@ public class DiagnosticManager {
      * Core method to generate a diagnostic from a request
      * @param diagnosticRequest Diagnostic request holding the information on which base the diagnostic process
      * @return A DiagnosticResponse holding the diagnostic
+     * @see RepositoryFactory If you want to force the initialization before creating the diagnostic
      */
     public static DiagnosticResponse generateDiagnostic(DiagnosticRequest diagnosticRequest) {
         DiagnosticResponse response = new DiagnosticResponse();
         Map<IDiagnosableEntity, Lazy<List<Drug>>> cures = response.getCures();
-
-        // Force repository population
-        _repositoryFactory.initializeRepositories();
 
         // Extract the associated symptoms
         List<Symptom> associatedSymptoms = getAssociatedSymptoms(diagnosticRequest);

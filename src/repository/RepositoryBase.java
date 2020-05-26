@@ -7,7 +7,6 @@ import org.apache.lucene.index.IndexReader;
 
 import java.util.List;
 
-
 /**
  * Base class for repositories objects querying at least one DAO
  * to fetch data from several sources

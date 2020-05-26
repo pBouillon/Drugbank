@@ -19,12 +19,12 @@ import java.util.regex.Pattern;
 public class OmimCsvParser implements IParser<Disease> {
 
     /**
-     * Common CSV separator
+     * CliCommon CSV separator
      */
     private static final char DEFAULT_CSV_SEPARATOR = ',';
 
     /**
-     * Common Csv quoting
+     * CliCommon Csv quoting
      */
     private static final char DEFAULT_QUOTE = '"';
 
