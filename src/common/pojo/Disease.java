@@ -2,7 +2,6 @@ package common.pojo;
 
 import diagnostic.response.IDiagnosableEntity;
 import lucene.indexer.LuceneIndexerBase;
-import util.Lazy;
 
 import java.io.Serializable;
 import java.util.ArrayList;

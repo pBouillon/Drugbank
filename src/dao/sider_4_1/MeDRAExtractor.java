@@ -56,7 +56,7 @@ public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
         return symptoms;
     }
 
-    private void populateSymptomsFromQuery(String query, List<Symptom> symptoms){
+    private void populateSymptomsFromQuery(String query, List<Symptom> symptoms) {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {

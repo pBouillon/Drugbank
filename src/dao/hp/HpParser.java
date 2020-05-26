@@ -60,28 +60,28 @@ public class HpParser implements IParser<Symptom> {
                     return;
                 }
 
-                if(line.equals(Fields.BEGIN_CARD)){
+                if (line.equals(Fields.BEGIN_CARD)) {
                     symptoms.push(new Symptom());
                     symptoms.peek().setCui("");
                     return;
                 }
 
                 // Skip until 1st card
-                if(symptoms.empty()){
+                if (symptoms.empty()) {
                     return;
                 }
 
-                if(line.startsWith(Fields.ID_FIELD)){
+                if (line.startsWith(Fields.ID_FIELD)) {
                     symptoms.peek().setHpoId(line.replace(Fields.ID_FIELD, ""));
                     return;
                 }
 
-                if(line.startsWith(Fields.CUI_FIELD)){
+                if (line.startsWith(Fields.CUI_FIELD)) {
                     symptoms.peek().setCui(line.replace(Fields.CUI_FIELD, ""));
                     return;
                 }
 
-                if(line.startsWith(Fields.NAME_FIELD)){
+                if (line.startsWith(Fields.NAME_FIELD)) {
                     symptoms.peek().setName(line.replace(Fields.NAME_FIELD, ""));
                 }
 
