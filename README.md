@@ -9,7 +9,7 @@ find the potential causes of the trouble he is experiencing.
 
 These causes may be drugs or diseases.
 
-> This fork was made before the final version of the project (comlete CLI and cure for each cause diagnosed)
+> This fork was made before the final version of the project (complete CLI and cure for each cause diagnosed)
 
 ## Goals
 
