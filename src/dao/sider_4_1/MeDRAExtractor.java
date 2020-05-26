@@ -35,7 +35,7 @@ public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
                 " '' as stitch_list_in," +
                 " GROUP_CONCAT(stitch_compound_id1)  as stitch_list_se" +
                 " FROM" +
-                " meddra_all_se m_se " +
+                " meddra_all_se m_se" +
                 " WHERE" +
                 " m_se.meddra_concept_type = 'PT'" +
                 " group by  m_se.cui_of_meddra_term;";
@@ -46,17 +46,17 @@ public class MeDRAExtractor extends SQLExtractorBase<Symptom> {
                 " '' as stitch_list_se," +
                 " GROUP_CONCAT(m_ai.stitch_compound_id) as stitch_list_in" +
                 " FROM" +
-                " meddra_all_indications m_ai " +
+                " meddra_all_indications m_ai" +
                 " WHERE" +
                 " m_ai.meddra_concept_type = 'PT'" +
                 " group by  m_ai.cui_of_meddra_term;";
 
-        retrieveSymptomFromQuery(sqlQuerySideEffectsName, symptoms);
-        retrieveSymptomFromQuery(sqlQuerySideIndicationsName, symptoms);
+        populateSymptomsFromQuery(sqlQuerySideEffectsName, symptoms);
+        populateSymptomsFromQuery(sqlQuerySideIndicationsName, symptoms);
         return symptoms;
     }
 
-    private void retrieveSymptomFromQuery(String query, List<Symptom> symptoms){
+    private void populateSymptomsFromQuery(String query, List<Symptom> symptoms){
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
