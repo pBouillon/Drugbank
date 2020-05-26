@@ -6,6 +6,7 @@ import common.pojo.Symptom;
 import dao.hpo.HpoDao;
 import dao.omim.csv.OmimCsvDao;
 import dao.omim.txt.OmimTxtDao;
+import lucene.searcher.LuceneSearcherBase;
 import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
@@ -104,7 +105,7 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Disease.SYMPTOMS,
-                            "\""+symptom.getName()+"\""
+                            LuceneSearcherBase.getFieldForLuceneExactSearchOn(symptom.getName())
                     ));
         }
 

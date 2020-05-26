@@ -83,6 +83,18 @@ public abstract class LuceneSearcherBase<T> implements ILuceneSearcher<T> {
     }
 
     /**
+     * Add syntactic sugar on the provided field to make Lucene
+     * search matching that exact field
+     * @param field Field on which performing the exact search
+     * @return The syntactically sugared field
+     */
+    public static String getFieldForLuceneExactSearchOn(String field) {
+        // In Lucene, search on exact matching is performed when the string field
+        // is surrounded by `"`
+        return "\"" + field + "\"";
+    }
+
+    /**
      * @inheritDoc
      */
     public List<T> getMatchingEntities(Query query) throws IOException {
