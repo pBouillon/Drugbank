@@ -9,8 +9,10 @@ import dao.stitch.StitchDao;
 import lucene.searcher.LuceneSearcherBase;
 import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
+import util.tree.TreeNode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -32,13 +34,19 @@ public class DrugRepository extends RepositoryBase<Drug> {
     /**
      * From a Symptom generate a list of the SearchParam used to query the associated entity
      * from this repository
-     * @param symptom The symptom to be associated with an entity
+     * @param symptoms The symptom to be associated with an entity
      * @return A list of the search param to be applied on the request
      * @see Symptom
      */
-    public List<SearchParam> generateSearchParamsFromSymptom(Symptom symptom) {
+    public List<SearchParam> generateSearchParamsFromSymptom(List<List<Symptom>> symptoms) {
         List<SearchParam> searchParams = new Stack<>();
 
+        List<TreeNode> tmp = recursif(symptoms, 0);
+        List<StringBuilder> names = new ArrayList<>();
+        for (TreeNode t:tmp) {
+            names.addAll(t.reduce());
+        }
+/*
         if (symptom.getSideEffectOf() != null) {
             searchParams.add(
                     new SearchParam(
@@ -48,16 +56,39 @@ public class DrugRepository extends RepositoryBase<Drug> {
                                     .reduce("", (acc, elem) -> acc + " " + elem)
                     ));
         }
+        */
 
-        if (symptom.getName() != null && !symptom.getName().equals("")) {
+        for (StringBuilder nameB : names) {
+            String nameQuery = nameB.toString();
             searchParams.add(
                     new SearchParam(
                             Configuration.Lucene.IndexKey.Drug.TOXICITY,
-                            LuceneSearcherBase.getFieldForLuceneExactSearchOn(symptom.getName())
+                            nameQuery
                     ));
         }
 
         return searchParams;
+    }
+
+    private List<TreeNode> recursif(List<List<Symptom>> L, int idx) {
+        if (L.size() - 1 == idx) {
+            List<TreeNode> list = new ArrayList<>();
+            for (Symptom s : L.get(idx)) {
+                TreeNode res = new TreeNode(LuceneSearcherBase.getFieldForLuceneExactSearchOn(s.getName()));
+                list.add(res);
+            }
+            return list;
+        } else {
+            List<TreeNode> list = new ArrayList<>();
+            List<TreeNode> sons = recursif(L, idx + 1);
+            for (Symptom s : L.get(idx)) {
+                TreeNode res = new TreeNode(LuceneSearcherBase.getFieldForLuceneExactSearchOn(s.getName()));
+                res.sons.addAll(sons);
+                list.add(res);
+            }
+
+            return list;
+        }
     }
 
     /**

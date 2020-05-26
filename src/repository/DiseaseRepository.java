@@ -9,6 +9,7 @@ import dao.omim.txt.OmimTxtDao;
 import lucene.searcher.LuceneSearcherBase;
 import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
+import util.tree.TreeNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -155,31 +156,6 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
             }
 
             return list;
-        }
-    }
-
-    private static class TreeNode{
-        public String text;
-        public List<TreeNode> sons;
-        public TreeNode(String ptext){
-            text = ptext;
-            sons = new ArrayList<>();
-        }
-        public List<StringBuilder> reduce(){
-            List<StringBuilder> res = new ArrayList<>();
-            if (sons.size()==0){
-                if(text!=null){
-                    res.add(new StringBuilder(text));
-                }
-            }else{
-                for (TreeNode son: sons) {
-                    for (StringBuilder s: son.reduce()) {
-                        s.append(" AND ").append(text);
-                        res.add(s);
-                    }
-                }
-            }
-            return res;
         }
     }
 

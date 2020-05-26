@@ -16,6 +16,7 @@ import java.util.*;
 
 /**
  * Diagnostic manager entity to perform diagnostic based on response/request POJOs
+ *
  * @see DiagnosticRequest
  * @see DiagnosticResponse
  */
@@ -23,6 +24,7 @@ public class DiagnosticManager {
 
     /**
      * Provider for the various repositories
+     *
      * @see RepositoryFactorySingleton
      */
     private static final RepositoryFactory _repositoryFactory
@@ -30,6 +32,7 @@ public class DiagnosticManager {
 
     /**
      * Core method to generate a diagnostic from a request
+     *
      * @param diagnosticRequest Diagnostic request holding the information on which base the diagnostic process
      * @return A DiagnosticResponse holding the diagnostic
      */
@@ -46,7 +49,7 @@ public class DiagnosticManager {
         // Fetch all potential causes
         List<IDiagnosableEntity> causes = new ArrayList<>();
         causes.addAll(diagnoseDiseasesFor(associatedSymptoms));
-        //causes.addAll(diagnoseDrugsFor(associatedSymptoms));
+        causes.addAll(diagnoseDrugsFor(associatedSymptoms));
 
         // Register all potential causes of the effect specified in the request
         causes.forEach(cause
@@ -61,6 +64,7 @@ public class DiagnosticManager {
 
     /**
      * Diagnose all disease that may cause the effect specified in the request
+     *
      * @param symptoms Symptoms to be associated with a disease
      * @return A list of all the disease that may cause the effect
      */
@@ -89,36 +93,37 @@ public class DiagnosticManager {
 
     /**
      * Diagnose all drugs that may cause the effect specified in the request
+     *
      * @param symptoms Symptoms to be associated with a drug's side effect
      * @return A list of all the drugs that may cause the effect
      */
-    private static List<Drug> diagnoseDrugsFor(List<Symptom> symptoms) {
-        Set<Drug> drugCauses = new HashSet<>();
+    private static List<Drug> diagnoseDrugsFor(List<List<Symptom>> symptoms) {
 
         // Buffer for query parameters relative to each symptom
         List<SearchParam> searchParams;
 
         // Retrieve all diseases that may cause each symptom
         List<Drug> drugForCurrentSymptom;
-        for (Symptom symptom : symptoms) {
-            searchParams = _repositoryFactory
-                    .getDrugRepository()
-                    .generateSearchParamsFromSymptom(symptom);
 
-            drugForCurrentSymptom = _repositoryFactory
-                    .getDrugRepository()
-                    .getEntities(
-                            searchParams.toArray(SearchParam[]::new));
+        searchParams = _repositoryFactory
+                .getDrugRepository()
+                .generateSearchParamsFromSymptom(symptoms);
 
-            // Since diseaseCauses is a set, remove any duplicate
-            drugCauses.addAll(drugForCurrentSymptom);
-        }
+        drugForCurrentSymptom = _repositoryFactory
+                .getDrugRepository()
+                .getEntities(
+                        searchParams.toArray(SearchParam[]::new));
+
+        // Since diseaseCauses is a set, remove any duplicate
+        Set<Drug> drugCauses = new HashSet<>(drugForCurrentSymptom);
+
 
         return new ArrayList<>(drugCauses);
     }
 
     /**
      * Get all symptoms that are matching the described undesirable effect in the request
+     *
      * @param diagnosticRequest User's diagnostic request
      * @return A List of all the symptoms matching the user's request
      * @see Symptom
@@ -137,6 +142,7 @@ public class DiagnosticManager {
 
     /**
      * Get the all cures for the side effect of the provided disease
+     *
      * @param cause Disease to cure
      * @return A list of all drugs that may cure the cause
      */
@@ -150,6 +156,7 @@ public class DiagnosticManager {
 
     /**
      * Get the all cures for the side effect of the provided drug
+     *
      * @param cause Drug to cure
      * @return A list of all drugs that may cure the cause
      */
@@ -163,6 +170,7 @@ public class DiagnosticManager {
 
     /**
      * Get the all cures for the provided cause
+     *
      * @param cause IDiagnosableEntity to cure, either Disease or Drug
      * @return A list of all drugs that may cure the cause
      * @see IDiagnosableEntity
