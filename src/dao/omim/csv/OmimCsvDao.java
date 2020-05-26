@@ -53,6 +53,13 @@ public class OmimCsvDao extends TextSourceDaoBase<Disease> implements ILuceneInd
                 Field.Store.YES
         ));
 
+        // Disease's cui lists
+        document.add(new TextField(
+                Configuration.Lucene.IndexKey.Disease.CUI_LIST,
+                LuceneIndexerBase.getJoinedStringCollection(sourceObject.getCuiList()),
+                Field.Store.YES
+        ));
+
         return document;
     }
 }

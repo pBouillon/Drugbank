@@ -162,6 +162,12 @@ public class Configuration {
                 public static final String SYNONYMS = "synonym";
 
                 /**
+                 * List of the symptoms CUI
+                 */
+                public static final String CUI_LIST = "cui_list";
+
+
+                /**
                  * Symptoms provoked by this disease
                  */
                 public static final String SYMPTOMS = "symptoms";
@@ -181,6 +187,7 @@ public class Configuration {
             public static final int HITS_PER_PAGES = 512;
 
         }
+
     }
 
     /**

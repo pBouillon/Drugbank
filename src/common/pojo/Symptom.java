@@ -61,7 +61,11 @@ public class Symptom implements Serializable {
      * @param hpoId Symptom's HPO ID
      */
     public Symptom(String name, String cui, String hpoId,List<String> sideEffectOf, List<String> indicationOf) {
-        _cui = cui;
+        // Lucene throw an error on empty chain
+        // The following prevents this error to be thrown
+        _cui = cui != null && !cui.equals("")
+                ? cui
+                : null;
         _hpoId = hpoId;
         _name = name;
         _sideEffectOf = sideEffectOf;

@@ -44,7 +44,7 @@ public class HpDao extends TextSourceDaoBase<Symptom> implements ILuceneIndexer<
         ));
 
         // Symptom's CUI
-        document.add(new StringField(
+        document.add(new TextField(
                 Configuration.Lucene.IndexKey.Symptom.CUI,
                 sourceObject.getCui(),
                 Field.Store.YES

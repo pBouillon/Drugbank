@@ -1,17 +1,19 @@
 package diagnostic;
 
+import common.Configuration;
 import common.pojo.Disease;
 import common.pojo.Drug;
+import common.pojo.Symptom;
 import diagnostic.request.DiagnosticRequest;
 import diagnostic.response.DiagnosticResponse;
 import diagnostic.response.IDiagnosableEntity;
+import lucene.searcher.SearchParam;
+import repository.DiseaseRepository;
 import repository.factory.RepositoryFactory;
 import repository.factory.RepositoryFactorySingleton;
 import util.Lazy;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Diagnostic manager entity to perform diagnostic based on response/request POJOs
@@ -39,10 +41,13 @@ public class DiagnosticManager {
         // Force repository population
         _repositoryFactory.initializeRepositories();
 
+        // Extract the associated symptoms
+        List<Symptom> associatedSymptoms = getAssociatedSymptoms(diagnosticRequest);
+
         // Fetch all potential causes
         List<IDiagnosableEntity> causes = new ArrayList<>();
-        causes.addAll(diagnoseDiseases(diagnosticRequest));
-        causes.addAll(diagnoseDrugs(diagnosticRequest));
+        causes.addAll(diagnoseDiseasesFor(associatedSymptoms));
+        causes.addAll(diagnoseDrugsFor(associatedSymptoms));
 
         // Register all potential causes of the effect specified in the request
         causes.forEach(cause
@@ -56,26 +61,39 @@ public class DiagnosticManager {
     }
 
     /**
-     * TODO
      * Diagnose all disease that may cause the effect specified in the request
-     * @param diagnosticRequest Diagnostic request holding the information on which base the diagnostic process
+     * @param symptoms Symptoms to be associated with a disease
      * @return A list of all the disease that may cause the effect
      */
-    private static List<Disease> diagnoseDiseases(DiagnosticRequest diagnosticRequest) {
-        List<Disease> diseaseCauses = new ArrayList<>();
+    private static List<Disease> diagnoseDiseasesFor(List<Symptom> symptoms) {
+        Set<Disease> diseaseCauses = new HashSet<>();
 
-        // TODO: fetch from repositories
+        // Buffer for query parameters relative to each symptom
+        List<SearchParam> searchParams;
 
-        return diseaseCauses;
+        // Retrieve all diseases that may cause each symptom
+        List<Disease> diseasesForCurrentSymptom;
+        for (Symptom symptom : symptoms) {
+            searchParams = DiseaseRepository.generateSearchParamsFromSymptom(symptom);
+
+            diseasesForCurrentSymptom = _repositoryFactory
+                    .getDiseaseRepository()
+                    .getEntities(
+                            searchParams.toArray(SearchParam[]::new));
+
+            // Since diseaseCauses is a set, remove any duplicate
+            diseaseCauses.addAll(diseasesForCurrentSymptom);
+        }
+
+        return new ArrayList<>(diseaseCauses);
     }
 
     /**
-     * TODO
      * Diagnose all drugs that may cause the effect specified in the request
-     * @param diagnosticRequest Diagnostic request holding the information on which base the diagnostic process
+     * @param symptoms Symptoms to be associated with a drug's side effect
      * @return A list of all the drugs that may cause the effect
      */
-    private static List<Drug> diagnoseDrugs(DiagnosticRequest diagnosticRequest) {
+    private static List<Drug> diagnoseDrugsFor(List<Symptom> symptoms) {
         List<Drug> drugCauses = new ArrayList<>();
 
         // TODO: fetch from repositories
@@ -84,16 +102,57 @@ public class DiagnosticManager {
     }
 
     /**
-     * TODO
-     * @param cause
-     * @return
+     * Get all symptoms that are matching the described undesirable effect in the request
+     * @param diagnosticRequest User's diagnostic request
+     * @return A List of all the symptoms matching the user's request
+     * @see Symptom
      */
-    private static List<Drug> getCureFor(IDiagnosableEntity cause) {
+    private static List<Symptom> getAssociatedSymptoms(DiagnosticRequest diagnosticRequest) {
+        return _repositoryFactory
+                .getSymptomRepository()
+                .getEntities(
+                        new SearchParam(Configuration.Lucene.IndexKey.Symptom.NAME,
+                        diagnosticRequest.getUndesirableEffect()));
+    }
+
+    /**
+     * Get the all cures for the side effect of the provided disease
+     * @param cause Disease to cure
+     * @return A list of all drugs that may cure the cause
+     */
+    private static List<Drug> getCureFor(Disease cause) {
         List<Drug> cures = new ArrayList<>();
 
         // TODO: fetch from repositories
 
         return cures;
+    }
+
+    /**
+     * Get the all cures for the side effect of the provided drug
+     * @param cause Drug to cure
+     * @return A list of all drugs that may cure the cause
+     */
+    private static List<Drug> getCureFor(Drug cause) {
+        List<Drug> cures = new ArrayList<>();
+
+        // TODO: fetch from repositories
+
+        return cures;
+    }
+
+    /**
+     * Get the all cures for the provided cause
+     * @param cause IDiagnosableEntity to cure, either Disease or Drug
+     * @return A list of all drugs that may cure the cause
+     * @see IDiagnosableEntity
+     * @see Disease
+     * @see Drug
+     */
+    private static List<Drug> getCureFor(IDiagnosableEntity cause) {
+        return cause instanceof Disease
+                ? getCureFor((Disease) cause)
+                : getCureFor((Drug) cause);
     }
 
 }

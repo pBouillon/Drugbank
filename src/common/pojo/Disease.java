@@ -1,6 +1,7 @@
 package common.pojo;
 
 import diagnostic.response.IDiagnosableEntity;
+import lucene.indexer.LuceneIndexerBase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,6 +44,11 @@ public class Disease implements IDiagnosableEntity, Serializable {
     private String _hpoSignId;
 
     /**
+     * list of the disease's symptom's cui
+     */
+    private List<String> _cuiList;
+
+    /**
      * Default constructor for parameter-less construction
      */
     public Disease() { }
@@ -74,11 +80,21 @@ public class Disease implements IDiagnosableEntity, Serializable {
         _synonyms = synonyms;
     }
 
-    public Disease(String name, String signId, String hpoID, String hpoDbName) {
+    /**
+     * Specialized constructor
+     * @param name Disease's name
+     * @param signId Disease's sign ID
+     * @param hpoId Disease's hpo ID
+     * @param hpoDbName Disease's hpo database's name
+     * @param rawCuiList Disease's raw string (stringified list as "cui cui cui")
+     * @see LuceneIndexerBase String utility methods
+     */
+    public Disease(String name, String signId, String hpoId, String hpoDbName, String rawCuiList) {
         _name = name;
         _hpoSignId = signId;
-        _hpoId = hpoID;
+        _hpoId = hpoId;
         _hpoDbName = hpoDbName;
+        _cuiList = LuceneIndexerBase.getSplitStringCollection(rawCuiList);
     }
 
     /**
@@ -131,11 +147,27 @@ public class Disease implements IDiagnosableEntity, Serializable {
     }
 
     /**
+     * getter for the list of CUI
+     * @return the list of CUI
+     */
+    public List<String> getCuiList() {
+        return _cuiList;
+    }
+
+    /**
      * Set the collection of all symptoms related to this disease
      * @param associatedSymptoms A collection of all symptoms related to this disease
      */
     public void setAssociatedSymptoms(List<String> associatedSymptoms) {
         _associatedSymptoms = associatedSymptoms;
+    }
+
+    /**
+     * Setter for the list of CUI
+     * @param cuiList the new list of CUI
+     */
+    public void setCuiList(List<String> cuiList) {
+        _cuiList = cuiList;
     }
 
     /**
@@ -159,7 +191,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * @param hpoId new hpoId
      */
     public void setHpoId(String hpoId) {
-        this._hpoId = hpoId;
+        _hpoId = hpoId;
     }
 
     /**
@@ -167,7 +199,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * @param hpoDbName db name
      */
     public void setHpoDbName(String hpoDbName) {
-        this._hpoDbName = hpoDbName;
+        _hpoDbName = hpoDbName;
     }
 
     /**
@@ -175,7 +207,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * @param hpoSignId the new hpo sign id
      */
     public void setHpoSignId(String hpoSignId) {
-        this._hpoSignId = hpoSignId;
+        _hpoSignId = hpoSignId;
     }
 
 }
