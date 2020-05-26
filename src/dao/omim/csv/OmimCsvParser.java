@@ -1,4 +1,4 @@
-package dao.omim;
+package dao.omim.csv;
 
 import common.pojo.Disease;
 import util.parser.IParser;
@@ -13,10 +13,10 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 
 /**
- * OMIM file parser
+ * OMIM csv file parser
  * @see IParser
  */
-public class OmimParser implements IParser<Disease> {
+public class OmimCsvParser implements IParser<Disease> {
 
     /**
      * Common CSV separator

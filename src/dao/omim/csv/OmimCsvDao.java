@@ -1,4 +1,4 @@
-package dao.omim;
+package dao.omim.csv;
 
 import common.Configuration;
 import common.pojo.Disease;
@@ -12,15 +12,15 @@ import org.apache.lucene.document.TextField;
 import java.nio.file.Paths;
 
 /**
- * DAO for the OMIM data source
+ * DAO for the OMIM CSV data source
  */
-public class OmimDao extends TextSourceDaoBase<Disease> implements ILuceneIndexer<Disease> {
+public class OmimCsvDao extends TextSourceDaoBase<Disease> implements ILuceneIndexer<Disease> {
 
     /**
      * Default constructor
      */
-    public OmimDao() {
-        super(Paths.get(Configuration.Omim.Paths.INDEX));
+    public OmimCsvDao() {
+        super(Paths.get(Configuration.Omim.Csv.Paths.INDEX));
     }
 
     /**
@@ -28,8 +28,8 @@ public class OmimDao extends TextSourceDaoBase<Disease> implements ILuceneIndexe
      */
     @Override
     protected void initialize() {
-        dataSource = Paths.get(Configuration.Omim.Paths.SOURCE);
-        parser = new OmimParser();
+        dataSource = Paths.get(Configuration.Omim.Csv.Paths.SOURCE);
+        parser = new OmimCsvParser();
     }
 
     /**

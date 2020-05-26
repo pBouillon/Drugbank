@@ -5,6 +5,7 @@ import common.pojo.Symptom;
 import dao.DataAccessObjectBase;
 import dao.DatabaseDaoBase;
 import lucene.indexer.ILuceneIndexer;
+import lucene.indexer.LuceneIndexerBase;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
@@ -46,6 +47,20 @@ public class SiderDao extends DatabaseDaoBase<Symptom> implements ILuceneIndexer
                 Configuration.Lucene.IndexKey.Symptom.NAME,
                 sourceObject.getName(),
                 Field.Store.YES));
+
+        // add the list of indications
+        symptomDocument.add(new TextField(
+                Configuration.Lucene.IndexKey.Symptom.INDICATION_OF,
+                LuceneIndexerBase.getJoinedStringCollection(sourceObject.getIndicationOf()),
+                Field.Store.YES
+        ));
+
+        // add the list of side effects
+        symptomDocument.add(new TextField(
+                Configuration.Lucene.IndexKey.Symptom.SIDE_EFFECT_OF,
+                LuceneIndexerBase.getJoinedStringCollection(sourceObject.getSideEffectOf()),
+                Field.Store.YES
+        ));
 
         return symptomDocument;
     }

@@ -120,6 +120,15 @@ public class Configuration {
                  */
                 public static final String CUI = "cui";
 
+                /**
+                 * indication of a drug
+                 */
+                public static final String INDICATION_OF = "indication_of";
+
+                /**
+                 * side effect of a drug
+                 */
+                public static final String SIDE_EFFECT_OF = "side_effect_of";
             }
 
             /**
@@ -157,6 +166,12 @@ public class Configuration {
                  */
                 public static final String CUI_LIST = "cui_list";
 
+
+                /**
+                 * Symptoms provoked by this disease
+                 */
+                public static final String SYMPTOMS = "symptoms";
+
             }
 
         }
@@ -181,19 +196,50 @@ public class Configuration {
     public static class Omim {
 
         /**
-         * OMIM paths
+         * Omim csv data source
          */
-        public static class Paths {
+        public static class Csv {
 
             /**
-             * Default data source location
+             * OMIM paths
              */
-            public static final String SOURCE = "./data/omim/omim_onto.csv";
+            public static class Paths {
+
+                /**
+                 * Default data source location
+                 */
+                public static final String SOURCE = "./data/omim/omim_onto.csv";
+
+                /**
+                 * Lucene indexes paths
+                 */
+                public static final String INDEX = "./src/dao/omim/csv/indexes/";
+
+            }
+
+        }
+
+        /**
+         * Omim text data source
+         */
+        public static class Txt {
 
             /**
-             * Lucene indexes paths
+             * OMIM paths
              */
-            public static final String INDEX = "./src/dao/omim/indexes/";
+            public static class Paths {
+
+                /**
+                 * Default data source location
+                 */
+                public static final String SOURCE = "./data/omim/omim.txt";
+
+                /**
+                 * Lucene indexes paths
+                 */
+                public static final String INDEX = "./src/dao/omim/txt/indexes/";
+
+            }
 
         }
 

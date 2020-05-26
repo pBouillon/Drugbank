@@ -4,7 +4,8 @@ import common.Configuration;
 import common.pojo.Disease;
 import common.pojo.Symptom;
 import dao.hpo.HpoDao;
-import dao.omim.OmimDao;
+import dao.omim.csv.OmimCsvDao;
+import dao.omim.txt.OmimTxtDao;
 import lucene.searcher.SearchParam;
 import org.apache.lucene.document.Document;
 
@@ -22,7 +23,8 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
      * Default constructor
      */
     public DiseaseRepository() throws IOException {
-        super(new OmimDao().createIndexReader(),
+        super(new OmimTxtDao().createIndexReader(),
+                new OmimCsvDao().createIndexReader(),
                 new HpoDao().createIndexReader());
     }
 
