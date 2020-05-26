@@ -29,11 +29,6 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
     private static class Fields {
 
         /**
-         * Used when the following line will be the disease's symptoms
-         */
-        private static final String ASSOCIATED_SYMPTOMS = "*FIELD* CS";
-
-        /**
          * Constants for the disease's name parsing
          */
         private static class Name {
@@ -50,6 +45,33 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
 
         }
 
+        /**
+         * Constants for the disease's symptoms parsing
+         */
+        private static class Symptoms {
+
+            /**
+             * Used when the following line will be the disease's symptoms
+             */
+            public static final String FIELD = "*FIELD* CS";
+
+            /**
+             * Prefix of all symptoms when defined
+             */
+            public static final String SYMPTOMS_BEGINNING = "   ";
+
+            /**
+             * First char on the line ending the symptoms enumeration
+             */
+            public static final String SYMPTOMS_ENDING_CHAR = "*";
+
+            /**
+             * Prefix of all subtitles, e.g. '['
+             */
+            public static final String SYMPTOMS_SUBTITLE_BEGINNING = "[";
+
+        }
+
     }
 
     /**
@@ -57,15 +79,29 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
      */
     @Override
     protected void handleMultilineFields(String field) {
-        if (field.isEmpty()) {
+        // Reset the flag when beginning a new disease definition
+        if (field.startsWith(Fields.Symptoms.SYMPTOMS_ENDING_CHAR)) {
             _isDiseaseSymptoms = false;
+            return;
+        }
+
+        // Ignore symptom's categories and subtitles
+        if (!field.startsWith(Fields.Symptoms.SYMPTOMS_BEGINNING)
+            || field.contains(Fields.Symptoms.SYMPTOMS_SUBTITLE_BEGINNING)) {
             return;
         }
 
         Disease currentDisease = parsedEntities.peek();
 
         if (_isDiseaseSymptoms) {
-            currentDisease.getAssociatedSymptoms().add(field);
+            // Remove trailing spaces
+            String symptom = field.strip();
+
+            // Then remove the trailing line ending
+            symptom = symptom.replace(";", "");
+
+            // Add the newly formatted symptom
+            currentDisease.getAssociatedSymptoms().add(symptom);
         }
     }
 
@@ -125,7 +161,7 @@ public class OmimTxtParser extends UnstructuredTextParserBase<Disease> {
             _isDiseaseName = true;
         }
 
-        else if (field.contains(Fields.ASSOCIATED_SYMPTOMS)) {
+        else if (field.contains(Fields.Symptoms.FIELD)) {
             _isDiseaseSymptoms = true;
         }
     }
