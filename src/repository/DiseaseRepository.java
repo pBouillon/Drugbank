@@ -3,7 +3,8 @@ package repository;
 import common.Configuration;
 import common.pojo.Disease;
 import dao.hpo.HpoDao;
-import dao.omim.OmimDao;
+import dao.omim.csv.OmimCsvDao;
+import dao.omim.txt.OmimTxtDao;
 import org.apache.lucene.document.Document;
 
 import java.io.IOException;
@@ -18,7 +19,8 @@ public class DiseaseRepository extends RepositoryBase<Disease> {
      * Default constructor
      */
     public DiseaseRepository() throws IOException {
-        super(new OmimDao().createIndexReader(),
+        super(new OmimTxtDao().createIndexReader(),
+                new OmimCsvDao().createIndexReader(),
                 new HpoDao().createIndexReader());
     }
 

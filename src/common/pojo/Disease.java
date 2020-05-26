@@ -1,9 +1,9 @@
 package common.pojo;
 
 import diagnostic.response.IDiagnosableEntity;
-import util.Lazy;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
     /**
      * Lazy list of all symptoms related to this disease
      */
-    private final Lazy<List<Symptom>> _associatedSymptoms = new Lazy<>();
+    private List<String> _associatedSymptoms = new ArrayList<>();
 
     /**
      * Disease's name
@@ -25,7 +25,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
     /**
      * Disease's synonyms
      */
-    private List<String> _synonyms;
+    private List<String> _synonyms = new ArrayList<>();
 
     /**
      * Id in the database dbName
@@ -33,7 +33,7 @@ public class Disease implements IDiagnosableEntity, Serializable {
     private String _hpoId;
 
     /**
-     * name of the database where the Id have to comes (see HPO)
+     * Name of the database where the Id have to comes (see HPO)
      */
     private String _hpoDbName;
 
@@ -68,12 +68,11 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * @param name Disease's name
      * @param synonyms Disease's synonyms
      */
-    public Disease(List<Symptom> associatedSymptoms, String name, List<String> synonyms) {
-        _associatedSymptoms.setSupplier(() -> associatedSymptoms);
+    public Disease(List<String> associatedSymptoms, String name, List<String> synonyms) {
+        _associatedSymptoms = associatedSymptoms;
         _name = name;
         _synonyms = synonyms;
     }
-
 
     public Disease(String name, String signId, String hpoID, String hpoDbName) {
         _name = name;
@@ -87,8 +86,8 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * @return A collection of all symptoms related to this disease
      * @see Symptom
      */
-    public List<Symptom> getAssociatedSymptoms() {
-        return _associatedSymptoms.getOrCompute();
+    public List<String> getAssociatedSymptoms() {
+        return _associatedSymptoms;
     }
 
     /**
@@ -135,8 +134,8 @@ public class Disease implements IDiagnosableEntity, Serializable {
      * Set the collection of all symptoms related to this disease
      * @param associatedSymptoms A collection of all symptoms related to this disease
      */
-    public void setAssociatedSymptoms(List<Symptom> associatedSymptoms) {
-        _associatedSymptoms.setSupplier(() -> associatedSymptoms);
+    public void setAssociatedSymptoms(List<String> associatedSymptoms) {
+        _associatedSymptoms = associatedSymptoms;
     }
 
     /**
