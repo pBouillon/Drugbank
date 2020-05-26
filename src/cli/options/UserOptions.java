@@ -2,8 +2,14 @@ package cli.options;
 
 import cli.display.Display;
 
+/**
+ * User option in the main CLI
+ */
 public class UserOptions {
 
+    /**
+     * Option to trigger the interactive diagnostic mode
+     */
     public static final String Diagnostic = "d";
 
     public static final String Help = "h";

@@ -57,7 +57,7 @@ public class StitchParser implements IParser<Drug> {
 
                     Drug currentDrug = new Drug();
                     currentDrug.setATC(lineTab[3]);
-                    currentDrug.set_compoundId(lineTab[0]);
+                    currentDrug.setCompoundId(lineTab[0]);
                     drugs.add(currentDrug);
                 });
 

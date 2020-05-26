@@ -110,7 +110,7 @@ public class Cli implements Runnable {
      * Start and show Lucene indexing process
      */
     private void startAndShowIndexingProcess() {
-        System.out.print("Starting Lucene indexation ... ");
+        System.out.print("Starting Lucene indexing ... ");
 
         long start = System.currentTimeMillis();
         RepositoryFactorySingleton.instance.initializeRepositories();

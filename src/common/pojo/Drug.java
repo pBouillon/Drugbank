@@ -160,7 +160,6 @@ public class Drug implements IDiagnosableEntity, Serializable {
         _synonyms.setSupplier(() -> synonyms);
     }
 
-
     /**
      * Drug's toxicity setter
      * @param toxicity New name to be set
@@ -190,8 +189,17 @@ public class Drug implements IDiagnosableEntity, Serializable {
      * setter for CompoundId
      * @param _compoundId new Compound ID
      */
-    public void set_compoundId(String _compoundId) {
+    public void setCompoundId(String _compoundId) {
         this._compoundId = _compoundId;
+    }
+
+    /**
+     * Default string representation
+     * @return The drug's name
+     */
+    @Override
+    public String toString() {
+        return getName();
     }
 
 }

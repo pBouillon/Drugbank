@@ -178,4 +178,14 @@ public class Symptom implements Serializable {
     public void setIndicationOf(List<String> stitchCompondList) {
         _indicationOf = stitchCompondList;
     }
+
+    /**
+     * Default string representation
+     * @return The symptom's name
+     */
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

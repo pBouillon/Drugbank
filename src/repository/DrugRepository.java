@@ -113,7 +113,7 @@ public class DrugRepository extends RepositoryBase<Drug> {
         // Merge data
         if (currentDrug.get_compoundId() == null
                 && toMerge.get_compoundId() != null) {
-            currentDrug.set_compoundId(toMerge.get_compoundId());
+            currentDrug.setCompoundId(toMerge.get_compoundId());
         }
 
         if (currentDrug.getToxicity() == null

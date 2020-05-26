@@ -210,4 +210,13 @@ public class Disease implements IDiagnosableEntity, Serializable {
         _hpoSignId = hpoSignId;
     }
 
+    /**
+     * Default string representation
+     * @return The disease's name
+     */
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }
