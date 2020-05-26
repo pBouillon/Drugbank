@@ -23,11 +23,11 @@ public class CliCommon {
      */
     public static final String stylizedName =
             "  ____  _                             _   _         ____            \n" +
-                    " |  _ \\(_) __ _  __ _ _ __   ___  ___| |_(_) ___   / ___| ___ _ __  \n" +
-                    " | | | | |/ _` |/ _` | '_ \\ / _ \\/ __| __| |/ __| | |  _ / _ \\ '_ \\ \n" +
-                    " | |_| | | (_| | (_| | | | | (_) \\__ \\ |_| | (__  | |_| |  __/ | | |\n" +
-                    " |____/|_|\\__,_|\\__, |_| |_|\\___/|___/\\__|_|\\___|  \\____|\\___|_| |_|\n" +
-                    "                |___/                                               \n";
+            " |  _ \\(_) __ _  __ _ _ __   ___  ___| |_(_) ___   / ___| ___ _ __  \n" +
+            " | | | | |/ _` |/ _` | '_ \\ / _ \\/ __| __| |/ __| | |  _ / _ \\ '_ \\ \n" +
+            " | |_| | | (_| | (_| | | | | (_) \\__ \\ |_| | (__  | |_| |  __/ | | |\n" +
+            " |____/|_|\\__,_|\\__, |_| |_|\\___/|___/\\__|_|\\___|  \\____|\\___|_| |_|\n" +
+            "                |___/                                               \n";
 
     /**
      * Get a text separator for the CLI
@@ -40,6 +40,15 @@ public class CliCommon {
                 .orElse(15);
 
         return "─".repeat(Math.max(0, nameBiggestRow));
+    }
+
+    /**
+     * Get the user input after display
+     * @return The value specified by the user
+     */
+    public static String getUserCliInput() {
+        System.out.print(userCursor);
+        return input.nextLine();
     }
 
 }

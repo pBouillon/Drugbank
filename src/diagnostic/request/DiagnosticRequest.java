@@ -12,6 +12,14 @@ public class DiagnosticRequest {
     private String _undesirableEffect;
 
     /**
+     * Default constructor
+     * @param undesirableEffect Undesirable effect(s) to match
+     */
+    public DiagnosticRequest(String undesirableEffect) {
+        _undesirableEffect = undesirableEffect;
+    }
+
+    /**
      * Getter for the undesirable effect
      * @return The undesirable effect
      */

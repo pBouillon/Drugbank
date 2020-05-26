@@ -39,8 +39,7 @@ public class Cli implements Runnable {
         String userOption;
 
         do {
-            System.out.print(CliCommon.userCursor);
-            userOption = CliCommon.input.nextLine();
+            userOption = CliCommon.getUserCliInput();
 
             // Leave an empty line for readability
             System.out.println();
@@ -84,13 +83,11 @@ public class Cli implements Runnable {
 
         // Generate greeting name
         greeter.append(Display.getColorizedString(
-                CliCommon.stylizedName, Display.ConsoleColors.BLUE))
-                .append("\n");
+                CliCommon.stylizedName, Display.ConsoleColors.BLUE));
 
         // Project's authors
         greeter.append(
-                    Display.getColorizedString(
-                            "Authors: ", Display.ConsoleColors.WHITE_BOLD))
+                    Display.getColorizedString("Authors: ", Display.ConsoleColors.WHITE_BOLD))
                 .append("\n")
                 .append("\t- Antoine Jacque\n")
                 .append("\t- Mathieu Dreyer\n")
@@ -99,8 +96,7 @@ public class Cli implements Runnable {
 
         // Project's version
         greeter.append(
-                    Display.getColorizedString(
-                            "Version: ", Display.ConsoleColors.WHITE_BOLD))
+                    Display.getColorizedString("Version: ", Display.ConsoleColors.WHITE_BOLD))
                 .append(Configuration.VERSION)
                 .append("\n");
 
@@ -114,7 +110,7 @@ public class Cli implements Runnable {
      * Start and show Lucene indexing process
      */
     private void startAndShowIndexingProcess() {
-        System.out.println("Starting Lucene indexation ...");
+        System.out.print("Starting Lucene indexation ... ");
 
         long start = System.currentTimeMillis();
         RepositoryFactorySingleton.instance.initializeRepositories();
